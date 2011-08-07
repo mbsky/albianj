@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/log4j-1.2.16.jar" sourcepath="D:/java/apache-log4j-1.2.16/src"/>
-	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/jaxen-1.1-beta-6.jar"/>
+	<classpathentry kind="lib" path="/opt/5173/albianj/lib/log4j-1.2.16.jar" sourcepath="/opt/java/apache-log4j-1.2.16/src"/>
+	<classpathentry kind="lib" path="/opt/5173/albianj/lib/jaxen-1.1-beta-6.jar"/>
+	<classpathentry kind="lib" path="/opt/5173/albianj/lib/dom4j-1.6.1.jar" sourcepath="/opt/java/dom4j-1.6.1/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
