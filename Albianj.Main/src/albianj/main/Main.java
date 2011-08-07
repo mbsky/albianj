@@ -16,7 +16,8 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 //import org.w3c.dom.Document;
 //import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+//import org.w3c.dom.Element;
+//import org.w3c.dom.NodeList;
 public class Main
 {
 
@@ -32,7 +33,7 @@ public class Main
 		try
 		{
 			DOMConfigurator.configure(Path.getExtendResourcePath("../config/log4j.xml"));
-//			logger.info("aasdsadasd");
+			logger.info("aasdsadasd");
 			try
 			{
 				Document doc = XmlParser.load(Path.getExtendResourcePath("../config/service.xml"));
@@ -40,7 +41,10 @@ public class Main
 				 Iterator it=nodes.iterator();   
 			     while(it.hasNext()){   
 			       Element ele=(Element)it.next();         
-			       System.out.println(ele.getText());   
+			       //System.out.println(ele.getText());
+			       String base = XmlParser.getAttributeValue(ele, "Base");
+			       System.out.println(base);
+			       logger.info(base);
 			     }   
 				return;
 			}
