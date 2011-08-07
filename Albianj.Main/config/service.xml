@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Services>  
+  <!-- Kernel-->
+  <Service Id="" Base="Albian.Kernel.log4netPlugin.Log4netService,Albian.Kernel" Type="Albian.Kernel.Service.IAlbianService,Albian.Kernel"/>
+  
+  <!-- business -->
+</Services>
