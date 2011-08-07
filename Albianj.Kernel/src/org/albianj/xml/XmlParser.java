@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.albianj.logger.AlbianLoggerService;
 import org.apache.log4j.Logger;
+import org.dom4j.Attribute;
 import org.dom4j.Document;
+import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.w3c.dom.Element;
+//import org.w3c.dom.Element;
 
 public final class XmlParser
 {
@@ -54,9 +56,9 @@ public final class XmlParser
 	
 	public static String getAttributeValue(Element ele, String attributeName)
     {
-		if(!ele.hasAttributes()) return null;
-		String value = ele.getAttribute(attributeName);				
-		return value;
+		Attribute attr = ele.attribute(attributeName);
+		if(null == attr) return null;
+		return attr.getValue();
     }
 
     public static String getAttributeValue(Document doc, String tagName, String attributeName)
@@ -66,20 +68,20 @@ public final class XmlParser
 
     public static boolean hasAttributes(Element ele)
     {
-        return null == ele ? false : null != ele.getAttributes() && 0 != ele.getAttributes().getLength();
+        return null == ele ? false : null != ele.attributes() && 0 != ele.attributes().size();
     }
 
     public static String getNodeValue(Element ele)
     {
     	if(null == ele) return null;
-    	return ele.getNodeValue();
+    	return ele.getText();
     }
 
     public static String getNodeValue(Document doc, String tagName)
     {
     	Element ele = analyzeSingle(doc, tagName);
     	if(null == ele) return null;
-    	return ele.getNodeValue();
+    	return ele.getText();
     }
     
 	
