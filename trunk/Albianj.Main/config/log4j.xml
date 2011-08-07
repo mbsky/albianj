@@ -23,7 +23,7 @@
  <appender class="org.apache.log4j.DailyRollingFileAppender"
   name="ROLLINGFILE">
   <param name="DatePattern" value=".yyyy-MM-dd" />
-  <param name="File" value="D:/jframelog/jframe.log" />
+  <param name="File" value="/app/albianj/albianj.log" />
   <param name="Encoding" value="GBK" />
   <layout class="org.apache.log4j.PatternLayout">
    <param name="ConversionPattern"
@@ -35,7 +35,7 @@
  <appender name="DEBUG"
   class="org.apache.log4j.DailyRollingFileAppender">
   <param name="DatePattern" value=".yyyy-MM-dd" />
-  <param name="File" value="D:/jframelog/jframe_debug.log" />
+  <param name="File" value="/app/albianj/debug.log" />
   <param name="Append" value="true" />
   <layout class="org.apache.log4j.PatternLayout">
    <param name="ConversionPattern"
@@ -51,7 +51,7 @@
  <appender name="INFO"
   class="org.apache.log4j.DailyRollingFileAppender">
   <param name="DatePattern" value=".yyyy-MM-dd" />
-  <param name="File" value="D:/jframelog/jframe_info.log" />
+  <param name="File" value="/app/albianj/info.log" />
   <param name="Append" value="true" />
   <layout class="org.apache.log4j.PatternLayout">
    <param name="ConversionPattern"
@@ -67,7 +67,7 @@
  <appender name="WARN"
   class="org.apache.log4j.DailyRollingFileAppender">
   <param name="DatePattern" value=".yyyy-MM-dd" />
-  <param name="File" value="D:/jframelog/jframe_warn.log" />
+  <param name="File" value="/app/albianj/warn.log" />
   <param name="Append" value="true" />
   <layout class="org.apache.log4j.PatternLayout">
    <param name="ConversionPattern"
@@ -82,7 +82,7 @@
  <!--设定级别为error的配置信息-->
  <appender name="ERROR"
   class="org.apache.log4j.DailyRollingFileAppender">
-  <param name="File" value="D:/jframelog/jframe_error.log" />
+  <param name="File" value="/app/albianj/error.log" />
   <param name="Append" value="true" />
   <layout class="org.apache.log4j.PatternLayout">
    <param name="ConversionPattern"
@@ -97,7 +97,7 @@
  <!--设定级别为fatal的配置信息-->
  <appender name="FATAL"
   class="org.apache.log4j.DailyRollingFileAppender">
-  <param name="File" value="D:/jframelog/jframe_fatal.log" />
+  <param name="File" value="/app/albianj/fatal.log" />
   <param name="Append" value="true" />
   <layout class="org.apache.log4j.PatternLayout">
    <param name="ConversionPattern"
