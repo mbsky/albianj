@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 //import org.albianj.logger.AlbianLoggerService;
-import org.albianj.logger.AlbianLogger;
+import org.albianj.kernel.AlbianServiceRouter;
+import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.service.AlbianServiceAttrbuite;
 import org.albianj.service.AlbianServiceException;
 import org.albianj.service.IAlbianServiceAttrbuite;
@@ -19,15 +20,16 @@ public class ServiceParser extends FreeServiceParser
 {
 
 	private final static String ID_ATTRBUITE_NAME = "Id";
-	private final static String BASE_ATTRBUITE_NAME = "Base";
 	private final static String TYPE_ATTRBUITE_NAME = "Type";
-
+	IAlbianLoggerService logger; 
 	@Override
 	public void loading() throws AlbianServiceException
 	{
 		try
 		{
 			super.init();
+			super.loading();
+			logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		}
 		catch (MalformedURLException e)
 		{
@@ -44,14 +46,14 @@ public class ServiceParser extends FreeServiceParser
 	}
 
 	@Override
-	protected Map<String,IAlbianServiceAttrbuite> parserServices(List nodes) throws NullPointerException,
+	protected Map<String,IAlbianServiceAttrbuite> parserServices(@SuppressWarnings("rawtypes") List nodes) throws NullPointerException,
 			AlbianServiceException
 	{
 		if (null == nodes || 0 == nodes.size())
 		{
 			String msg = "nodes is null or size is 0";
-			if (null != AlbianLogger.ALBIANJ_SERVICE)
-				AlbianLogger.SERVICE_LOGGER.error(msg);
+			if (null != logger)
+				logger.error(msg);
 			throw new IllegalArgumentException(msg);
 		}
 		Map<String,IAlbianServiceAttrbuite> map = new LinkedHashMap<String,IAlbianServiceAttrbuite>(nodes.size());
@@ -71,37 +73,32 @@ public class ServiceParser extends FreeServiceParser
 		if (null == elt)
 		{
 			String msg = "The node is null";
-			if (null != AlbianLogger.SERVICE_LOGGER)
+			if (null != logger)
 			{
-				AlbianLogger.SERVICE_LOGGER.error(msg);
+				logger.error(msg);
 			}
 			throw new IllegalArgumentException(msg);
 		}
 		IAlbianServiceAttrbuite serviceAttr = new AlbianServiceAttrbuite();
 		String id = XmlParser.getAttributeValue(elt, ID_ATTRBUITE_NAME);
-		if (null != id && !id.trim().isEmpty())
-			serviceAttr.setId(id);
-		String base = XmlParser.getAttributeValue(elt, BASE_ATTRBUITE_NAME);
-		if (null != base && !base.trim().isEmpty())
-			serviceAttr.setId(base);
+		if (null == id || id.trim().isEmpty())
+		{
+			String msg = "The id is null or empty.";
+			if (null != logger)
+			{
+				logger.error(msg);
+			}
+			throw new NullPointerException(msg);
+		}
+		serviceAttr.setId(id);
 		String type = XmlParser.getAttributeValue(elt, TYPE_ATTRBUITE_NAME);
-		if (serviceAttr.getId().isEmpty() && serviceAttr.getBase().isEmpty())
-		{
-			String msg = "The service's id and base are all empty";
-			throw new AlbianServiceException(msg);
-		}
-		if(serviceAttr.getId().isEmpty())//if id is empty use the base for id
-		{
-			serviceAttr.setId(serviceAttr.getBase());
-		}
 		if (null == type || type.trim().isEmpty())
 		{
 			String msg = String.format("The %1$s Type is null or empty.",
-					serviceAttr.getId().isEmpty() ? serviceAttr.getBase()
-							: serviceAttr.getId());
-			if (null != AlbianLogger.SERVICE_LOGGER)
+					serviceAttr.getId());
+			if (null != logger)
 			{
-				AlbianLogger.SERVICE_LOGGER.error(msg);
+				logger.error(msg);
 			}
 			throw new NullPointerException(msg);
 		}

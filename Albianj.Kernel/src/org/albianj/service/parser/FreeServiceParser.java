@@ -8,7 +8,8 @@ import java.util.Map;
 
 import org.albianj.cached.impl.SortCached;
 import org.albianj.io.Path;
-import org.albianj.logger.AlbianLogger;
+import org.albianj.kernel.AlbianServiceRouter;
+import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.service.AlbianServiceException;
 import org.albianj.service.FreeAlbianService;
 import org.albianj.service.IAlbianServiceAttrbuite;
@@ -27,24 +28,24 @@ public abstract class FreeServiceParser extends FreeAlbianService implements
 	public final static String ALBIANJSERVICEKEY = "@$#&ALBIANJ_ALL_SERVICE&#$@";
 
 	@Override
-	public void init() throws MalformedURLException, URISyntaxException,
-			Exception
+	public void init() throws Exception
 	{
 		Document doc = XmlParser.load(Path.getExtendResourcePath(path));
 		@SuppressWarnings("rawtypes")
 		List nodes = XmlParser.analyze(doc, tagName);
+		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		if (null == nodes || 0 == nodes.size())
 		{
 			String msg = String.format("There is not %1$s nodes.", tagName);
-			if (null != AlbianLogger.KERNEL_LOGGER)
-				AlbianLogger.KERNEL_LOGGER.error(msg);
+			if (null != logger)
+				logger.error(msg);
 			throw new UnsupportedOperationException(msg);
 		}
 		Map<String, IAlbianServiceAttrbuite> map = parserServices(nodes);
 		if (null == map)
 		{
-			if(null != AlbianLogger.SERVICE_LOGGER)
-				AlbianLogger.SERVICE_LOGGER.error("The albian services is empty.");
+			if(null != logger)
+				logger.error("The albian services is empty.");
 			return;
 		}
 		SortCached.Instance().insert(ALBIANJSERVICEKEY, map);

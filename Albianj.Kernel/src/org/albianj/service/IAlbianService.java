@@ -6,7 +6,7 @@ import org.albianj.kernel.Kernel;
 public interface IAlbianService
 {
 
-	public AlbianServiceState getAlbianServiceState();
+	public AlbianServiceLifetime getAlbianServiceState();
 
 	public void beforeLoad() throws AlbianServiceException;
 

@@ -4,7 +4,6 @@ public class AlbianServiceAttrbuite implements IAlbianServiceAttrbuite
 {
 
 	private String id = "";
-	private String base = "";
 	private String type = "";
 
 	@Override
@@ -14,29 +13,13 @@ public class AlbianServiceAttrbuite implements IAlbianServiceAttrbuite
 	}
 
 	@Override
-	public void setId(String id) throws NullPointerException
+	public void setId(String id) throws IllegalArgumentException
 	{
 		if (null == id || id.isEmpty()) 
 		{ 
-			throw new NullPointerException("id"); 
+			throw new IllegalArgumentException("id"); 
 		}
 		this.id = id;
-	}
-
-	@Override
-	public String getBase()
-	{
-		return this.base;
-	}
-
-	@Override
-	public void setBase(String base) throws NullPointerException
-	{
-		if (null == base || base.isEmpty()) 
-		{ 
-			throw new NullPointerException("base"); 
-		}
-		this.base = base;
 	}
 
 	@Override
@@ -46,11 +29,11 @@ public class AlbianServiceAttrbuite implements IAlbianServiceAttrbuite
 	}
 
 	@Override
-	public void setType(String type) throws NullPointerException
+	public void setType(String type) throws IllegalArgumentException
 	{
 		if (null == type || type.isEmpty()) 
 		{ 
-			throw new NullPointerException("type"); 
+			throw new IllegalArgumentException("type"); 
 		}
 		this.type = type;
 
