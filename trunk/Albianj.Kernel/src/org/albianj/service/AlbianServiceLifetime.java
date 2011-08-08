@@ -1,6 +1,6 @@
 package org.albianj.service;
 
-public enum AlbianServiceState
+public enum AlbianServiceLifetime
 {
 	Normal, 
 	BeforeLoading, 

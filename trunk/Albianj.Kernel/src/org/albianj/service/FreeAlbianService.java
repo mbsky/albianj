@@ -6,10 +6,10 @@ import org.albianj.kernel.Kernel;
 public abstract class FreeAlbianService implements IAlbianService
 {
 
-	private AlbianServiceState state = AlbianServiceState.Normal;
+	private AlbianServiceLifetime state = AlbianServiceLifetime.Normal;
 
 	@Override
-	public AlbianServiceState getAlbianServiceState()
+	public AlbianServiceLifetime getAlbianServiceState()
 	{
 		// TODO Auto-generated method stub
 		return this.state;
@@ -19,28 +19,28 @@ public abstract class FreeAlbianService implements IAlbianService
 	public void beforeLoad() throws AlbianServiceException
 	{
 		// TODO Auto-generated method stub
-		this.state = AlbianServiceState.BeforeLoading;
+		this.state = AlbianServiceLifetime.BeforeLoading;
 	}
 
 	@Override
 	public void loading() throws AlbianServiceException
 	{
 		// TODO Auto-generated method stub
-		this.state = AlbianServiceState.Loading;
+		this.state = AlbianServiceLifetime.Loading;
 	}
 
 	@Override
 	public void afterLoading() throws AlbianServiceException
 	{
 		// TODO Auto-generated method stub
-		this.state = AlbianServiceState.Running;
+		this.state = AlbianServiceLifetime.Running;
 	}
 
 	@Override
 	public void beforeUnload() throws AlbianServiceException
 	{
 		// TODO Auto-generated method stub
-		this.state = AlbianServiceState.BeforeUnloading;
+		this.state = AlbianServiceLifetime.BeforeUnloading;
 
 	}
 
@@ -48,14 +48,14 @@ public abstract class FreeAlbianService implements IAlbianService
 	public void unload() throws AlbianServiceException
 	{
 		// TODO Auto-generated method stub
-		this.state = AlbianServiceState.Unloading;
+		this.state = AlbianServiceLifetime.Unloading;
 	}
 
 	@Override
 	public void afterUnload() throws AlbianServiceException
 	{
 		// TODO Auto-generated method stub
-		this.state = AlbianServiceState.Unloaded;
+		this.state = AlbianServiceLifetime.Unloaded;
 	}
 
 }
