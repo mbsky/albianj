@@ -1,0 +1,27 @@
+package org.albianj.persistence.object;
+
+public interface IStorageAttrbuite
+{
+	public String getName();
+	public void setName(String name);
+	public DatabaseStyle getDatabaseStyle();
+	public void setDatabaseStyle(DatabaseStyle databaseStyle);
+	public String getDatabase();
+	public void setDatabase(String database);
+	public String getUser();
+	public void setUser(String user);
+	public String getPassword();
+	public void setPassword(String password);
+	public boolean getPooling();
+	public void setPooling(boolean pooling);
+	public int getMinSize();
+	public void setMinSize(int minSize);
+	public int getMaxSize();
+	public void setMaxSize(int maxSize);
+	public int getTimeout();
+	public void setTimeout(int timeout);
+	public String getCharset();
+	public void setCharset(String charset);
+	public boolean getTransactional();
+	public void setTransactional(boolean transaction);
+}
