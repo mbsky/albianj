@@ -16,7 +16,7 @@
  <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
   <layout class="org.apache.log4j.PatternLayout">
    <param name="ConversionPattern"
-    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] " />
+    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] %n" />
   </layout>
  </appender>
 
@@ -27,7 +27,7 @@
   <param name="Encoding" value="GBK" />
   <layout class="org.apache.log4j.PatternLayout">
    <param name="ConversionPattern"
-    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] " />
+    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] %n" />
   </layout>
  </appender>
 
@@ -39,7 +39,7 @@
   <param name="Append" value="true" />
   <layout class="org.apache.log4j.PatternLayout">
    <param name="ConversionPattern"
-    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] " />
+    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] %n" />
   </layout>
   <filter class="org.apache.log4j.varia.LevelRangeFilter">
    <param name="LevelMin" value="DEBUG" />
@@ -55,7 +55,7 @@
   <param name="Append" value="true" />
   <layout class="org.apache.log4j.PatternLayout">
    <param name="ConversionPattern"
-    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] " />
+    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] %n" />
   </layout>
   <filter class="org.apache.log4j.varia.LevelRangeFilter">
    <param name="LevelMin" value="INFO" />
@@ -71,7 +71,7 @@
   <param name="Append" value="true" />
   <layout class="org.apache.log4j.PatternLayout">
    <param name="ConversionPattern"
-    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] " />
+    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] %n" />
   </layout>
   <filter class="org.apache.log4j.varia.LevelRangeFilter">
    <param name="LevelMin" value="WARN" />
@@ -86,7 +86,7 @@
   <param name="Append" value="true" />
   <layout class="org.apache.log4j.PatternLayout">
    <param name="ConversionPattern"
-    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] " />
+    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] %n" />
   </layout>
   <filter class="org.apache.log4j.varia.LevelRangeFilter">
    <param name="LevelMin" value="ERROR" />
@@ -101,7 +101,7 @@
   <param name="Append" value="true" />
   <layout class="org.apache.log4j.PatternLayout">
    <param name="ConversionPattern"
-    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] " />
+    value="[%d{yyyy-MM-dd HH:mm:ss}] [%t] [%p] [%m] %n" />
   </layout>
   <filter class="org.apache.log4j.varia.LevelRangeFilter">
    <param name="LevelMin" value="FATAL" />
