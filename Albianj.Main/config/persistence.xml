@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <AlbianObjects>
-  <AlbianObject Type="AppTest.Model.Imp.LogInfo,AppTest.Model.Imp" Base="AppTest.Model.ILogInfo,AppTest.Model">
+  <AlbianObject Type="AppTest.Model.Imp.LogInfo">
     <Cache Enable="false" LifeTime="300"></Cache>
     <Members>
       <Member Name="Id" FieldName="LogId"/>
     </Members>
   </AlbianObject>
-  <AlbianObject Type="AppTest.Model.Imp.User,AppTest.Model.Imp" Base="AppTest.Model.IUser,AppTest.Model">
+  <AlbianObject Type="AppTest.Model.Imp.User">
     <Routings>
       <Routing Name="1thRouting" StorageName="1thStorage" TableName="User" Owner="dbo" Permission="W"></Routing>
     </Routings>
   </AlbianObject>
-  <AlbianObject Type="AppTest.Model.Imp.Order,AppTest.Model.Imp" Base="AppTest.Model.IOrder,AppTest.Model">
+  <AlbianObject Type="AppTest.Model.Imp.Order">
     <Cache Enable="true" LifeTime="300"></Cache>
     <Routings>
       <Routing Name="IdRouting" StorageName="2thStorage" TableName="OrderById" Owner="dbo" Permission="WR"></Routing>
@@ -21,7 +21,7 @@
       <Member Name="Id" FieldName="OrderId" AllowNull="false" Length="32" PrimaryKey="true" DbType="string" IsSave="true"/>
     </Members>
   </AlbianObject>
-  <AlbianObject Type="AppTest.Model.Imp.BizOffer,AppTest.Model.Imp" Base="AppTest.Model.IBizOffer,AppTest.Model">
+  <AlbianObject Type="AppTest.Model.Imp.BizOffer">
     <Cache Enable="true" LifeTime="60"></Cache>
     <Routings Hash="true">
       <Routing Name="IdRouting" StorageName="2thStorage" TableName="BizOfferById" Owner="dbo" Permission="WR"></Routing>
