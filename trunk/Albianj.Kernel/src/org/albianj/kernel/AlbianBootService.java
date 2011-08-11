@@ -8,21 +8,22 @@ import org.albianj.cached.impl.SortCached;
 import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.service.AlbianServiceException;
 import org.albianj.service.IAlbianService;
-import org.albianj.service.IAlbianServiceAttrbuite;
+import org.albianj.service.IAlbianServiceAttribute;
 import org.albianj.service.parser.FreeServiceParser;
 import org.albianj.service.parser.IServiceParser;
+import org.albianj.service.parser.ServiceAttributeCached;
 import org.albianj.service.parser.ServiceParser;
 
 @Kernel
 public final class AlbianBootService
 {
-	private static Map<String,IAlbianService> services = new HashMap<String,IAlbianService>();
+//	private static Map<String,IAlbianService> services = new HashMap<String,IAlbianService>();
 	private static AlbianState state = AlbianState.Normal;
 	
-	static Map<String,IAlbianService> getAlbianServices()
-	{
-		return services;
-	}
+//	static Map<String,IAlbianService> getAlbianServices()
+//	{
+//		return services;
+//	}
 	public static AlbianState getLifeState()
 	{
 		return state;
@@ -39,23 +40,23 @@ public final class AlbianBootService
 		state = AlbianState.Initing;
 		IServiceParser parser = new ServiceParser();
 		parser.init();
-		LinkedHashMap<String,IAlbianServiceAttrbuite> map = (LinkedHashMap<String, IAlbianServiceAttrbuite>) SortCached.Instance().get(FreeServiceParser.ALBIANJSERVICEKEY);
-		LinkedHashMap<String,IAlbianServiceAttrbuite> failMap = new LinkedHashMap<String,IAlbianServiceAttrbuite>();
+		LinkedHashMap<String,IAlbianServiceAttribute> map = (LinkedHashMap<String, IAlbianServiceAttribute>) ServiceAttributeCached.get(FreeServiceParser.ALBIANJSERVICEKEY);
+		LinkedHashMap<String,IAlbianServiceAttribute> failMap = new LinkedHashMap<String,IAlbianServiceAttribute>();
 		int lastFailSize = 0;
 		
 		while(true)
 		{
-			for(Map.Entry<String,IAlbianServiceAttrbuite> entry : map.entrySet())
+			for(Map.Entry<String,IAlbianServiceAttribute> entry : map.entrySet())
 			{
 				try
 				{
-					IAlbianServiceAttrbuite serviceAttr = entry.getValue(); 
+					IAlbianServiceAttribute serviceAttr = entry.getValue(); 
 					Class<?> cla = Class.forName(serviceAttr.getType());
 					IAlbianService service =(IAlbianService) cla.newInstance();
 					service.beforeLoad();
 					service.loading();
 					service.afterLoading();
-					services.put(entry.getKey(), service);
+					ServiceCached.insert(entry.getKey(), service);
 				}
 				catch(Exception exc)
 				{
@@ -83,7 +84,7 @@ public final class AlbianBootService
 					logger.error(msg);
 					logger.error(failMap.keySet().toString());
 				}
-				ServiceCached.Instance().clear();
+				ServiceCached.clear();
 				state = AlbianState.Unloaded;
 				throw new AlbianServiceException(msg);
 			}

@@ -1,6 +1,6 @@
 package org.albianj.service;
 
-public class AlbianServiceAttrbuite implements IAlbianServiceAttrbuite
+public class AlbianServiceAttribute implements IAlbianServiceAttribute
 {
 
 	private String id = "";

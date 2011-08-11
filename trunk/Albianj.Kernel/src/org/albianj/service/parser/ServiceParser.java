@@ -10,9 +10,9 @@ import java.util.Map;
 //import org.albianj.logger.AlbianLoggerService;
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
-import org.albianj.service.AlbianServiceAttrbuite;
+import org.albianj.service.AlbianServiceAttribute;
 import org.albianj.service.AlbianServiceException;
-import org.albianj.service.IAlbianServiceAttrbuite;
+import org.albianj.service.IAlbianServiceAttribute;
 import org.albianj.xml.XmlParser;
 import org.dom4j.Element;
 
@@ -46,7 +46,7 @@ public class ServiceParser extends FreeServiceParser
 	}
 
 	@Override
-	protected Map<String,IAlbianServiceAttrbuite> parserServices(@SuppressWarnings("rawtypes") List nodes) throws NullPointerException,
+	protected Map<String,IAlbianServiceAttribute> parserServices(@SuppressWarnings("rawtypes") List nodes) throws NullPointerException,
 			AlbianServiceException
 	{
 		if (null == nodes || 0 == nodes.size())
@@ -56,18 +56,18 @@ public class ServiceParser extends FreeServiceParser
 				logger.error(msg);
 			throw new IllegalArgumentException(msg);
 		}
-		Map<String,IAlbianServiceAttrbuite> map = new LinkedHashMap<String,IAlbianServiceAttrbuite>(nodes.size());
+		Map<String,IAlbianServiceAttribute> map = new LinkedHashMap<String,IAlbianServiceAttribute>(nodes.size());
 		for (Object node : nodes)
 		{
 			Element elt = XmlParser.toElement(node);
-			IAlbianServiceAttrbuite serviceAttr = parserService(elt);
+			IAlbianServiceAttribute serviceAttr = parserService(elt);
 			map.put(serviceAttr.getId(), serviceAttr);
 		}
 		return 0 == map.size() ? null : map;
 	}
 
 	@Override
-	protected IAlbianServiceAttrbuite parserService(Element elt)
+	protected IAlbianServiceAttribute parserService(Element elt)
 			throws NullPointerException, AlbianServiceException
 	{
 		if (null == elt)
@@ -79,7 +79,7 @@ public class ServiceParser extends FreeServiceParser
 			}
 			throw new IllegalArgumentException(msg);
 		}
-		IAlbianServiceAttrbuite serviceAttr = new AlbianServiceAttrbuite();
+		IAlbianServiceAttribute serviceAttr = new AlbianServiceAttribute();
 		String id = XmlParser.getAttributeValue(elt, ID_ATTRBUITE_NAME);
 		if (null == id || id.trim().isEmpty())
 		{

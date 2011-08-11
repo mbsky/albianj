@@ -1,6 +1,6 @@
 package org.albianj.service;
 
-public interface IAlbianServiceAttrbuite
+public interface IAlbianServiceAttribute
 {
 	public String getId();
 
