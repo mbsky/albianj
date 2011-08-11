@@ -1,6 +1,7 @@
 package org.albianj.cached.impl;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.albianj.cached.ICached;
 
@@ -8,13 +9,11 @@ public class HashCached extends FreeCached implements ICached
 {
 	public HashCached()
 	{
-		map = new HashMap<String, Object>();
+		super(new HashMap<String, Object>());
 	}
 	
-	private static ICached cached = null;
-	public synchronized static ICached Instance()
+	public HashCached(Map<String, Object> map)
 	{
-		if(null == cached) cached = new HashCached();
-		return cached;
+		super(map);
 	}
 }

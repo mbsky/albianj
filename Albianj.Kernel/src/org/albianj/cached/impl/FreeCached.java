@@ -7,24 +7,30 @@ import org.albianj.cached.ICached;
 public abstract class FreeCached implements ICached
 {
 
-	protected Map<String, Object> map;
+	private Map<String, Object> map = null;
+	
+	public FreeCached(Map<String, Object> map)
+	{
+		if(null == map) throw new IllegalArgumentException("key");
+		this.map = map;
+	}
 
 	@Override
-	public synchronized boolean exist(String key) throws IllegalArgumentException
+	public boolean exist(String key) throws IllegalArgumentException
 	{
 		if(null == key || key.isEmpty()) throw new IllegalArgumentException("key");
 		return map.containsKey(key);
 	}
 
 	@Override
-	public synchronized Object get(String key) throws IllegalArgumentException
+	public Object get(String key) throws IllegalArgumentException
 	{
 		if(null == key || key.isEmpty()) throw new IllegalArgumentException("key");
 		return map.get(key);
 	}
 
 	@Override
-	public synchronized void insert(String key, Object value) throws IllegalArgumentException
+	public void insert(String key, Object value) throws IllegalArgumentException
 	{
 		if(null == key || key.isEmpty()) throw new IllegalArgumentException("key");
 		if(null == value) throw new IllegalArgumentException("value");
@@ -33,7 +39,7 @@ public abstract class FreeCached implements ICached
 	}
 
 	@Override
-	public synchronized void remove(String key) throws IllegalArgumentException
+	public void remove(String key) throws IllegalArgumentException
 	{
 		if(null == key || key.isEmpty()) throw new IllegalArgumentException("key");
 		map.remove(key);
@@ -42,7 +48,7 @@ public abstract class FreeCached implements ICached
 	}
 
 	@Override
-	public synchronized void clear()
+	public void clear()
 	{
 		map.clear();		
 	}

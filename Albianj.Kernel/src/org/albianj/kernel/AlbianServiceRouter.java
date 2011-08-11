@@ -12,7 +12,7 @@ public class AlbianServiceRouter
 			throw new IllegalArgumentException("id");
 		try
 		{
-			IAlbianService service = AlbianBootService.getAlbianServices().get(id);		
+			IAlbianService service =(IAlbianService) ServiceCached.get(id);		
 			if(null == service) return null;
 			return cla.cast(service);
 		}

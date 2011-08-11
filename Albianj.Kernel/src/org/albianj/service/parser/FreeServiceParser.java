@@ -1,7 +1,7 @@
 package org.albianj.service.parser;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
+//import java.net.MalformedURLException;
+//import java.net.URISyntaxException;
 // import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +12,7 @@ import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.service.AlbianServiceException;
 import org.albianj.service.FreeAlbianService;
-import org.albianj.service.IAlbianServiceAttrbuite;
+import org.albianj.service.IAlbianServiceAttribute;
 import org.albianj.xml.XmlParser;
 // import org.apache.log4j.Logger;
 import org.dom4j.Document;
@@ -22,8 +22,8 @@ public abstract class FreeServiceParser extends FreeAlbianService implements
 		IServiceParser
 {
 
-	private static String path = "../config/service.xml";
-	private static String tagName = "Services/Service";
+	private final static String path = "../config/service.xml";
+	private final static String tagName = "Services/Service";
 
 	public final static String ALBIANJSERVICEKEY = "@$#&ALBIANJ_ALL_SERVICE&#$@";
 
@@ -41,21 +41,21 @@ public abstract class FreeServiceParser extends FreeAlbianService implements
 				logger.error(msg);
 			throw new UnsupportedOperationException(msg);
 		}
-		Map<String, IAlbianServiceAttrbuite> map = parserServices(nodes);
+		Map<String, IAlbianServiceAttribute> map = parserServices(nodes);
 		if (null == map)
 		{
 			if(null != logger)
 				logger.error("The albian services is empty.");
 			return;
 		}
-		SortCached.Instance().insert(ALBIANJSERVICEKEY, map);
+		ServiceAttributeCached.insert(ALBIANJSERVICEKEY, map);
 		return;
 	}
 
-	protected abstract Map<String, IAlbianServiceAttrbuite> parserServices(
+	protected abstract Map<String, IAlbianServiceAttribute> parserServices(
 			@SuppressWarnings("rawtypes") List nodes)
 			throws NullPointerException, AlbianServiceException;
 
-	protected abstract IAlbianServiceAttrbuite parserService(Element node)
+	protected abstract IAlbianServiceAttribute parserService(Element node)
 			throws NullPointerException, AlbianServiceException;
 }
