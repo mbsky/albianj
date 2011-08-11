@@ -1,6 +1,6 @@
 package org.albianj.persistence.object;
 
-public interface IStorageAttrbuite
+public interface IStorageAttribute
 {
 	public String getName();
 	public void setName(String name);
@@ -23,5 +23,5 @@ public interface IStorageAttrbuite
 	public String getCharset();
 	public void setCharset(String charset);
 	public boolean getTransactional();
-	public void setTransactional(boolean transaction);
+	public void setTransactional(boolean transactional);
 }
