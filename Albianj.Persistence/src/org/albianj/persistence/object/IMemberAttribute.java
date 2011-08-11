@@ -1,6 +1,6 @@
 package org.albianj.persistence.object;
 
-public interface IMemberAttrbuite
+public interface IMemberAttribute
 {
 //	Name="Id"
 //			FieldName="BizOfferId" AllowNull="false" 
