@@ -51,7 +51,7 @@ public class PersistenceAttribute implements IPersistenceAttribute
 	}
 
 	@Override
-	public void setReadererRoutings(List<IRoutingAttribute> readerRoutings)
+	public void setReaderRoutings(List<IRoutingAttribute> readerRoutings)
 	{
 		// TODO Auto-generated method stub
 		this.readerRoutings = readerRoutings;

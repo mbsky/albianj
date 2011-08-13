@@ -37,13 +37,13 @@ public abstract class FreeAlbianObject implements IAlbianObject
 	}
 	
 	@Override
-	public String mappingWriterRouter()
+	public String mappingWriterRouting()
 	{
 		return null;
 	}
 	
 	@Override
-	public String mappingReaderRouter()
+	public String mappingReaderRouting()
 	{
 		return null;
 	}

@@ -20,7 +20,7 @@ public interface IPersistenceAttribute
 	public List<IRoutingAttribute> getWriterRoutings();
 	public void setWriterRoutings(List<IRoutingAttribute> writerRoutings);
 	public List<IRoutingAttribute> getReaderRoutings();
-	public void setReadererRoutings(List<IRoutingAttribute> readerRoutings);
+	public void setReaderRoutings(List<IRoutingAttribute> readerRoutings);
 	public List<IMemberAttribute> getMembers();
 	public void setMembers(List<IMemberAttribute> members);
 }

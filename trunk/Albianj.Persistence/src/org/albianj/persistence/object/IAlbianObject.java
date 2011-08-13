@@ -9,8 +9,8 @@ public interface IAlbianObject extends Serializable
 	public boolean getIsNew();
 	public void setIsNew(boolean isNew);
 	
-	public String mappingWriterRouter();
-	public String mappingReaderRouter();
+	public String mappingWriterRouting();
+	public String mappingReaderRouting();
 	public String mappingWriterTable();
 	public String mappingReaderTable();
 }

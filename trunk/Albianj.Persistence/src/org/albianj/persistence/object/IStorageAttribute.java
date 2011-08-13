@@ -4,8 +4,10 @@ public interface IStorageAttribute
 {
 	public String getName();
 	public void setName(String name);
-	public DatabaseStyle getDatabaseStyle();
-	public void setDatabaseStyle(DatabaseStyle databaseStyle);
+	public int getDatabaseStyle();
+	public void setDatabaseStyle(int databaseStyle);
+	public String getServer();
+	public void setServer(String server);
 	public String getDatabase();
 	public void setDatabase(String database);
 	public String getUser();
