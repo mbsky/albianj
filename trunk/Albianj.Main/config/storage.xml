@@ -5,7 +5,7 @@
     <DatabaseStyle>MySql</DatabaseStyle>
     <Server>localhost</Server>
     <Database>BaseInfo</Database>
-    <Uid>root</Uid>
+    <User>root</User>
     <Password>xuhf</Password>
     <Pooling>false</Pooling>
     <MinPoolSize>10</MinPoolSize>
@@ -19,7 +19,7 @@
     <DatabaseStyle>MySql</DatabaseStyle>
     <Server>localhost</Server>
     <Database>BusinessInfoById</Database>
-    <Uid>root</Uid>
+    <User>root</User>
     <Password>xuhf</Password>
     <Pooling>false</Pooling>
     <MinPoolSize>10</MinPoolSize>
@@ -33,7 +33,7 @@
     <DatabaseStyle>MySql</DatabaseStyle>
     <Server>localhost</Server>
     <Database>BusinessInfoByCreateTime</Database>
-    <Uid>root</Uid>
+    <User>root</User>
     <Password>xuhf</Password>
     <Pooling>true</Pooling>
     <MinPoolSize>10</MinPoolSize>
