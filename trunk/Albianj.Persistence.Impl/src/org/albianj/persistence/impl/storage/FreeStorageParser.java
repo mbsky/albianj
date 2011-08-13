@@ -8,6 +8,7 @@ import org.albianj.cached.impl.SortCached;
 import org.albianj.io.Path;
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.persistence.object.DatabaseStyle;
 import org.albianj.persistence.object.IStorageAttribute;
 import org.albianj.service.IAlbianServiceAttribute;
 import org.albianj.xml.IParser;
@@ -35,19 +36,55 @@ public abstract class FreeStorageParser implements IParser
 				logger.error(msg);
 			throw new UnsupportedOperationException(msg);
 		}
-		Map<String, IStorageAttribute> map = parserStorages(nodes);
-		if (null == map)
-		{
-			if(null != logger)
-				logger.error("The albian services is empty.");
-			return;
-		}
+		parserStorages(nodes);
 		return;
 	}
 	
-	protected abstract Map<String, IStorageAttribute> parserStorages(List nodes);
+	protected abstract void parserStorages(List nodes) throws StorageAttributeException;
 	
-	protected abstract IStorageAttribute parserStorage(Element node);
+	protected abstract IStorageAttribute parserStorage(Element node) throws StorageAttributeException;
 	
 
+	public static String GenerateConnectionUrl(IStorageAttribute storageAttribute)
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("jdbc:");
+		//String url = "jdbc:mysql://localhost/baseinfo?useUnicode=true&characterEncoding=8859_1";
+		switch(storageAttribute.getDatabaseStyle())
+		{
+			case (DatabaseStyle.MySql):
+			{
+				sb.append("mysql://")
+				.append(storageAttribute.getServer()).append("/")
+				.append(storageAttribute.getDatabase());
+				if(null != storageAttribute.getCharset())
+				{
+					sb.append("?useUnicode=true&characterEncoding=").append(storageAttribute.getCharset());
+				}
+			}
+			case (DatabaseStyle.Oracle) :
+			{
+				sb.append("oracle:thin:@")
+				.append(storageAttribute.getServer()).append(":")
+				.append(storageAttribute.getDatabase());
+			}
+			case(DatabaseStyle.SqlServer) : 
+			{
+				sb.append("microsoft:sqlserver://")
+				.append(storageAttribute.getServer()).append(";")
+				.append(storageAttribute.getDatabase());
+			}
+			default:
+			{
+				sb.append("mysql://")
+				.append(storageAttribute.getServer()).append("/")
+				.append(storageAttribute.getDatabase());
+				if(null != storageAttribute.getCharset())
+				{
+					sb.append("?useUnicode=true&characterEncoding=").append(storageAttribute.getCharset());
+				}
+			}
+		}
+		return sb.toString();
+	}
 }
