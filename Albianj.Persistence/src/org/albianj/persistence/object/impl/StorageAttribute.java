@@ -7,7 +7,7 @@ public class StorageAttribute implements IStorageAttribute
 {
 
 	private String name = null;
-	private DatabaseStyle databaseStyle = DatabaseStyle.MySql;
+	private int databaseStyle = DatabaseStyle.MySql;
 	private String database = null;
 	private String user = null;
 	private String password = null;
@@ -17,6 +17,7 @@ public class StorageAttribute implements IStorageAttribute
 	private int timeout = 30;
 	private String charset = null;
 	private boolean transactional = true;
+	private String server = null;
 	
 	@Override
 	public String getName()
@@ -33,14 +34,14 @@ public class StorageAttribute implements IStorageAttribute
 	}
 
 	@Override
-	public DatabaseStyle getDatabaseStyle()
+	public int getDatabaseStyle()
 	{
 		// TODO Auto-generated method stub
 		return this.databaseStyle;
 	}
 
 	@Override
-	public void setDatabaseStyle(DatabaseStyle databaseStyle)
+	public void setDatabaseStyle(int databaseStyle)
 	{
 		// TODO Auto-generated method stub
 		this.databaseStyle = databaseStyle;
@@ -172,4 +173,13 @@ public class StorageAttribute implements IStorageAttribute
 		this.transactional = transactional;
 	}
 
+	public String getServer()
+	{
+		return server;
+	}
+	
+	public void setServer(String  server)
+	{
+		this.server = server;
+	}
 }
