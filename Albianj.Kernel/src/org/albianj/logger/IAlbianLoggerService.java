@@ -4,20 +4,20 @@ import org.albianj.service.IAlbianService;
 
 public interface IAlbianLoggerService extends IAlbianService
 {
-	public void error(String... values);
+	public void error(Object... values);
 
-	public void warn(String... values);
+	public void warn(Object... values);
 
-	public void info(String... values);
+	public void info(Object... values);
 
-	public void debug(String... values);
+	public void debug(Object... values);
 
-	public String getErrorMsg(String... values);
+	public String getErrorMsg(Object... values);
 
-	public String getWarnMsg(String... values);
+	public String getWarnMsg(Object... values);
 
-	public String getInfoMsg(String... values);
+	public String getInfoMsg(Object... values);
 
-	public String getDebugMsg(String... values);
+	public String getDebugMsg(Object... values);
 
 }

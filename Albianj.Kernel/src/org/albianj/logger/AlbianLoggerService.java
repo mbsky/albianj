@@ -36,7 +36,7 @@ public class AlbianLoggerService extends FreeAlbianService implements IAlbianLog
 	 * @see org.albianj.logger.IAlbianLoggerService#error(java.lang.String)
 	 */
 	@Override
-	public void error(String...values)
+	public void error(Object...values)
 	{
 		if(null == albianLogger) return;
 		albianLogger.error(getErrorMsg(values));
@@ -45,7 +45,7 @@ public class AlbianLoggerService extends FreeAlbianService implements IAlbianLog
 	 * @see org.albianj.logger.IAlbianLoggerService#warn(java.lang.String)
 	 */
 	@Override
-	public void warn(String...values)
+	public void warn(Object...values)
 	{
 		if(null == albianLogger) return;
 		albianLogger.warn(getWarnMsg(values));
@@ -54,7 +54,7 @@ public class AlbianLoggerService extends FreeAlbianService implements IAlbianLog
 	 * @see org.albianj.logger.IAlbianLoggerService#info(java.lang.String)
 	 */
 	@Override
-	public void info(String...values)
+	public void info(Object...values)
 	{
 		if(null == albianLogger) return;
 		albianLogger.info(getInfoMsg(values));
@@ -63,7 +63,7 @@ public class AlbianLoggerService extends FreeAlbianService implements IAlbianLog
 	 * @see org.albianj.logger.IAlbianLoggerService#debug(java.lang.String)
 	 */
 	@Override
-	public void debug(String...values)
+	public void debug(Object...values)
 	{
 		if(null == albianLogger) return;
 		albianLogger.debug(getDebugMsg(values));
@@ -73,10 +73,10 @@ public class AlbianLoggerService extends FreeAlbianService implements IAlbianLog
 	 * @see org.albianj.logger.IAlbianLoggerService#getErrorMsg(java.lang.String)
 	 */
 	@Override
-	public String getErrorMsg(String...values)
+	public String getErrorMsg(Object...values)
 	{
 		StringBuilder sb = new StringBuilder(ERROR);
-		for(String value : values)
+		for(Object value : values)
 		{
 			sb.append(value);
 		}
@@ -87,10 +87,10 @@ public class AlbianLoggerService extends FreeAlbianService implements IAlbianLog
 	 * @see org.albianj.logger.IAlbianLoggerService#getWarnMsg(java.lang.String)
 	 */
 	@Override
-	public String getWarnMsg(String...values)
+	public String getWarnMsg(Object...values)
 	{
 		StringBuilder sb = new StringBuilder(WARN);
-		for(String value : values)
+		for(Object value : values)
 		{
 			sb.append(value);
 		}
@@ -101,10 +101,10 @@ public class AlbianLoggerService extends FreeAlbianService implements IAlbianLog
 	 * @see org.albianj.logger.IAlbianLoggerService#getInfoMsg(java.lang.String)
 	 */
 	@Override
-	public String getInfoMsg(String...values)
+	public String getInfoMsg(Object...values)
 	{
 		StringBuilder sb = new StringBuilder(INFO);
-		for(String value : values)
+		for(Object value : values)
 		{
 			sb.append(value);
 		}
@@ -115,10 +115,10 @@ public class AlbianLoggerService extends FreeAlbianService implements IAlbianLog
 	 * @see org.albianj.logger.IAlbianLoggerService#getDebugMsg(java.lang.String)
 	 */
 	@Override
-	public String getDebugMsg(String...values)
+	public String getDebugMsg(Object...values)
 	{
 		StringBuilder sb = new StringBuilder(DEBUG);
-		for(String value : values)
+		for(Object value : values)
 		{
 			sb.append(value);
 		}
