@@ -1,6 +1,6 @@
 package org.albianj.persistence.impl.storage;
 
-public class StorageAttributeException extends Exception
+public class StorageAttributeException extends RuntimeException
 {
 	/**
 	 * 
