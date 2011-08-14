@@ -18,7 +18,6 @@ public class ServiceThread extends Thread
 			{
 				logger.error(String.format("start service is fail.Message:%1$s", e.getMessage()));
 			}
-			e.printStackTrace();
 		}
 	}
 }

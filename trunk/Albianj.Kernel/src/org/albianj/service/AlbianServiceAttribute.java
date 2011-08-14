@@ -1,5 +1,7 @@
 package org.albianj.service;
 
+import org.albianj.verify.Validate;
+
 public class AlbianServiceAttribute implements IAlbianServiceAttribute
 {
 
@@ -15,7 +17,7 @@ public class AlbianServiceAttribute implements IAlbianServiceAttribute
 	@Override
 	public void setId(String id) throws IllegalArgumentException
 	{
-		if (null == id || id.isEmpty()) 
+		if (Validate.isNullOrEmptyOrAllSpace(id)) 
 		{ 
 			throw new IllegalArgumentException("id"); 
 		}
@@ -31,7 +33,7 @@ public class AlbianServiceAttribute implements IAlbianServiceAttribute
 	@Override
 	public void setType(String type) throws IllegalArgumentException
 	{
-		if (null == type || type.isEmpty()) 
+		if (Validate.isNullOrEmptyOrAllSpace(type)) 
 		{ 
 			throw new IllegalArgumentException("type"); 
 		}

@@ -2,5 +2,5 @@ package org.albianj.xml;
 
 public interface IParser
 {
-	public void init() throws RuntimeException;
+	public void init();
 }

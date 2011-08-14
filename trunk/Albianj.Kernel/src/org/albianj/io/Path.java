@@ -4,6 +4,9 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.albianj.kernel.AlbianServiceRouter;
+import org.albianj.logger.IAlbianLoggerService;
+
 public final class Path
 {
 
@@ -29,14 +32,15 @@ public final class Path
 		return getClassLoader(cla).getResource("").toString();
 	}
 
-	public static String getExtendResourcePath(String relativePath)
-			throws MalformedURLException, URISyntaxException
+	public static String getExtendResourcePath(String relativePath)			
 	{
 		return getExtendResourcePath(Path.class,relativePath);
 	}
 	
-	public static String getExtendResourcePath(@SuppressWarnings("rawtypes") Class cla,String relativePath) throws MalformedURLException, URISyntaxException
+	public static String getExtendResourcePath(@SuppressWarnings("rawtypes") Class cla,String relativePath)
 	{
+		IAlbianLoggerService logger = AlbianServiceRouter.getService(
+				IAlbianLoggerService.class, "logger");
 		URL resourceAbsoluteURL = null;
 		boolean isWindows = false;
 		String system = System.getProperty("os.name");
@@ -64,11 +68,26 @@ public final class Path
 			classPathAbsolutePath = cutLastString(classPathAbsolutePath, "/",
 					containSum);
 			String resourceAbsolutePath = classPathAbsolutePath + relativePath;
-			resourceAbsoluteURL = new URL(resourceAbsolutePath);
+			try
+			{
+				resourceAbsoluteURL = new URL(resourceAbsolutePath);
+				path = resourceAbsoluteURL.toURI().getPath();
+			}
+			catch (MalformedURLException e)
+			{
+				// TODO Auto-generated catch block
+				if(null != logger)
+					logger.warn("url is error.msg:",e.getMessage());
+				return null;
+			}
+			catch (URISyntaxException e)
+			{
+				if(null != logger)
+					logger.warn("uri is error.msg:",e.getMessage());
+				return null;
+			}
 		}
-		 if(null == resourceAbsoluteURL) throw new MalformedURLException("url is null!");
 		 
-		path = resourceAbsoluteURL.toURI().getPath();//encode not in gbk
 		if(isWindows && path.startsWith("/"))
 		{
 			path = path.substring(1);
