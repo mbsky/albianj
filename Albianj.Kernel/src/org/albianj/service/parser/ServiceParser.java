@@ -9,6 +9,7 @@ import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.service.AlbianServiceAttribute;
 import org.albianj.service.AlbianServiceException;
 import org.albianj.service.IAlbianServiceAttribute;
+import org.albianj.verify.Validate;
 import org.albianj.xml.XmlParser;
 import org.dom4j.Element;
 
@@ -17,27 +18,19 @@ public class ServiceParser extends FreeServiceParser
 
 	private final static String ID_ATTRBUITE_NAME = "Id";
 	private final static String TYPE_ATTRBUITE_NAME = "Type";
-	IAlbianLoggerService logger; 
+	private IAlbianLoggerService logger; 
 	@Override
-	public void loading() throws AlbianServiceException
+	public void loading()
 	{
-		try
-		{
-			super.init();
-			super.loading();
-			logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
-		}
-		catch (RuntimeException e)
-		{
-			throw new RuntimeException(e.getMessage());
-		}
+		super.init();
+		super.loading();
+		logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 	}
 
 	@Override
-	protected Map<String,IAlbianServiceAttribute> parserServices(@SuppressWarnings("rawtypes") List nodes) throws NullPointerException,
-			AlbianServiceException
+	protected Map<String,IAlbianServiceAttribute> parserServices(@SuppressWarnings("rawtypes") List nodes) 
 	{
-		if (null == nodes || 0 == nodes.size())
+		if (Validate.isNullOrEmpty(nodes))
 		{
 			String msg = "nodes is null or size is 0";
 			if (null != logger)
@@ -49,6 +42,10 @@ public class ServiceParser extends FreeServiceParser
 		{
 			Element elt = XmlParser.toElement(node);
 			IAlbianServiceAttribute serviceAttr = parserService(elt);
+			if(null == serviceAttr)
+			{
+				throw new NullPointerException("parser service node is error.");
+			}
 			map.put(serviceAttr.getId(), serviceAttr);
 		}
 		return 0 == map.size() ? null : map;
@@ -56,7 +53,6 @@ public class ServiceParser extends FreeServiceParser
 
 	@Override
 	protected IAlbianServiceAttribute parserService(Element elt)
-			throws NullPointerException, AlbianServiceException
 	{
 		if (null == elt)
 		{
@@ -69,26 +65,23 @@ public class ServiceParser extends FreeServiceParser
 		}
 		IAlbianServiceAttribute serviceAttr = new AlbianServiceAttribute();
 		String id = XmlParser.getAttributeValue(elt, ID_ATTRBUITE_NAME);
-		if (null == id || id.trim().isEmpty())
+		if (Validate.isNullOrEmptyOrAllSpace(id))
 		{
-			String msg = "The id is null or empty.";
 			if (null != logger)
 			{
-				logger.error(msg);
+				logger.error("The id is null or empty.");
 			}
-			throw new NullPointerException(msg);
+			return null;
 		}
 		serviceAttr.setId(id);
 		String type = XmlParser.getAttributeValue(elt, TYPE_ATTRBUITE_NAME);
-		if (null == type || type.trim().isEmpty())
+		if (Validate.isNullOrEmptyOrAllSpace(type))
 		{
-			String msg = String.format("The %1$s Type is null or empty.",
-					serviceAttr.getId());
 			if (null != logger)
 			{
-				logger.error(msg);
+				logger.error("The",serviceAttr.getId(),"Type is null or empty.");
 			}
-			throw new NullPointerException(msg);
+			return null;
 		}
 		serviceAttr.setType(type);
 		return serviceAttr;

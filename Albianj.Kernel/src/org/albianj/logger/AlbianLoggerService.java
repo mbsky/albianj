@@ -3,7 +3,6 @@ package org.albianj.logger;
 import org.albianj.io.Path;
 import org.albianj.service.AlbianServiceException;
 import org.albianj.service.FreeAlbianService;
-import org.albianj.service.IAlbianService;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
@@ -15,7 +14,7 @@ public class AlbianLoggerService extends FreeAlbianService implements IAlbianLog
 	public static final String DEBUG = "*";
 	
 	private final static String ALBIAN_LOGGER = "albian_logger";
-	private static Logger albianLogger;
+	private Logger albianLogger;
 	
 	@Override
 	public void loading() throws AlbianServiceException
@@ -75,12 +74,7 @@ public class AlbianLoggerService extends FreeAlbianService implements IAlbianLog
 	@Override
 	public String getErrorMsg(Object...values)
 	{
-		StringBuilder sb = new StringBuilder(ERROR);
-		for(Object value : values)
-		{
-			sb.append(value);
-		}
-		return sb.toString();
+		return getMessage(ERROR,values);
 	}
 	
 	/* (non-Javadoc)
@@ -89,12 +83,7 @@ public class AlbianLoggerService extends FreeAlbianService implements IAlbianLog
 	@Override
 	public String getWarnMsg(Object...values)
 	{
-		StringBuilder sb = new StringBuilder(WARN);
-		for(Object value : values)
-		{
-			sb.append(value);
-		}
-		return sb.toString();
+		return getMessage(WARN,values);
 	}
 	
 	/* (non-Javadoc)
@@ -103,12 +92,7 @@ public class AlbianLoggerService extends FreeAlbianService implements IAlbianLog
 	@Override
 	public String getInfoMsg(Object...values)
 	{
-		StringBuilder sb = new StringBuilder(INFO);
-		for(Object value : values)
-		{
-			sb.append(value);
-		}
-		return sb.toString();
+		return getMessage(INFO,values);
 	}
 	
 	/* (non-Javadoc)
@@ -117,10 +101,15 @@ public class AlbianLoggerService extends FreeAlbianService implements IAlbianLog
 	@Override
 	public String getDebugMsg(Object...values)
 	{
-		StringBuilder sb = new StringBuilder(DEBUG);
+		return getMessage(DEBUG,values);
+	}
+	
+	protected String getMessage(String level,Object...values)
+	{
+		StringBuilder sb = new StringBuilder(level).append(" ");
 		for(Object value : values)
 		{
-			sb.append(value);
+			sb.append(value).append(" ");
 		}
 		return sb.toString();
 	}

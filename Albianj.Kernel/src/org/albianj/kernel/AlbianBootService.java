@@ -1,10 +1,8 @@
 package org.albianj.kernel;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.albianj.cached.impl.SortCached;
 import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.service.AlbianServiceException;
 import org.albianj.service.IAlbianService;
@@ -17,13 +15,8 @@ import org.albianj.service.parser.ServiceParser;
 @Kernel
 public final class AlbianBootService
 {
-//	private static Map<String,IAlbianService> services = new HashMap<String,IAlbianService>();
 	private static AlbianState state = AlbianState.Normal;
 	
-//	static Map<String,IAlbianService> getAlbianServices()
-//	{
-//		return services;
-//	}
 	public static AlbianState getLifeState()
 	{
 		return state;
@@ -32,14 +25,16 @@ public final class AlbianBootService
 	public static void start() throws Exception
 	{
 		Thread thread = new ServiceThread(); 
+		
 		thread.start();
 	}
 	
-	static void doStart() throws Exception
+	static void doStart() throws AlbianServiceException
 	{
 		state = AlbianState.Initing;
 		IServiceParser parser = new ServiceParser();
 		parser.init();
+		@SuppressWarnings("unchecked")
 		LinkedHashMap<String,IAlbianServiceAttribute> map = (LinkedHashMap<String, IAlbianServiceAttribute>) ServiceAttributeCached.get(FreeServiceParser.ALBIANJSERVICEKEY);
 		LinkedHashMap<String,IAlbianServiceAttribute> failMap = new LinkedHashMap<String,IAlbianServiceAttribute>();
 		int lastFailSize = 0;

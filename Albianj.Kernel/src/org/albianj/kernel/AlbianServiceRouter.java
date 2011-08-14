@@ -6,7 +6,7 @@ import org.albianj.service.IAlbianService;
 public class AlbianServiceRouter
 {
 	
-	public static <T extends IAlbianService> T getService(Class<T> cla,String id,boolean isThrowIfException) throws Exception
+	public static <T extends IAlbianService> T getService(Class<T> cla,String id,boolean isThrowIfException) throws IllegalArgumentException
 	{
 		if(null == id || id.isEmpty())
 			throw new IllegalArgumentException("id");
@@ -16,7 +16,7 @@ public class AlbianServiceRouter
 			if(null == service) return null;
 			return cla.cast(service);
 		}
-		catch(Exception exc)
+		catch(IllegalArgumentException exc)
 		{
 			IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 			if(null != logger)

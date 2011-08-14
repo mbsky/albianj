@@ -1,11 +1,12 @@
 package org.albianj.algorithm;
 
+import org.albianj.verify.Validate;
+
 public class Hash
 {
-
-	public static long generateCode(String value) throws IllegalArgumentException
+	public static long generateHashCode(String value) throws IllegalArgumentException
 	{
-		if (null == value || value.isEmpty()) 
+		if (Validate.isNullOrEmpty(value)) 
 		{ 
 			throw new IllegalArgumentException("value"); 
 		}

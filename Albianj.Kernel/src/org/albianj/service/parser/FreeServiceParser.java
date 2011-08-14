@@ -1,24 +1,15 @@
 package org.albianj.service.parser;
 
-//import java.net.MalformedURLException;
-//import java.net.URISyntaxException;
-// import java.util.LinkedHashMap;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
-
-import javax.management.RuntimeErrorException;
-
-import org.albianj.cached.impl.SortCached;
 import org.albianj.io.Path;
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.service.AlbianServiceException;
 import org.albianj.service.FreeAlbianService;
 import org.albianj.service.IAlbianServiceAttribute;
+import org.albianj.verify.Validate;
 import org.albianj.xml.XmlParser;
-// import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
@@ -32,36 +23,24 @@ public abstract class FreeServiceParser extends FreeAlbianService implements
 	public final static String ALBIANJSERVICEKEY = "@$#&ALBIANJ_ALL_SERVICE&#$@";
 
 	@Override
-	public void init() throws RuntimeException
+	public void init()
 	{
-		Document doc = null;
-		try
-		{
-			doc = XmlParser.load(Path.getExtendResourcePath(path));
-		}
-		catch (MalformedURLException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (URISyntaxException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
+		Document doc = XmlParser.load(Path.getExtendResourcePath(path));
 		if(null == doc)
 		{
-			throw new RuntimeException("load service.xml is error.");
+			throw new AlbianServiceException("load service.xml is error.");
 		}
 		@SuppressWarnings("rawtypes")
 		List nodes = XmlParser.analyze(doc, tagName);
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
-		if (null == nodes || 0 == nodes.size())
+		
+		if (Validate.isNullOrEmpty(nodes))
 		{
 			String msg = String.format("There is not %1$s nodes.", tagName);
 			if (null != logger)
 				logger.error(msg);
-			throw new UnsupportedOperationException(msg);
+			throw new NullPointerException(msg);
 		}
 		Map<String, IAlbianServiceAttribute> map = parserServices(nodes);
 		if (null == map)

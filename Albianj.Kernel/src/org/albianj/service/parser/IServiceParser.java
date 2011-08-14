@@ -5,6 +5,6 @@ import org.albianj.xml.IParser;
 
 public interface IServiceParser extends IParser, IAlbianService {
 
-	public void init() throws RuntimeException;
+	public void init();
 }
 
