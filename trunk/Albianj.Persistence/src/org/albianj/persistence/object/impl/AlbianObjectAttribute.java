@@ -1,10 +1,8 @@
 package org.albianj.persistence.object.impl;
 
-import java.util.List;
-
+import org.albianj.persistence.object.IAlbianObjectAttribute;
 import org.albianj.persistence.object.ICacheAttribute;
 import org.albianj.persistence.object.IMemberAttribute;
-import org.albianj.persistence.object.IAlbianObjectAttribute;
 import org.albianj.persistence.object.IRoutingAttribute;
 
 public class AlbianObjectAttribute implements IAlbianObjectAttribute
