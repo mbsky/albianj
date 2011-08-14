@@ -8,15 +8,15 @@ public interface IAlbianService
 
 	public AlbianServiceLifetime getAlbianServiceState();
 
-	public void beforeLoad() throws AlbianServiceException;
+	public void beforeLoad() throws RuntimeException;
 
-	public void loading() throws AlbianServiceException;
+	public void loading() throws RuntimeException;
 
-	public void afterLoading() throws AlbianServiceException;
+	public void afterLoading() throws RuntimeException;
 
-	public void beforeUnload() throws AlbianServiceException;
+	public void beforeUnload() throws RuntimeException;
 
-	public void unload() throws AlbianServiceException;
+	public void unload() throws RuntimeException;
 
-	public void afterUnload() throws AlbianServiceException;
+	public void afterUnload() throws RuntimeException;
 }

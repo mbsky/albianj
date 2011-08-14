@@ -8,14 +8,16 @@ import org.albianj.logger.AlbianLoggerService;
 import org.apache.log4j.Logger;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 //import org.w3c.dom.Element;
 
 public final class XmlParser
 {
 	static Logger logger = Logger.getLogger(XmlParser.class.getName()); 
-	public static Document load(String path) throws Exception
+	public static Document load(String path) throws RuntimeException
 	{
 		try
 		{
@@ -23,11 +25,17 @@ public final class XmlParser
 			 Document doc = reader.read(new File(path));
 			 return doc;	
 		}
-		catch(Exception exc)
+		catch(RuntimeException exc)
 		{
 			if(null != logger)
 				logger.error(String.format("%1$s,init xml document with path \"%2$s\" is error.msg:%3$s", AlbianLoggerService.ERROR,path,exc.getMessage()));
 			throw exc;
+		}
+		catch (DocumentException exc)
+		{
+			if(null != logger)
+				logger.error(String.format("%1$s,init xml document with path \"%2$s\" is error.msg:%3$s", AlbianLoggerService.ERROR,path,exc.getMessage()));
+			return null;
 		}
 	}
 	
@@ -54,9 +62,9 @@ public final class XmlParser
 		return it.hasNext() ? (Element) it.next() : null;
 	}
 	
-	public static String getAttributeValue(Element ele, String attributeName)
+	public static String getAttributeValue(Element elt, String attributeName)
     {
-		Attribute attr = ele.attribute(attributeName);
+		Attribute attr = elt.attribute(attributeName);
 		if(null == attr) return null;
 		return attr.getValue();
     }
@@ -84,6 +92,15 @@ public final class XmlParser
     	return ele.getText();
     }
     
+	public static String getAttributeValue(Node node,String attributeName)
+	{
+		return getAttributeValue((Element) node, attributeName);
+	}
 	
-	
+	public static String getSingleChildNodeValue(Element node, String childTagName)
+	{
+		Node chird = node.selectSingleNode(childTagName);
+		if (null == chird) return null;
+		return chird.getStringValue();
+	}
 }

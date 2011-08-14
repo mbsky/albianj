@@ -3,8 +3,12 @@ package org.albianj.service.parser;
 //import java.net.MalformedURLException;
 //import java.net.URISyntaxException;
 // import java.util.LinkedHashMap;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+
+import javax.management.RuntimeErrorException;
 
 import org.albianj.cached.impl.SortCached;
 import org.albianj.io.Path;
@@ -28,9 +32,27 @@ public abstract class FreeServiceParser extends FreeAlbianService implements
 	public final static String ALBIANJSERVICEKEY = "@$#&ALBIANJ_ALL_SERVICE&#$@";
 
 	@Override
-	public void init() throws Exception
+	public void init() throws RuntimeException
 	{
-		Document doc = XmlParser.load(Path.getExtendResourcePath(path));
+		Document doc = null;
+		try
+		{
+			doc = XmlParser.load(Path.getExtendResourcePath(path));
+		}
+		catch (MalformedURLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (URISyntaxException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(null == doc)
+		{
+			throw new RuntimeException("load service.xml is error.");
+		}
 		@SuppressWarnings("rawtypes")
 		List nodes = XmlParser.analyze(doc, tagName);
 		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
