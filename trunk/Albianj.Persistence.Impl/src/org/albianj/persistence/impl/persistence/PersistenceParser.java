@@ -4,7 +4,6 @@ import java.beans.PropertyDescriptor;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
@@ -19,6 +18,7 @@ import org.albianj.persistence.object.impl.CacheAttribute;
 import org.albianj.persistence.object.impl.MemberAttribute;
 import org.albianj.persistence.object.impl.RoutingAttribute;
 import org.albianj.persistence.toolkit.Convert;
+import org.albianj.verify.Validate;
 import org.albianj.xml.XmlParser;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -31,21 +31,26 @@ public class PersistenceParser extends FreePersistenceParser
 	public static final String DEFAULT_ROUTING_NAME = "!@#$%Albianj_Default_Routing%$#@!";
 
 	@Override
-	protected void parserAlbianObjects(List nodes)
+	protected void parserAlbianObjects(@SuppressWarnings("rawtypes") List nodes)
 	{
+		if(Validate.isNullOrEmpty(nodes))
+		{
+			throw new IllegalArgumentException("nodes");
+		}
 		IAlbianLoggerService logger = AlbianServiceRouter.getService(
 				IAlbianLoggerService.class, "logger");
-		for (int i = 0; i < nodes.size(); i++)
+		for (Object node : nodes)
 		{
-			IAlbianObjectAttribute albianObjectAttribute = parserAlbianObject((Element) nodes
-					.get(i));
+			IAlbianObjectAttribute albianObjectAttribute = parserAlbianObject((Element) node);
 			if (null == albianObjectAttribute)
 			{
-
+				String msg = "parser the albian object is error.";
+				if(null != logger)
+					logger.warn(msg);
+				throw new PersistenceAttributeException(msg);
 			}
 
-			AlbianObjectsCached.insert(albianObjectAttribute.getType(),
-					albianObjectAttribute);
+			AlbianObjectsCached.insert(albianObjectAttribute.getType(),albianObjectAttribute);
 		}
 
 	}
@@ -56,7 +61,7 @@ public class PersistenceParser extends FreePersistenceParser
 		IAlbianLoggerService logger = AlbianServiceRouter.getService(
 				IAlbianLoggerService.class, "logger");
 		String type = XmlParser.getAttributeValue(node, "Type");
-		if (null == type || type.isEmpty())
+		if (Validate.isNullOrEmptyOrAllSpace(type))
 		{
 			if (null != logger) logger
 					.error("The albianObject's type is empty or null.");
@@ -84,12 +89,15 @@ public class PersistenceParser extends FreePersistenceParser
 		defaultRouting.setStorageName(StorageParser.DEFAULT_STORAGE_NAME);
 		defaultRouting.setTableName(ReflectionHelper.getClassSimpleName(type));
 
+		@SuppressWarnings("rawtypes")
 		List nodes = node.selectNodes(memberTagName);
-		parserAlbianObjectMembers(nodes, map);
+		if(!Validate.isNullOrEmpty(nodes))
+		{
+			parserAlbianObjectMembers(nodes, map);
+		}
 		IAlbianObjectAttribute albianObjectAttribute = new AlbianObjectAttribute();
 		albianObjectAttribute.setCache(cached);
-		albianObjectAttribute.setMembers((IMemberAttribute[]) map.values()
-				.toArray());
+		albianObjectAttribute.setMembers(map);
 		albianObjectAttribute.setType(type);
 		albianObjectAttribute.setDefaultRouting(defaultRouting);
 		return albianObjectAttribute;
@@ -97,18 +105,17 @@ public class PersistenceParser extends FreePersistenceParser
 
 	private static ICacheAttribute parserAlbianObjectCache(Node node)
 	{
-		// Element elt = (Element) node;
 		String enable = XmlParser.getAttributeValue(node, "Enable");
 		String lifeTime = XmlParser.getAttributeValue(node, "LifeTime");
 		ICacheAttribute cache = new CacheAttribute();
-		cache.setEnable(null == enable || enable.isEmpty() ? true
+		cache.setEnable(Validate.isNullOrEmpty(enable) ? true
 				: new Boolean(enable));
-		cache.setLifeTime(null == lifeTime || lifeTime.isEmpty() ? 300
+		cache.setLifeTime(Validate.isNullOrEmpty(lifeTime) ? 300
 				: new Integer(lifeTime));
 		return cache;
 	}
 
-	private static void parserAlbianObjectMembers(List nodes,
+	private static void parserAlbianObjectMembers(@SuppressWarnings("rawtypes") List nodes,
 			Map<String, IMemberAttribute> map)
 	{
 		for (Object node : nodes)
@@ -123,7 +130,7 @@ public class PersistenceParser extends FreePersistenceParser
 		String name = XmlParser.getAttributeValue(elt, "Name");
 		IAlbianLoggerService logger = AlbianServiceRouter.getService(
 				IAlbianLoggerService.class, "logger");
-		if (null == name || name.isEmpty())
+		if (Validate.isNullOrEmpty(name))
 		{
 			String msg = "AlbianObject name is null or empty.";
 			if (null != logger)
@@ -140,27 +147,27 @@ public class PersistenceParser extends FreePersistenceParser
 		String primaryKey = XmlParser.getAttributeValue(elt, "PrimaryKey");
 		String dbType = XmlParser.getAttributeValue(elt, "DbType");
 		String isSave = XmlParser.getAttributeValue(elt, "IsSave");
-		if (null != fieldName && !fieldName.isEmpty())
+		if (Validate.isNullOrEmpty(fieldName))
 		{
 			member.setFieldName(fieldName);
 		}
-		if (null != allowNull && !allowNull.isEmpty())
+		if (Validate.isNullOrEmpty(allowNull))
 		{
 			member.setAllowNull(new Boolean(allowNull));
 		}
-		if (null != length && !length.isEmpty())
+		if (Validate.isNullOrEmpty(length))
 		{
 			member.setLength(new Integer(length));
 		}
-		if (null != primaryKey && !primaryKey.isEmpty())
+		if (Validate.isNullOrEmpty(primaryKey))
 		{
 			member.setPrimaryKey(new Boolean(primaryKey));
 		}
-		if (null != dbType && !dbType.isEmpty())
+		if (Validate.isNullOrEmpty(dbType))
 		{
 			member.setDatabaseType(Convert.ToDatabaseType(dbType));
 		}
-		if (null != isSave && !isSave.isEmpty())
+		if (Validate.isNullOrEmpty(isSave))
 		{
 			member.setIsSave(new Boolean(isSave));
 		}

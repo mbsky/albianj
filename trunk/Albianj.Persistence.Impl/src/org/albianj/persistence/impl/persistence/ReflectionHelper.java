@@ -4,11 +4,9 @@ import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
 
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
-import org.albianj.persistence.object.MemberAnnotation;
 
 public class ReflectionHelper
 {
@@ -17,6 +15,7 @@ public class ReflectionHelper
 		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		try
 		{
+			@SuppressWarnings("rawtypes")
 			Class cls = Class.forName(className);
 			BeanInfo info = Introspector.getBeanInfo(cls, Object.class);
 			return info;
@@ -63,6 +62,7 @@ public class ReflectionHelper
 		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		try
 		{
+			@SuppressWarnings("rawtypes")
 			Class cls = Class.forName(className);
 			return cls.getSimpleName();
 		}

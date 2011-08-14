@@ -8,11 +8,10 @@ import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.persistence.object.IRoutingAttribute;
 import org.albianj.xml.XmlParser;
 import org.dom4j.Element;
-import org.dom4j.Node;
 
 public class RoutingParser extends FreeRoutingParser
 {
-	protected Map<String,IRoutingAttribute> parserRoutings(List nodes)
+	protected Map<String,IRoutingAttribute> parserRoutings(@SuppressWarnings("rawtypes") List nodes)
 	{
 		
 		return null;

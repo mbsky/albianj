@@ -1,18 +1,14 @@
 package org.albianj.persistence.impl.storage;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 
-import org.albianj.cached.impl.SortCached;
 import org.albianj.io.Path;
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.persistence.impl.cached.StorageAttributeCache;
 import org.albianj.persistence.object.DatabaseStyle;
 import org.albianj.persistence.object.IStorageAttribute;
-import org.albianj.service.IAlbianServiceAttribute;
+import org.albianj.verify.Validate;
 import org.albianj.xml.IParser;
 import org.albianj.xml.XmlParser;
 import org.dom4j.Document;
@@ -25,23 +21,9 @@ public abstract class FreeStorageParser implements IParser
 
 
 	@Override
-	public void init() throws RuntimeException
+	public void init()
 	{
-		Document doc = null;
-		try
-		{
-			doc = XmlParser.load(Path.getExtendResourcePath(path));
-		}
-		catch (MalformedURLException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (URISyntaxException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Document doc = XmlParser.load(Path.getExtendResourcePath(path));
 		if(null == doc)
 		{
 			throw new RuntimeException("load persistence is error.");
@@ -49,7 +31,7 @@ public abstract class FreeStorageParser implements IParser
 		@SuppressWarnings("rawtypes")
 		List nodes = XmlParser.analyze(doc, tagName);
 		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
-		if (null == nodes || 0 == nodes.size())
+		if (Validate.isNullOrEmpty(nodes))
 		{
 			String msg = String.format("There is not %1$s nodes.", tagName);
 			if (null != logger)
@@ -60,13 +42,33 @@ public abstract class FreeStorageParser implements IParser
 		return;
 	}
 	
-	protected abstract void parserStorages(List nodes) throws StorageAttributeException;
+	protected abstract void parserStorages(@SuppressWarnings("rawtypes") List nodes) throws StorageAttributeException;
 	
-	protected abstract IStorageAttribute parserStorage(Element node) throws StorageAttributeException;
-	
+	protected abstract IStorageAttribute parserStorage(Element node);
 
+	public static String GenerateConnectionUrl(String storageName)
+	{
+		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
+		if(Validate.isNullOrEmptyOrAllSpace(storageName))
+		{
+			if(null != logger)
+				logger.warn("the argument storageName is null or empty.");
+			return null;
+		}
+		IStorageAttribute storageAttribute = (IStorageAttribute) StorageAttributeCache.get(storageName);
+		return GenerateConnectionUrl(storageAttribute);
+	}
+	
 	public static String GenerateConnectionUrl(IStorageAttribute storageAttribute)
 	{
+		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
+		if(null == storageAttribute)
+		{
+			if(null != logger)
+				logger.warn("The argument storageAttribute is null.");
+			return null;
+		}
+			
 		StringBuilder sb = new StringBuilder();
 		sb.append("jdbc:");
 		//String url = "jdbc:mysql://localhost/baseinfo?useUnicode=true&characterEncoding=8859_1";

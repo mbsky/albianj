@@ -1,10 +1,7 @@
 package org.albianj.persistence.impl.routing;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
-
 import org.albianj.io.Path;
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
@@ -34,21 +31,7 @@ public abstract class FreeRoutingParser implements IParser
 	@Override
 	public void init() throws RuntimeException
 	{
-		Document doc = null;
-		try
-		{
-			doc = XmlParser.load(Path.getExtendResourcePath(path));
-		}
-		catch (MalformedURLException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (URISyntaxException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Document doc = XmlParser.load(Path.getExtendResourcePath(path));
 		if(null == doc)
 		{
 			throw new RuntimeException("load persistence is error.");
@@ -68,6 +51,6 @@ public abstract class FreeRoutingParser implements IParser
 
 	}
 	
-	protected abstract Map<String,IRoutingAttribute> parserRoutings(List nodes);
+	protected abstract Map<String,IRoutingAttribute> parserRoutings(@SuppressWarnings("rawtypes") List nodes);
 	protected abstract Map<String,IRoutingAttribute> parserRouting(Element elt);
 }
