@@ -16,7 +16,7 @@ import org.dom4j.Node;
 public class StorageParser extends FreeStorageParser
 {
 
-	public final static String DEFAULT_STORAGE_KEY = "!@#$%Albianj_Default_Storage%$#@!";
+	public final static String DEFAULT_STORAGE_NAME = "!@#$%Albianj_Default_Storage%$#@!";
 	// <Storage>
 	// <Name>1thStorage</Name>
 	// <DatabaseStyle>MySql</DatabaseStyle>
@@ -50,7 +50,7 @@ public class StorageParser extends FreeStorageParser
 			StorageAttributeCache.insert(storage.getName(), storage);
 			if(i == 0)
 			{
-				StorageAttributeCache.insert(DEFAULT_STORAGE_KEY, storage);				
+				StorageAttributeCache.insert(DEFAULT_STORAGE_NAME, storage);				
 			}
 		}
 	}
@@ -61,7 +61,7 @@ public class StorageParser extends FreeStorageParser
 	{
 		IAlbianLoggerService logger = AlbianServiceRouter.getService(
 				IAlbianLoggerService.class, "logger");
-		String name = getValue(node, "Name");
+		String name = XmlParser.getSingleChildNodeValue(node, "Name");
 		if (null == name)
 		{
 			String msg = "There is no name attribute in the storage node.";
@@ -71,8 +71,8 @@ public class StorageParser extends FreeStorageParser
 			}
 			throw new StorageAttributeException(msg);
 		}
-		String databaseStyle = getValue(node, "DatabaseStyle");
-		String server = getValue(node, "Server");
+		String databaseStyle = XmlParser.getSingleChildNodeValue(node, "DatabaseStyle");
+		String server = XmlParser.getSingleChildNodeValue(node, "Server");
 		if (null == server)
 		{
 			String msg = "There is no server attribute in the storage node.";
@@ -82,7 +82,7 @@ public class StorageParser extends FreeStorageParser
 			}
 			throw new StorageAttributeException(msg);
 		}
-		String database = getValue(node, "Database");
+		String database = XmlParser.getSingleChildNodeValue(node, "Database");
 		if (null == database)
 		{
 			String msg = "There is no database attribute in the storage node.";
@@ -92,7 +92,7 @@ public class StorageParser extends FreeStorageParser
 			}
 			throw new StorageAttributeException(msg);
 		}
-		String user = getValue(node, "User");
+		String user = XmlParser.getSingleChildNodeValue(node, "User");
 		if (null == user)
 		{
 			String msg = "There is no uid attribute in the storage node.";
@@ -102,40 +102,40 @@ public class StorageParser extends FreeStorageParser
 			}
 			throw new StorageAttributeException(msg);
 		}
-		String password = getValue(node, "Password");
-		String pooling = getValue(node, "Pooling");
-		String minPoolSize = getValue(node, "MinPoolSize");
-		String maxPoolSize = getValue(node, "MaxPoolSize");
-		String timeout = getValue(node, "Timeout");
-		String charset = getValue(node, "Charset");
-		String transactional = getValue(node, "Transactional");
+		String password = XmlParser.getSingleChildNodeValue(node, "Password");
+		String pooling = XmlParser.getSingleChildNodeValue(node, "Pooling");
+		String minPoolSize = XmlParser.getSingleChildNodeValue(node, "MinPoolSize");
+		String maxPoolSize = XmlParser.getSingleChildNodeValue(node, "MaxPoolSize");
+		String timeout = XmlParser.getSingleChildNodeValue(node, "Timeout");
+		String charset = XmlParser.getSingleChildNodeValue(node, "Charset");
+		String transactional = XmlParser.getSingleChildNodeValue(node, "Transactional");
 
 		IStorageAttribute storage = new StorageAttribute();
 		storage.setName(name);
-		storage.setDatabaseStyle(null == databaseStyle ? DatabaseStyle.MySql
-				: int.class.cast(databaseStyle));
+		if(null == databaseStyle)
+		{
+			storage.setDatabaseStyle(DatabaseStyle.MySql);
+		}
+		else
+		{
+			String style = databaseStyle.trim().toLowerCase();
+			storage.setDatabaseStyle("sqlserver".equalsIgnoreCase(style) ? DatabaseStyle.SqlServer : 
+				"oracle".equalsIgnoreCase(style) ? DatabaseStyle.Oracle : DatabaseStyle.MySql);
+		}
 		storage.setServer(server);
 		storage.setDatabase(database);
 		storage.setUser(user);
 		storage.setPassword(null == password ? "" : password);
-		storage.setPooling(null == pooling ? true : boolean.class.cast(pooling));
-		storage.setMinSize(null == minPoolSize ? 5 : int.class
-				.cast(minPoolSize));
-		storage.setMaxSize(null == maxPoolSize ? 20 : int.class
-				.cast(maxPoolSize));
-		storage.setTimeout(null == timeout ? 30 : int.class.cast(timeout));
+		storage.setPooling(null == pooling ? true :new Boolean(pooling));
+		storage.setMinSize(null == minPoolSize ? 5 : new Integer(minPoolSize));
+		storage.setMaxSize(null == maxPoolSize ? 20 : new Integer(maxPoolSize));
+		storage.setTimeout(null == timeout ? 30 : new Integer(timeout));
 		storage.setCharset(null == charset ? null : charset);
-		storage.setTransactional(null == transactional ? true : boolean.class
-				.cast(transactional));
+		storage.setTransactional(null == transactional ? true : new Boolean(transactional));
 
 		return storage;
 	}
 
-	private static String getValue(Element node, String tagName)
-	{
-		Node chird = node.selectSingleNode(tagName);
-		if (null == chird) return null;
-		return chird.getStringValue();
-	}
+
 
 }

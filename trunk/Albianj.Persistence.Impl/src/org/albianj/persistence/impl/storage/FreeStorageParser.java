@@ -1,5 +1,7 @@
 package org.albianj.persistence.impl.storage;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -18,14 +20,32 @@ import org.dom4j.Element;
 
 public abstract class FreeStorageParser implements IParser
 {
-	private static String path = "../config/storage.xml";
-	private static String tagName = "Storages/Storage";
+	private final static String path = "../config/storage.xml";
+	private final static String tagName = "Storages/Storage";
 
 
 	@Override
-	public void init() throws Exception
+	public void init() throws RuntimeException
 	{
-		Document doc = XmlParser.load(Path.getExtendResourcePath(path));
+		Document doc = null;
+		try
+		{
+			doc = XmlParser.load(Path.getExtendResourcePath(path));
+		}
+		catch (MalformedURLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (URISyntaxException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(null == doc)
+		{
+			throw new RuntimeException("load persistence is error.");
+		}
 		@SuppressWarnings("rawtypes")
 		List nodes = XmlParser.analyze(doc, tagName);
 		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
