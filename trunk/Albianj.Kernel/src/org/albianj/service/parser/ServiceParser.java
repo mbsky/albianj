@@ -1,13 +1,9 @@
 package org.albianj.service.parser;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-//import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-//import org.albianj.logger.AlbianLoggerService;
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.service.AlbianServiceAttribute;
@@ -31,17 +27,9 @@ public class ServiceParser extends FreeServiceParser
 			super.loading();
 			logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		}
-		catch (MalformedURLException e)
+		catch (RuntimeException e)
 		{
-			throw new AlbianServiceException(e.getMessage());
-		}
-		catch (URISyntaxException e)
-		{
-			throw new AlbianServiceException(e.getMessage());
-		}
-		catch (Exception e)
-		{
-			throw new AlbianServiceException(e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 

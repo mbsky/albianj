@@ -4,7 +4,7 @@ package org.albianj.service;
  * @author Seapeak.Xu
  * 
  */
-public class AlbianServiceException extends Exception
+public class AlbianServiceException extends RuntimeException
 {
 
 	/**

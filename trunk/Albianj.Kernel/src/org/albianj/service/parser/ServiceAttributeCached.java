@@ -12,7 +12,7 @@ public final class ServiceAttributeCached
 		return cached.exist(key);
 	}
 
-	public synchronized static Object get(String key) throws IllegalArgumentException
+	public static Object get(String key) throws IllegalArgumentException
 	{
 		return cached.get(key);
 	}
