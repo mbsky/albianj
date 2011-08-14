@@ -14,8 +14,12 @@ import org.albianj.kernel.AlbianBootService;
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.kernel.AlbianState;
 import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.persistence.impl.persistence.PersistenceParser;
+import org.albianj.persistence.impl.persistence.ReflectionHelper;
+import org.albianj.persistence.impl.storage.StorageParser;
 import org.albianj.persistence.object.IAlbianObject;
 import org.albianj.persistence.object.impl.FreeAlbianObject;
+import org.albianj.xml.IParser;
 import org.apache.commons.dbcp.DelegatingStatement;
 import org.apache.log4j.Logger;
 
@@ -32,62 +36,82 @@ public class Main
 	 * @param args
 	 */
 
+	
 	static Logger logger = Logger.getLogger(Main.class.getName());
 
 	public static void main(String[] args)
 	{
 		try
 		{
-			
+//			int i = 0;
+//			System.out.print(
 //			Connection conn = PoolingDriverTest.getConnection();
 //			DelegatingStatement stmt = (DelegatingStatement) conn.createStatement();
 //			ResultSet rs = stmt.executeQuery("SELECT * FROM user_1");
 //			System.out.println(rs.getMetaData().getColumnCount());
-			PoolingDriverTest.Test();
+//			PoolingDriverTest.Test();
 			
 			
-			// AlbianBootService.class.
-			AlbianBootService.start();
-			while (AlbianState.Running != AlbianBootService.getLifeState())
-			{
-				Thread.sleep(1000);
-			}
-			IAlbianLoggerService logger = AlbianServiceRouter.getService(
-					IAlbianLoggerService.class, "logger");
-			logger.info("i", "heat", "java");
+////			Field[] fields = ReflectionHelper.getFields("albianj.main.Order");
+//			PropertyDescriptor[] beans = ReflectionHelper.getBeanPropertyDescriptors("albianj.main.Order");
+//			for(PropertyDescriptor b : beans)
+//			{
+//				System.out.printf(b.getPropertyType().getSimpleName());
+////				System.out.printf(b.getName());
+////				System.out.printf(b.);
+//				
+//			}
 			
-			 Field[] fields = getField(Order.class);
-			 for(Field f : fields)
-			 {
-				 logger.info(f.getName());
-			 }
-			 
-			 Field[] fields2 = getField2(FreeAlbianObject.class);
-			 for(Field f : fields)
-			 {
-				 logger.info(f.getName());
-			 }
-			 
-			 Field[] fields3 = getSuperField(Order.class);
-			 for(Field f : fields)
-			 {
-				 logger.info(f.toString());
-			 }
-			
-			 boolean is = IAlbianObject.class.isAssignableFrom(Order.class);
-			 if(is)
-			 {
-				 
-				 logger.info("true");
-				 
-			 }
-			 else
-			 {
-				 logger.info("false");
-				 
-			 }
-			 
-			 
+//			for(Field field : fields)
+//			{
+////				field.
+//			}
+//			
+			IParser parser = new PersistenceParser();
+			parser.init();
+//			
+//			// AlbianBootService.class.
+//			AlbianBootService.start();
+//			while (AlbianState.Running != AlbianBootService.getLifeState())
+//			{
+//				Thread.sleep(1000);
+//			}
+//			IAlbianLoggerService logger = AlbianServiceRouter.getService(
+//					IAlbianLoggerService.class, "logger");
+//			logger.info("i", "heat", "java");
+//			
+//			 Field[] fields = getField(Order.class);
+//			 for(Field f : fields)
+//			 {
+//				 logger.info(f.getName());
+//			 }
+//			 
+//			 Field[] fields2 = getField2(FreeAlbianObject.class);
+//			 for(Field f : fields)
+//			 {
+//				 logger.info(f.getName());
+//			 }
+//			 
+//			 Field[] fields3 = getSuperField(Order.class);
+//			 for(Field f : fields)
+//			 {
+//				 logger.info(f.toString());
+//			 }
+//			
+//			 boolean is = IAlbianObject.class.isAssignableFrom(Order.class);
+//			 if(is)
+//			 {
+//				 
+//				 logger.info("true");
+//				 
+//			 }
+//			 else
+//			 {
+//				 logger.info("false");
+//				 
+//			 }
+//			 
+//			 
 			return;
 		}
 		catch (Exception e)

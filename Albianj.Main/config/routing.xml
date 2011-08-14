@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AlbianObjects>
+	<AlbianObject Type="AppTest.Model.Imp.BizOffer">
+		<WriterRoutings Hash="true">
+			<WriteRouting Name="IdRouting" StorageName="2thStorage"
+				TableName="BizOfferById" Owner="dbo"></WriteRouting>
+		</WriterRoutings>
+		<ReaderRoutings Hash="true">
+			<ReaderRouting Name="CreateTimeRouting" StorageName="3thStorage"
+				TableName="BizOfferByCreateTime" Owner="dbo"></ReaderRouting>
+		</ReaderRoutings>
+	</AlbianObject>
+</AlbianObjects>
