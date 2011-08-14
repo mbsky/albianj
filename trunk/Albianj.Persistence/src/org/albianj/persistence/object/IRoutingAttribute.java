@@ -13,6 +13,4 @@ public interface IRoutingAttribute
 	public void setTableName(String tableName);
 	public String getOwner();
 	public void setOwner(String owner);
-	public int getPermission();
-	public void setPermission(int permission);
 }

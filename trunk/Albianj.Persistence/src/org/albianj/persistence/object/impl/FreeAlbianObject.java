@@ -10,7 +10,7 @@ public abstract class FreeAlbianObject implements IAlbianObject
 	@MemberAnnotation(PrimaryKey=true,AllowNull=false,FieldName="Id",IsSave=true,Length=36)
 	private String id = "";
 	@MemberAnnotation(IsSave=false)
-	private boolean isNew = false;
+	private boolean isAlbianNew = false;
 	
 	@Override
 	public String getId()
@@ -25,15 +25,15 @@ public abstract class FreeAlbianObject implements IAlbianObject
 	}
 
 	@Override
-	public boolean getIsNew()
+	public boolean getIsAlbianNew()
 	{
-		return this.isNew;
+		return this.isAlbianNew;
 	}
 
 	@Override
-	public void setIsNew(boolean isNew)
+	public void setIsAlbianNew(boolean isAlbianNew)
 	{
-		this.isNew = isNew;
+		this.isAlbianNew = isAlbianNew;
 	}
 	
 	@Override

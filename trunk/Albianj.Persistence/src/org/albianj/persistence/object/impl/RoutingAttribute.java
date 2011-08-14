@@ -1,7 +1,6 @@
 package org.albianj.persistence.object.impl;
 
 import org.albianj.persistence.object.IRoutingAttribute;
-import org.albianj.persistence.object.RouterPermission;
 
 public class RoutingAttribute implements IRoutingAttribute
 {
@@ -9,7 +8,6 @@ public class RoutingAttribute implements IRoutingAttribute
 	private String storageName = null;
 	private String tableName = null;
 	private String owner = null;
-	private int permission = RouterPermission.WR;
 
 	@Override
 	public String getName()
@@ -66,19 +64,4 @@ public class RoutingAttribute implements IRoutingAttribute
 		// TODO Auto-generated method stub
 		this.owner = owner;
 	}
-
-	@Override
-	public int getPermission()
-	{
-		// TODO Auto-generated method stub
-		return this.permission;
-	}
-
-	@Override
-	public void setPermission(int permission)
-	{
-		// TODO Auto-generated method stub
-		this.permission = permission;
-	}
-
 }

@@ -6,8 +6,8 @@ public interface IAlbianObject extends Serializable
 {	
 	public String getId();
 	public void setId(String id);
-	public boolean getIsNew();
-	public void setIsNew(boolean isNew);
+	public boolean getIsAlbianNew();
+	public void setIsAlbianNew(boolean isNew);
 	
 	public String mappingWriterRouting();
 	public String mappingReaderRouting();
