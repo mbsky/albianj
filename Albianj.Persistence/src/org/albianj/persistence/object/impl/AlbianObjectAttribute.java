@@ -1,5 +1,7 @@
 package org.albianj.persistence.object.impl;
 
+import java.util.Map;
+
 import org.albianj.persistence.object.IAlbianObjectAttribute;
 import org.albianj.persistence.object.ICacheAttribute;
 import org.albianj.persistence.object.IMemberAttribute;
@@ -10,7 +12,7 @@ public class AlbianObjectAttribute implements IAlbianObjectAttribute
 
 	private ICacheAttribute cache = null;
 	private IRoutingAttribute defaultRouting = null;
-	private  IMemberAttribute[] members = null;
+	private  Map<String,IMemberAttribute> members = null;
 	private String type = null; 
 	
 	public String getType()
@@ -48,14 +50,14 @@ public class AlbianObjectAttribute implements IAlbianObjectAttribute
 	}
 	
 	@Override
-	public IMemberAttribute[] getMembers()
+	public Map<String,IMemberAttribute> getMembers()
 	{
 		// TODO Auto-generated method stub
 		return this.members;
 	}
 
 	@Override
-	public void setMembers(IMemberAttribute[] members)
+	public void setMembers(Map<String,IMemberAttribute> members)
 	{
 		// TODO Auto-generated method stub
 		this.members = members;

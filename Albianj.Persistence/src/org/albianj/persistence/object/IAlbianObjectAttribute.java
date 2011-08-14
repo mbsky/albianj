@@ -1,5 +1,7 @@
 package org.albianj.persistence.object;
 
+import java.util.Map;
+
 
 public interface IAlbianObjectAttribute
 {
@@ -16,6 +18,6 @@ public interface IAlbianObjectAttribute
 	public void setCache(ICacheAttribute cache);
 	public IRoutingAttribute getDefaultRouting();
 	public void setDefaultRouting(IRoutingAttribute defaultRouting);
-	public IMemberAttribute[] getMembers();
-	public void setMembers(IMemberAttribute[] members);
+	public Map<String,IMemberAttribute> getMembers();
+	public void setMembers(Map<String,IMemberAttribute> members);
 }
