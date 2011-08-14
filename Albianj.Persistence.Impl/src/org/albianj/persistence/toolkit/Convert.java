@@ -4,7 +4,7 @@ import java.sql.Types;
 
 public class Convert
 {
-	public static int ToDatabaseType(Class cls)
+	public static int ToDatabaseType(@SuppressWarnings("rawtypes") Class cls)
 	{
 		String type = cls.getSimpleName().toLowerCase();
 		if("string".equalsIgnoreCase(type))
