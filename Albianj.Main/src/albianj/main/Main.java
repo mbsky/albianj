@@ -19,6 +19,8 @@ import org.albianj.persistence.impl.persistence.ReflectionHelper;
 import org.albianj.persistence.impl.storage.StorageParser;
 import org.albianj.persistence.object.IAlbianObject;
 import org.albianj.persistence.object.impl.FreeAlbianObject;
+import org.albianj.runtime.IStackTrace;
+import org.albianj.runtime.RuningTrace;
 import org.albianj.xml.IParser;
 import org.apache.commons.dbcp.DelegatingStatement;
 import org.apache.log4j.Logger;
@@ -67,18 +69,23 @@ public class Main
 ////				field.
 //			}
 //			
-			IParser parser = new PersistenceParser();
-			parser.init();
+//			IParser parser = new PersistenceParser();
+//			parser.init();
 //			
 //			// AlbianBootService.class.
-//			AlbianBootService.start();
-//			while (AlbianState.Running != AlbianBootService.getLifeState())
-//			{
-//				Thread.sleep(1000);
-//			}
-//			IAlbianLoggerService logger = AlbianServiceRouter.getService(
-//					IAlbianLoggerService.class, "logger");
-//			logger.info("i", "heat", "java");
+			
+			
+			IStackTrace trace = RuningTrace.getThreadTraceInfo();
+			System.out.println(trace.toString());
+//			throw new Exception();
+			AlbianBootService.start();
+			while (AlbianState.Running != AlbianBootService.getLifeState())
+			{
+				Thread.sleep(1000);
+			}
+			IAlbianLoggerService logger = AlbianServiceRouter.getService(
+					IAlbianLoggerService.class, "logger");
+			logger.info("i", "heat", "java");
 //			
 //			 Field[] fields = getField(Order.class);
 //			 for(Field f : fields)
@@ -112,13 +119,15 @@ public class Main
 //			 }
 //			 
 //			 
-			return;
+//			return;
 		}
 		catch (Exception e)
 		{
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+			IStackTrace trace = RuningTrace.getTraceInfo(e);
+			System.out.println(trace.toString());
 		}
 
 		// TODO Auto-generated method stub
@@ -162,8 +171,26 @@ public class Main
 		// e.printStackTrace();
 		// }
 		// System.out.println(path);
-		// return;
+		runThreadTrace();
+		try
+		{
+			Thread.sleep(5000);
+		}
+		catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 return;
 
+	}
+	
+	public static void runThreadTrace()
+	{
+		IStackTrace trace = RuningTrace.getThreadTraceInfo();
+		System.out.println("run1"+trace.toString());
+		IStackTrace trace1 = RuningTrace.getTraceInfo();
+		System.out.println("run2"+trace1.toString());
 	}
 
 	public static <T extends IAlbianObject> T Load(Class<T> cla)
