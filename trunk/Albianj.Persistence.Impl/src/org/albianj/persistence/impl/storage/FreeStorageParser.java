@@ -8,13 +8,14 @@ import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.persistence.impl.cached.StorageAttributeCache;
 import org.albianj.persistence.object.DatabaseStyle;
 import org.albianj.persistence.object.IStorageAttribute;
+import org.albianj.service.FreeAlbianService;
 import org.albianj.verify.Validate;
 import org.albianj.xml.IParser;
 import org.albianj.xml.XmlParser;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
-public abstract class FreeStorageParser implements IParser
+public abstract class FreeStorageParser extends FreeAlbianService implements IParser
 {
 	private final static String path = "../config/storage.xml";
 	private final static String tagName = "Storages/Storage";

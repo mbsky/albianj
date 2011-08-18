@@ -8,7 +8,7 @@ import java.util.Map;
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.persistence.impl.cached.AlbianObjectsCached;
-import org.albianj.persistence.impl.storage.StorageParser;
+import org.albianj.persistence.impl.storage.StorageService;
 import org.albianj.persistence.object.IAlbianObjectAttribute;
 import org.albianj.persistence.object.ICacheAttribute;
 import org.albianj.persistence.object.IMemberAttribute;
@@ -23,13 +23,18 @@ import org.albianj.xml.XmlParser;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
-public class PersistenceParser extends FreePersistenceParser
+public class PersistenceService extends FreePersistenceParser
 {
 
 	private static final String cacheTagName = "Cache";
 	private static final String memberTagName = "Members/Member";
 	public static final String DEFAULT_ROUTING_NAME = "!@#$%Albianj_Default_Routing%$#@!";
 
+	public void loading()
+	{
+		super.init();
+	}
+	
 	@Override
 	protected void parserAlbianObjects(@SuppressWarnings("rawtypes") List nodes)
 	{
@@ -86,7 +91,7 @@ public class PersistenceParser extends FreePersistenceParser
 		IRoutingAttribute defaultRouting = new RoutingAttribute();
 		defaultRouting.setName(DEFAULT_ROUTING_NAME);
 		defaultRouting.setOwner("dbo");
-		defaultRouting.setStorageName(StorageParser.DEFAULT_STORAGE_NAME);
+		defaultRouting.setStorageName(StorageService.DEFAULT_STORAGE_NAME);
 		defaultRouting.setTableName(ReflectionHelper.getClassSimpleName(type));
 
 		@SuppressWarnings("rawtypes")

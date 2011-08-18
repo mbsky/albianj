@@ -5,13 +5,15 @@ import org.albianj.io.Path;
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.persistence.object.IAlbianObjectAttribute;
+import org.albianj.service.FreeAlbianService;
+import org.albianj.service.parser.FreeServiceParser;
 import org.albianj.verify.Validate;
 import org.albianj.xml.IParser;
 import org.albianj.xml.XmlParser;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
-public abstract class FreePersistenceParser implements IParser
+public abstract class FreePersistenceParser extends FreeAlbianService implements IParser
 {
 
 	private final static String path = "../config/persistence.xml";
