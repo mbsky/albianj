@@ -4,7 +4,8 @@ public interface IRoutingAttribute
 {
 //	<Routing Name="IdRouting" StorageName="2thStorage" 
 //			TableName="BizOfferById" Owner="dbo" Permission="WR"></Routing>
-	
+	public boolean getEnable();
+	public void setEnable(boolean enable);
 	public String getName();
 	public void setName(String name);
 	public String getStorageName();
