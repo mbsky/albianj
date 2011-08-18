@@ -12,7 +12,7 @@ import org.albianj.verify.Validate;
 import org.albianj.xml.XmlParser;
 import org.dom4j.Element;
 
-public class StorageParser extends FreeStorageParser
+public class StorageService extends FreeStorageParser
 {
 
 	public final static String DEFAULT_STORAGE_NAME = "!@#$%Albianj_Default_Storage%$#@!";
@@ -31,6 +31,10 @@ public class StorageParser extends FreeStorageParser
 	// <Transactional>true</Transactional>
 	// </Storage>
 
+	public void loading()
+	{
+		super.init();
+	}
 	@Override
 	protected void parserStorages(@SuppressWarnings("rawtypes") List nodes) throws StorageAttributeException
 	{
