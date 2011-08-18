@@ -7,7 +7,8 @@ public class RoutingAttribute implements IRoutingAttribute
 	private String name = null;
 	private String storageName = null;
 	private String tableName = null;
-	private String owner = null;
+	private String owner = "dbo";
+	public boolean enable = true; 
 
 	@Override
 	public String getName()
@@ -63,5 +64,15 @@ public class RoutingAttribute implements IRoutingAttribute
 	{
 		// TODO Auto-generated method stub
 		this.owner = owner;
+	}
+	
+	public boolean getEnable()
+	{
+		return this.enable;
+	}
+	
+	public void setEnable(boolean enable)
+	{
+		this.enable = enable;
 	}
 }
