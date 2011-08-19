@@ -15,6 +15,7 @@ import org.albianj.persistence.object.impl.RoutingsAttribute;
 import org.albianj.verify.Validate;
 import org.albianj.xml.XmlParser;
 import org.dom4j.Element;
+import org.dom4j.Node;
 
 public class RoutingService extends FreeRoutingParser
 {
@@ -83,6 +84,26 @@ public class RoutingService extends FreeRoutingParser
 			}
 			
 		}
+		
+		Node writer = elt.selectSingleNode("WriterRoutings");
+		if(null != writer)
+		{
+			String hash = XmlParser.getAttributeValue(writer, "Hash");
+			if(!Validate.isNullOrEmptyOrAllSpace(hash))
+			{
+				routing.setWriterHash(new Boolean(hash));
+			}
+		}
+		Node reader = elt.selectSingleNode("ReaderRoutings");
+		if(null != reader)
+		{
+			String hash = XmlParser.getAttributeValue(reader, "Hash");
+			if(!Validate.isNullOrEmptyOrAllSpace(hash))
+			{
+				routing.setReaderHash(new Boolean(hash));
+			}
+		}
+		
 		List writers = elt.selectNodes("WriterRoutings/WriterRouting");
 		if(!Validate.isNullOrEmpty(writers))
 		{
@@ -94,7 +115,7 @@ public class RoutingService extends FreeRoutingParser
 		if(!Validate.isNullOrEmpty(readers))
 		{
 			Map<String,IRoutingAttribute> map = parserRouting(readers);
-			if(null != map) routing.setWriterRoutings(map);
+			if(null != map) routing.setReaderRoutings(map);
 		}
 		return routing;
 	}

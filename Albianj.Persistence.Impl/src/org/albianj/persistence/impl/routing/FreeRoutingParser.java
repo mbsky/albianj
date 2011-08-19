@@ -10,7 +10,6 @@ import org.albianj.service.FreeAlbianService;
 import org.albianj.xml.IParser;
 import org.albianj.xml.XmlParser;
 import org.dom4j.Document;
-import org.dom4j.Element;
 
 //<AlbianObjects>
 //<AlbianObject Type="AppTest.Model.Imp.BizOffer">
