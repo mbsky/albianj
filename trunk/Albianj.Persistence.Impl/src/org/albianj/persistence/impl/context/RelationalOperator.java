@@ -1,6 +1,6 @@
 package org.albianj.persistence.impl.context;
 
-public enum RelationalOperators
+public enum RelationalOperator
 {
 	And,
     OR,

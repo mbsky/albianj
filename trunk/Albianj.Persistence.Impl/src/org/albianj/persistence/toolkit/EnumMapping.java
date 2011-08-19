@@ -4,7 +4,7 @@ import org.albianj.persistence.impl.context.*;
 
 public class EnumMapping
 {
-	 public static String GetRelationalOperators(RelationalOperators opt)
+	 public static String GetRelationalOperators(RelationalOperator opt)
      {
          switch (opt)
          {
