@@ -1,9 +1,7 @@
-package org.albianj.persistence.impl.context.impl;
+package org.albianj.persistence.impl.context;
 
 import java.util.Map;
 
-import org.albianj.persistence.impl.context.CommandType;
-import org.albianj.persistence.impl.context.ICommand;
 
 public class Command implements ICommand
 {

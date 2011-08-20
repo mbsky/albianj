@@ -1,11 +1,9 @@
-package org.albianj.persistence.impl.context.impl;
+package org.albianj.persistence.impl.context;
 
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.List;
 
-import org.albianj.persistence.impl.context.ICommand;
-import org.albianj.persistence.impl.context.ITask;
 import org.albianj.persistence.object.IStorageAttribute;
 
 public class Task implements ITask

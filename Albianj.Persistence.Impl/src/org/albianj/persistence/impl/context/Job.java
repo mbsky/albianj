@@ -1,11 +1,7 @@
-package org.albianj.persistence.impl.context.impl;
+package org.albianj.persistence.impl.context;
 
 import java.util.List;
 
-import org.albianj.persistence.impl.context.ICompensateCallback;
-import org.albianj.persistence.impl.context.ITask;
-import org.albianj.persistence.impl.context.IJob;
-import org.albianj.persistence.impl.context.JobLifeTime;
 
 public class Job implements IJob
 {
