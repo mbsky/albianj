@@ -1,4 +1,4 @@
-package org.albianj.persistence.toolkit;
+package org.albianj.persistence.impl.toolkit;
 
 import java.sql.Types;
 
