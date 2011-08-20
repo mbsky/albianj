@@ -12,37 +12,37 @@ public class AlbianPersistenceService
 		return true;
 	}
 
-	public static boolean create(IAlbianObject[] objs)
+	public static boolean create(IAlbianObject[] objects)
 	{
 	    return true;
 	}
 
-	public static boolean modify(IAlbianObject obj)
+	public static boolean modify(IAlbianObject object)
 	{
 		return true;
 	}
 
-	public static boolean modify(IAlbianObject[] objs)
+	public static boolean modify(IAlbianObject[] objects)
 	{
 	   return true;
 	}
 	
-	public static boolean remove(IAlbianObject obj)
+	public static boolean remove(IAlbianObject object)
 	{
 	    return true;
 	}
 	
-	public static boolean remove(IAlbianObject[] objs)
+	public static boolean remove(IAlbianObject[] objects)
 	{
 	    return true;
 	}
 	
-	public static boolean save(IAlbianObject obj)
+	public static boolean save(IAlbianObject object)
 	{
 	    return true;
 	}
 	
-	public static boolean save(IAlbianObject[] objs)
+	public static boolean save(IAlbianObject[] objects)
 	{
 	    return true;
 	}
@@ -118,7 +118,7 @@ public class AlbianPersistenceService
 		return null;
 	}
 	
-	public static  <T extends IAlbianObject> List<T> findObjects(Statement statement)
+	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,Statement statement)
 	{
 		return null;
 	}
@@ -133,12 +133,10 @@ public class AlbianPersistenceService
 		return null;
 	}
 	
-	
 	public static  <T extends IAlbianObject> T loadObject(Class<T> cls,String routingName, String id)
 	{
 		return null;
 	}
-	
 	
 	public static  <T extends IAlbianObject> T loadObject(Class<T> cls,IFilterCondition[] where)
 	{
@@ -202,7 +200,8 @@ public class AlbianPersistenceService
 	}
 	
 	
-	private static  <T extends IAlbianObject> T doFindObject(Class<T> cls,String routingName, IFilterCondition[] where)
+	
+	protected static  <T extends IAlbianObject> T doFindObject(Class<T> cls,String routingName, IFilterCondition[] where)
 	{
 		return null;
 	//    try
@@ -221,7 +220,7 @@ public class AlbianPersistenceService
 	//    }
 	}
 	
-	private static  <T extends IAlbianObject> T doFindObject(Class<T> cls,Statement statement)
+	protected static  <T extends IAlbianObject> T doFindObject(Class<T> cls,Statement statement)
 	{
 		return null;
 	//    try
@@ -240,7 +239,7 @@ public class AlbianPersistenceService
 	//    }
 	}
 	
-	private static  <T extends IAlbianObject> List<T> doFindObjects(Class<T> cls,String routingName, int top, IFilterCondition[] where,
+	protected static  <T extends IAlbianObject> List<T> doFindObjects(Class<T> cls,String routingName, int top, IFilterCondition[] where,
 	                                         IOrderByCondition[] orderby)
 	{
 		return null;
@@ -260,7 +259,7 @@ public class AlbianPersistenceService
 	//    }
 	}
 	
-	private static  <T extends IAlbianObject> List<T> doFindObjects(Class<T> cls,Statement statement)
+	protected static  <T extends IAlbianObject> List<T> doFindObjects(Class<T> cls,Statement statement)
 	{
 		return null;
 	//    try
@@ -279,7 +278,7 @@ public class AlbianPersistenceService
 	//    }
 	}
 	
-	private static  <T extends IAlbianObject> List<T> doLoadObject(Class<T> cls,String routingName, IFilterCondition[] where)
+	protected static  <T extends IAlbianObject> List<T> doLoadObject(Class<T> cls,String routingName, IFilterCondition[] where)
 	{
 		return null;
 	//    try
@@ -299,7 +298,7 @@ public class AlbianPersistenceService
 	//    }
 	}
 	
-	private static  <T extends IAlbianObject> T doLoadObject(Class<T> cls,Statement statement)
+	protected static  <T extends IAlbianObject> T doLoadObject(Class<T> cls,Statement statement)
 	{
 		return null;
 	//    try
@@ -317,7 +316,7 @@ public class AlbianPersistenceService
 	//    }
 	}
 	
-	private static  <T extends IAlbianObject> List<T> doLoadObjects(Class<T> cls,String routingName, int top, IFilterCondition[] where,
+	protected static  <T extends IAlbianObject> List<T> doLoadObjects(Class<T> cls,String routingName, int top, IFilterCondition[] where,
 	                                         IOrderByCondition[] orderby)
 	{
 		return null;
@@ -338,7 +337,7 @@ public class AlbianPersistenceService
 	//    }
 	}
 	
-	private static  <T extends IAlbianObject> List<T> doLoadObjects(Class<T> cls,Statement statement)
+	protected static  <T extends IAlbianObject> List<T> doLoadObjects(Class<T> cls,Statement statement)
 	{
 		return null;
 	//    try
