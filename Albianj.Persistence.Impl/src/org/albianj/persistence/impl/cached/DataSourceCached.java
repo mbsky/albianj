@@ -3,7 +3,7 @@ package org.albianj.persistence.impl.cached;
 import org.albianj.cached.ICached;
 import org.albianj.cached.impl.HashCached;
 
-public class StorageAttributeCache
+public class DataSourceCached
 {
 	private static ICached cached = new HashCached();
 
@@ -35,9 +35,4 @@ public class StorageAttributeCache
 	{
 		cached.clear();
 	}
-
-//	public synchronized static boolean hasNext()
-//	{
-//		
-//	}
 }

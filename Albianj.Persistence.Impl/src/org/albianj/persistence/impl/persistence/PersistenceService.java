@@ -170,7 +170,7 @@ public class PersistenceService extends FreePersistenceParser
 		}
 		if (Validate.isNullOrEmpty(dbType))
 		{
-			member.setDatabaseType(Convert.ToDatabaseType(dbType));
+			member.setDatabaseType(Convert.toSqlType(dbType));
 		}
 		if (Validate.isNullOrEmpty(isSave))
 		{
@@ -199,7 +199,7 @@ public class PersistenceService extends FreePersistenceParser
 		if ("id".equals(propertyDescriptor.getName()))
 		{
 			member.setAllowNull(false);
-			member.setDatabaseType(Convert.ToDatabaseType(propertyDescriptor
+			member.setDatabaseType(Convert.toSqlType(propertyDescriptor
 					.getPropertyType()));
 			member.setFieldName(propertyDescriptor.getName());
 			member.setIsSave(true);
@@ -214,7 +214,7 @@ public class PersistenceService extends FreePersistenceParser
 			member.setName(propertyDescriptor.getName());
 		}
 		member.setAllowNull(true);
-		member.setDatabaseType(Convert.ToDatabaseType(propertyDescriptor
+		member.setDatabaseType(Convert.toSqlType(propertyDescriptor
 				.getPropertyType()));
 		member.setFieldName(propertyDescriptor.getName());
 		member.setIsSave(true);

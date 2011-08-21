@@ -8,6 +8,6 @@ public interface ICommand
 	public void setCommandText(String commandText);
 	public CommandType getCommandType();
 	public void setCommandType(CommandType commandType);
-	public Map<Integer,Object> getParameters();
-	public void setParameters(Map<Integer,Object> parameters);
+	public Map<Integer,ISqlParameter> getParameters();
+	public void setParameters(Map<Integer,ISqlParameter> parameters);
 }

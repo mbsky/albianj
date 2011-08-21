@@ -7,7 +7,7 @@ public class Command implements ICommand
 {
 	private String commandText = null;
 	private CommandType commandType = CommandType.Text;
-	private Map<Integer,Object> paramsters = null;
+	private Map<Integer,ISqlParameter> paramsters = null;
 	@Override
 
 	public String getCommandText()
@@ -38,14 +38,14 @@ public class Command implements ICommand
 	}
 
 	@Override
-	public Map<Integer, Object> getParameters()
+	public Map<Integer, ISqlParameter> getParameters()
 	{
 		// TODO Auto-generated method stub
 		return this.paramsters;
 	}
 
 	@Override
-	public void setParameters(Map<Integer, Object> parameters)
+	public void setParameters(Map<Integer, ISqlParameter> parameters)
 	{
 		// TODO Auto-generated method stub
 		this.paramsters = parameters;
