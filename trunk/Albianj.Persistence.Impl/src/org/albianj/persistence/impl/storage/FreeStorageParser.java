@@ -47,7 +47,7 @@ public abstract class FreeStorageParser extends FreeAlbianService implements IPa
 	
 	protected abstract IStorageAttribute parserStorage(Element node);
 
-	public static String GenerateConnectionUrl(String storageName)
+	public static String generateConnectionUrl(String storageName)
 	{
 		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		if(Validate.isNullOrEmptyOrAllSpace(storageName))
@@ -57,10 +57,10 @@ public abstract class FreeStorageParser extends FreeAlbianService implements IPa
 			return null;
 		}
 		IStorageAttribute storageAttribute = (IStorageAttribute) StorageAttributeCache.get(storageName);
-		return GenerateConnectionUrl(storageAttribute);
+		return generateConnectionUrl(storageAttribute);
 	}
 	
-	public static String GenerateConnectionUrl(IStorageAttribute storageAttribute)
+	public static String generateConnectionUrl(IStorageAttribute storageAttribute)
 	{
 		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		if(null == storageAttribute)

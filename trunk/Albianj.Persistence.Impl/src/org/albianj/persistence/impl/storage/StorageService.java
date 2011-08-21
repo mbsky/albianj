@@ -1,21 +1,28 @@
 package org.albianj.persistence.impl.storage;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
+
+import javax.sql.DataSource;
 
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.persistence.impl.cached.DataSourceCached;
 import org.albianj.persistence.impl.cached.StorageAttributeCache;
 import org.albianj.persistence.object.DatabaseStyle;
 import org.albianj.persistence.object.IStorageAttribute;
 import org.albianj.persistence.object.impl.StorageAttribute;
 import org.albianj.verify.Validate;
 import org.albianj.xml.XmlParser;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.dom4j.Element;
 
 public class StorageService extends FreeStorageParser
 {
 
 	public final static String DEFAULT_STORAGE_NAME = "!@#$%Albianj_Default_Storage%$#@!";
+	public final static String DRIVER_CLASSNAME = "com.mysql.jdbc.Driver";
 	// <Storage>
 	// <Name>1thStorage</Name>
 	// <DatabaseStyle>MySql</DatabaseStyle>
@@ -59,6 +66,8 @@ public class StorageService extends FreeStorageParser
 			{
 				StorageAttributeCache.insert(DEFAULT_STORAGE_NAME, storage);				
 			}
+			DataSource ds = setupDataSource(storage);
+			DataSourceCached.insert(storage.getName(),ds);
 		}
 	}
 
@@ -138,6 +147,61 @@ public class StorageService extends FreeStorageParser
 		return storage;
 	}
 
+	public DataSource setupDataSource(IStorageAttribute storageAttribute)
+	{
+		BasicDataSource ds = new BasicDataSource();
+		try
+		{
+			String url = FreeStorageParser.generateConnectionUrl(storageAttribute);
+			ds.setDriverClassName(DRIVER_CLASSNAME);
+			ds.setUrl(url);
+			ds.setUsername(storageAttribute.getUser());
+			ds.setPassword(storageAttribute.getPassword());
+			if(storageAttribute.getTransactional())
+			{
+				ds.setDefaultAutoCommit(false);
+				ds.setDefaultTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
+			}
+			ds.setDefaultReadOnly(false);
+			if(storageAttribute.getPooling())
+			{
+				ds.setInitialSize(storageAttribute.getMinSize());
+				ds.setMaxIdle(storageAttribute.getMaxSize());
+				ds.setMinIdle(storageAttribute.getMinSize());
+			}
+			else
+			{
+				ds.setInitialSize(5);
+				ds.setMaxIdle(10);
+				ds.setMinIdle(5);
+			}
+			ds.setMaxWait(storageAttribute.getTimeout()  * 1000);
+			ds.setRemoveAbandoned(true);
+			ds.setRemoveAbandonedTimeout(storageAttribute.getTimeout());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
 
+		return ds;
+	}
+	
+	public synchronized static Connection getConnection(String storageName)
+	{
+		DataSource ds =(DataSource) DataSourceCached.get(storageName);
+		IAlbianLoggerService logger = AlbianServiceRouter.getService(
+				IAlbianLoggerService.class, "logger");
+		try
+		{
+			return ds.getConnection();
+		}
+		catch (SQLException e)
+		{
+			if (null != logger) logger.error(e,"Get the '",storageName,"' connection form connection pool is error.");
+			return null;
+		}
+	}
 
 }

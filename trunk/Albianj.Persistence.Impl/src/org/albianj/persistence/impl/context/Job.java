@@ -7,9 +7,12 @@ public class Job implements IJob
 {
 	private List<ITask> tasks = null;
 	private JobLifeTime jobLifeTime = JobLifeTime.Normal;
-	private Exception exception = null;
-	private boolean isRollback = false;
+//	private Exception exception = null;
+//	private boolean isRollback = false;
 	private ICompensateCallback compensateCallback = null;
+	private Object compensateCallbackObject = null;
+	private INotify notifyCallback = null;
+	private ITask currentTask = null;
 	
 	@Override
 	public List<ITask> getTasks()
@@ -39,33 +42,33 @@ public class Job implements IJob
 		this.jobLifeTime = jobLifeTime;
 	}
 
-	@Override
-	public Exception getException()
-	{
-		// TODO Auto-generated method stub
-		return this.exception;
-	}
-
-	@Override
-	public void setException(Exception exception)
-	{
-		// TODO Auto-generated method stub
-		this.exception = exception;
-	}
-
-	@Override
-	public boolean getIsRollback()
-	{
-		// TODO Auto-generated method stub
-		return this.isRollback;
-	}
-
-	@Override
-	public void setIsRollback(boolean isRollback)
-	{
-		// TODO Auto-generated method stub
-		this.isRollback = isRollback;
-	}
+//	@Override
+//	public Exception getException()
+//	{
+//		// TODO Auto-generated method stub
+//		return this.exception;
+//	}
+//
+//	@Override
+//	public void setException(Exception exception)
+//	{
+//		// TODO Auto-generated method stub
+//		this.exception = exception;
+//	}
+//
+//	@Override
+//	public boolean getIsRollback()
+//	{
+//		// TODO Auto-generated method stub
+//		return this.isRollback;
+//	}
+//
+//	@Override
+//	public void setIsRollback(boolean isRollback)
+//	{
+//		// TODO Auto-generated method stub
+//		this.isRollback = isRollback;
+//	}
 
 	@Override
 	public ICompensateCallback getCompensateCallback()
@@ -81,4 +84,30 @@ public class Job implements IJob
 		this.compensateCallback = compensateCallback;
 	}
 
+	public void setCompensateCallbackObject(Object compensateCallbackObject)
+	{
+		this.compensateCallbackObject = compensateCallbackObject;
+	}
+	public Object getCompensateCallbackObject()
+	{
+		return this.compensateCallbackObject;
+	}
+	
+	public INotify getNotifyCallback()
+	{
+		return this.notifyCallback;
+	}
+	
+	public void setNotifyCallback(INotify notifyCallback)
+	{
+		this.notifyCallback = notifyCallback;
+	}
+	public ITask getCurrentTask()
+	{
+		return this.currentTask;
+	}
+	public void setCurrentTask(ITask currentTask)
+	{
+		this.currentTask = currentTask;
+	}
 }

@@ -8,10 +8,16 @@ public interface IJob
 	public void setTasks(List<ITask> tasks);
 	public JobLifeTime getJobLifeTime();
 	public void setJobLifeTime(JobLifeTime jobLifeTime);
-	public Exception getException();
-	public void setException(Exception exception);
-	public boolean getIsRollback();
-	public void setIsRollback(boolean isRollback);
+	public ITask getCurrentTask();
+	public void setCurrentTask(ITask currentTask);
+//	public Exception getException();
+//	public void setException(Exception exception);
+//	public boolean getIsRollback();
+//	public void setIsRollback(boolean isRollback);
+	public INotify getNotifyCallback();
+	public void setNotifyCallback(INotify notifyCallback);
 	public ICompensateCallback getCompensateCallback();
 	public void setCompensateCallback(ICompensateCallback compensateCallback);
+	public void setCompensateCallbackObject(Object compensateCallbackObject);
+	public Object getCompensateCallbackObject();
 }
