@@ -54,4 +54,6 @@ public abstract class FreeCached implements ICached
 		map.clear();		
 	}
 
+//	public abstract  boolean hasNext();
+//	public abstract Object getNext();
 }
