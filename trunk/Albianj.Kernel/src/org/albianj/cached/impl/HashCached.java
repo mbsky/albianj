@@ -16,4 +16,11 @@ public class HashCached extends FreeCached implements ICached
 	{
 		super(map);
 	}
+	
+//	public boolean hasNext()
+//	{
+//		Map map = new HashMap<String, Object>();
+//		map.keySet().
+//	}
+
 }

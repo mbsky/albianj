@@ -1,6 +1,7 @@
 package org.albianj.verify;
 
 import java.util.Collection;
+import java.util.Map;
 
 public class Validate
 {
@@ -9,7 +10,11 @@ public class Validate
 	{
 		return null == collection || collection.isEmpty();
 	}
-
+	
+	public static boolean isNullOrEmpty(Map map)
+	{
+		return null == map || map.isEmpty();
+	}
 	public static boolean isNullOrEmpty(String value)
 	{
 		return null == value || value.isEmpty();
