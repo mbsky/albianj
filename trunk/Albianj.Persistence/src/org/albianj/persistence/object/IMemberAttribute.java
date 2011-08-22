@@ -9,8 +9,8 @@ public interface IMemberAttribute
 	
 	public String getName();
 	public void setName(String name);
-	public String getFieldName();
-	public void setFieldName(String fieldName);
+	public String getSqlFieldName();
+	public void setSqlFieldName(String sqlFieldName);
 	public boolean getAllowNull();
 	public void setAllowNull(boolean allowNull);
 	public int getLength();
