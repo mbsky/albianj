@@ -1,28 +1,26 @@
 package org.albianj.persistence.impl.context;
 
-import java.util.List;
+import java.util.Map;
 
 
 public class Job implements IJob
 {
-	private List<ITask> tasks = null;
+	private Map<String,ITask> tasks = null;
 	private JobLifeTime jobLifeTime = JobLifeTime.Normal;
-//	private Exception exception = null;
-//	private boolean isRollback = false;
 	private ICompensateCallback compensateCallback = null;
 	private Object compensateCallbackObject = null;
 	private INotify notifyCallback = null;
-	private ITask currentTask = null;
+	private String currentStorage = null;
 	
 	@Override
-	public List<ITask> getTasks()
+	public Map<String,ITask> getTasks()
 	{
 		// TODO Auto-generated method stub
 		return this.tasks;
 	}
 
 	@Override
-	public void setTasks(List<ITask> tasks)
+	public void setTasks(Map<String,ITask> tasks)
 	{
 		// TODO Auto-generated method stub
 		this.tasks = tasks;
@@ -41,34 +39,6 @@ public class Job implements IJob
 		// TODO Auto-generated method stub
 		this.jobLifeTime = jobLifeTime;
 	}
-
-//	@Override
-//	public Exception getException()
-//	{
-//		// TODO Auto-generated method stub
-//		return this.exception;
-//	}
-//
-//	@Override
-//	public void setException(Exception exception)
-//	{
-//		// TODO Auto-generated method stub
-//		this.exception = exception;
-//	}
-//
-//	@Override
-//	public boolean getIsRollback()
-//	{
-//		// TODO Auto-generated method stub
-//		return this.isRollback;
-//	}
-//
-//	@Override
-//	public void setIsRollback(boolean isRollback)
-//	{
-//		// TODO Auto-generated method stub
-//		this.isRollback = isRollback;
-//	}
 
 	@Override
 	public ICompensateCallback getCompensateCallback()
@@ -102,12 +72,12 @@ public class Job implements IJob
 	{
 		this.notifyCallback = notifyCallback;
 	}
-	public ITask getCurrentTask()
+	public String getCurrentStorage()
 	{
-		return this.currentTask;
+		return this.currentStorage;
 	}
-	public void setCurrentTask(ITask currentTask)
+	public void setCurrentStorage(String currentStorage)
 	{
-		this.currentTask = currentTask;
+		this.currentStorage = currentStorage;
 	}
 }

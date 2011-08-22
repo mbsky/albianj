@@ -8,6 +8,7 @@ import java.util.Map;
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.persistence.impl.cached.AlbianObjectsCached;
+import org.albianj.persistence.impl.cached.BeanPropertyDescriptorCached;
 import org.albianj.persistence.impl.storage.StorageService;
 import org.albianj.persistence.impl.toolkit.Convert;
 import org.albianj.persistence.object.IAlbianObjectAttribute;
@@ -154,7 +155,7 @@ public class PersistenceService extends FreePersistenceParser
 		String isSave = XmlParser.getAttributeValue(elt, "IsSave");
 		if (Validate.isNullOrEmpty(fieldName))
 		{
-			member.setFieldName(fieldName);
+			member.setSqlFieldName(fieldName);
 		}
 		if (Validate.isNullOrEmpty(allowNull))
 		{
@@ -184,6 +185,7 @@ public class PersistenceService extends FreePersistenceParser
 		Map<String, IMemberAttribute> map = new LinkedHashMap<String, IMemberAttribute>();
 		PropertyDescriptor[] propertyDesc = ReflectionHelper
 				.getBeanPropertyDescriptors(type);
+		BeanPropertyDescriptorCached.insert(type, propertyDesc);
 		for (PropertyDescriptor p : propertyDesc)
 		{
 			IMemberAttribute member = reflexAlbianObjectMember(p);
@@ -201,7 +203,7 @@ public class PersistenceService extends FreePersistenceParser
 			member.setAllowNull(false);
 			member.setDatabaseType(Convert.toSqlType(propertyDescriptor
 					.getPropertyType()));
-			member.setFieldName(propertyDescriptor.getName());
+			member.setSqlFieldName(propertyDescriptor.getName());
 			member.setIsSave(true);
 			member.setLength(36);
 			member.setPrimaryKey(true);
@@ -216,7 +218,7 @@ public class PersistenceService extends FreePersistenceParser
 		member.setAllowNull(true);
 		member.setDatabaseType(Convert.toSqlType(propertyDescriptor
 				.getPropertyType()));
-		member.setFieldName(propertyDescriptor.getName());
+		member.setSqlFieldName(propertyDescriptor.getName());
 		member.setIsSave(true);
 		member.setLength(200);
 		member.setPrimaryKey(false);

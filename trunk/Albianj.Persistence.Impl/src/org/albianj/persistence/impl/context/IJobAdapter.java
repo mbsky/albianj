@@ -1,7 +1,6 @@
 package org.albianj.persistence.impl.context;
 
-public enum RelationalOperator
+public interface IJobAdapter
 {
-	And,
-    OR,
+
 }

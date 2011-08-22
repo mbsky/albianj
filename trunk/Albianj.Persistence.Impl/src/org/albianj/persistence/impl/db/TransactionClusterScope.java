@@ -1,4 +1,4 @@
-package org.albianj.persistence.impl.context;
+package org.albianj.persistence.impl.db;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.management.RuntimeErrorException;
-import javax.sql.DataSource;
-
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
-import org.albianj.persistence.impl.cached.DataSourceCached;
+import org.albianj.persistence.impl.context.ICompensateCallback;
+import org.albianj.persistence.impl.context.IJob;
+import org.albianj.persistence.impl.context.ITask;
+import org.albianj.persistence.impl.context.JobLifeTime;
 import org.albianj.persistence.impl.storage.StorageService;
 import org.albianj.persistence.object.IStorageAttribute;
 import org.albianj.verify.Validate;
@@ -50,7 +50,7 @@ public class TransactionClusterScope implements ITransactionClusterScope
 					sbMsg.append("Execute job is error.Job lifetime is:")
 					.append(job.getJobLifeTime()).append(",exception msg:")
 					.append(e.getMessage()).append(",Current task:")
-					.append(job.getCurrentTask().getStorage().getName());
+					.append(job.getCurrentStorage());
 					job.getNotifyCallback().notice(sbMsg.toString());
 				}
 				catch(Exception exc)
@@ -107,7 +107,7 @@ public class TransactionClusterScope implements ITransactionClusterScope
 					}
 				}
 			}
-			job.setCurrentTask(null);
+			job.setCurrentStorage(null);
 		}
 		
 		return isSuccess;		
@@ -116,22 +116,22 @@ public class TransactionClusterScope implements ITransactionClusterScope
 	protected void preLoadExecute(IJob job) throws SQLException
 	{
 		job.setJobLifeTime(JobLifeTime.Opening);
-		List<ITask> tasks =  job.getTasks();
+		Map<String,ITask> tasks =  job.getTasks();
 		if(Validate.isNullOrEmpty(tasks))
 		{
 			throw new RuntimeException("The task for job is empty or null.");
 		}
 		
-		for(ITask task : tasks)
+		for(Map.Entry<String, ITask> task : tasks.entrySet())
 		{
-			job.setCurrentTask(task);
-			IStorageAttribute storage = task.getStorage();
+			job.setCurrentStorage(task.getKey());
+			IStorageAttribute storage = task.getValue().getStorage();
 			if(null == storage)
 			{
 				throw new RuntimeException("The storage for task is null.");
 			}
-			task.setConnection(StorageService.getConnection(storage.getName()));
-			List<ICommand> cmds = task.getCommands();
+			task.getValue().setConnection(StorageService.getConnection(storage.getName()));
+			List<ICommand> cmds = task.getValue().getCommands();
 			if(Validate.isNullOrEmpty(cmds))
 			{
 				throw new RuntimeException("The commands for task is empty or null.");
@@ -139,7 +139,7 @@ public class TransactionClusterScope implements ITransactionClusterScope
 			List<Statement> statements = new Vector<Statement>();
 			for(ICommand cmd : cmds)
 			{
-				PreparedStatement prepareStatement = task.getConnection().prepareStatement(cmd.getCommandText());
+				PreparedStatement prepareStatement = task.getValue().getConnection().prepareStatement(cmd.getCommandText());
 				Map<Integer,ISqlParameter>  map = cmd.getParameters();
 				if(Validate.isNullOrEmpty(map))
 				{
@@ -162,22 +162,22 @@ public class TransactionClusterScope implements ITransactionClusterScope
 				}
 				statements.add(prepareStatement);
 			}
-			task.setStatements(statements);
+			task.getValue().setStatements(statements);
 		}
 	}
 	
 	protected void executeHandler(IJob job) throws SQLException
 	{
 		job.setJobLifeTime(JobLifeTime.Running);
-		List<ITask> tasks = job.getTasks();
+		Map<String,ITask> tasks = job.getTasks();
 		if(Validate.isNullOrEmpty(tasks))
 		{
 			throw new RuntimeException("The task is null or empty.");
 		}
-		for(ITask task : tasks)
+		for(Map.Entry<String, ITask> task : tasks.entrySet())
 		{
-			job.setCurrentTask(task);
-			List<Statement> statements = task.getStatements();
+			job.setCurrentStorage(task.getKey());
+			List<Statement> statements = task.getValue().getStatements();
 			for(Statement statement : statements)
 			{
 				if(!((PreparedStatement)statement).execute())
@@ -191,49 +191,47 @@ public class TransactionClusterScope implements ITransactionClusterScope
 	protected void executed(IJob job) throws SQLException
 	{
 		job.setJobLifeTime(JobLifeTime.Commiting);
-		List<ITask> tasks = job.getTasks();
+		Map<String,ITask> tasks = job.getTasks();
 		if(Validate.isNullOrEmpty(tasks))
 		{
 			throw new RuntimeException("The task is null or empty.");
 		}
-		for(ITask task : tasks)
+		for(Map.Entry<String, ITask> task : tasks.entrySet())
 		{
-			job.setCurrentTask(task);
-			task.getConnection().commit();
+			job.setCurrentStorage(task.getKey());
+			task.getValue().getConnection().commit();
 		}
 	}
 	
 	protected void exceptionHandler(IJob job) throws SQLException
 	{
-		List<ITask> tasks = job.getTasks();
+		Map<String,ITask> tasks = job.getTasks();
 		if(Validate.isNullOrEmpty(tasks))
 		{
 			throw new RuntimeException("The task is null or empty.");
 		}
-		for(ITask task : tasks)
+		for(Map.Entry<String, ITask> task : tasks.entrySet())
 		{
-//			job.setCurrentTask(task);
-			task.getConnection().rollback();
+			task.getValue().getConnection().rollback();
 		}
 	}
 	
 	protected void unLoadExecute(IJob job) throws SQLException
 	{
-		List<ITask> tasks = job.getTasks();
+		Map<String,ITask> tasks = job.getTasks();
 		if(Validate.isNullOrEmpty(tasks))
 		{
 			throw new RuntimeException("The task is null or empty.");
 		}
-		for(ITask task : tasks)
+		for(Map.Entry<String, ITask> task : tasks.entrySet())
 		{
-//			job.setCurrentTask(task);
-			List<Statement> statements = task.getStatements();
+			List<Statement> statements = task.getValue().getStatements();
 			for(Statement statement : statements)
 			{
 				((PreparedStatement)statement).clearParameters();
 				statement.close();
 			}
-			task.getConnection().close();
+			task.getValue().getConnection().close();
 		}
 	}
 	

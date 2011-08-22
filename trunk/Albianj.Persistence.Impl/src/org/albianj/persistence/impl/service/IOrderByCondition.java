@@ -1,6 +1,6 @@
 package org.albianj.persistence.impl.service;
 
-import org.albianj.persistence.impl.context.SortStyle;
+import org.albianj.persistence.impl.db.SortStyle;
 
 public interface IOrderByCondition
 {

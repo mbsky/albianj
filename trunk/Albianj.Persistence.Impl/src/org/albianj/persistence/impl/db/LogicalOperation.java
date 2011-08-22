@@ -1,4 +1,4 @@
-package org.albianj.persistence.impl.context;
+package org.albianj.persistence.impl.db;
 
 public enum LogicalOperation
 {

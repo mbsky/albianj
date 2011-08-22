@@ -1,7 +1,7 @@
 package org.albianj.persistence.impl.service;
 
-import org.albianj.persistence.impl.context.LogicalOperation;
-import org.albianj.persistence.impl.context.RelationalOperator;
+import org.albianj.persistence.impl.db.LogicalOperation;
+import org.albianj.persistence.impl.db.RelationalOperator;
 
 public interface IFilterCondition
 {

@@ -1,4 +1,4 @@
-package org.albianj.persistence.impl.context;
+package org.albianj.persistence.impl.db;
 
 public interface ISqlParameter
 {
@@ -8,8 +8,6 @@ public interface ISqlParameter
 	public void setName(String name);
 	public Object getValue();
 	public void setValue(Object value);
-//	public Class getValueClass();
-//	public void setValueClass(Class<?> valueClass);
-//	public int getLength();
-//	public void setLength(int length);
+	public void setSqlFieldName(String sqlFieldName);
+	public String getSqlFieldName();
 }
