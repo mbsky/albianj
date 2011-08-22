@@ -7,7 +7,7 @@ public class FilterCondition implements IFilterCondition
 {
 	private RelationalOperator relationalOperator = RelationalOperator.And;
 	private String fieldName = null;
-	private Class fieldClass = String.class;
+	private Class<?> fieldClass = String.class;
 	private LogicalOperation logicalOperation = LogicalOperation.Equal;
 	
 	public RelationalOperator getRelationalOperator()
@@ -26,11 +26,11 @@ public class FilterCondition implements IFilterCondition
 	{
 		this.fieldName = fieldName;
 	}
-	public Class getFieldClass()
+	public Class<?> getFieldClass()
 	{
 		return fieldClass;
 	}
-	public void setFieldClass(Class fieldClass)
+	public void setFieldClass(Class<?> fieldClass)
 	{
 		this.fieldClass = fieldClass;
 	}

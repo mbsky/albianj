@@ -54,7 +54,7 @@ public class RoutingService extends FreeRoutingParser
 		{
 			try
 			{
-				Class cls = Class.forName(hashMapping);
+				Class<?> cls = Class.forName(hashMapping);
 				routing.setHashMapping((IAlbianObjectHashMapping) cls.newInstance());
 
 			}
@@ -104,14 +104,14 @@ public class RoutingService extends FreeRoutingParser
 			}
 		}
 		
-		List writers = elt.selectNodes("WriterRoutings/WriterRouting");
+		List<?> writers = elt.selectNodes("WriterRoutings/WriterRouting");
 		if(!Validate.isNullOrEmpty(writers))
 		{
 			Map<String,IRoutingAttribute> map = parserRouting(writers);
 			if(null != map) routing.setWriterRoutings(map);
 		}
 		
-		List readers = elt.selectNodes("ReaderRoutings/ReaderRouting");
+		List<?> readers = elt.selectNodes("ReaderRoutings/ReaderRouting");
 		if(!Validate.isNullOrEmpty(readers))
 		{
 			Map<String,IRoutingAttribute> map = parserRouting(readers);
@@ -120,7 +120,7 @@ public class RoutingService extends FreeRoutingParser
 		return routing;
 	}
 	
-	private static Map<String,IRoutingAttribute> parserRouting(List nodes)
+	private static Map<String,IRoutingAttribute> parserRouting(@SuppressWarnings("rawtypes") List nodes)
 	{
 		Map<String,IRoutingAttribute> map = new HashMap<String,IRoutingAttribute>();
 		for(Object node : nodes)
