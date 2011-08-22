@@ -1,4 +1,4 @@
-package org.albianj.persistence.impl.context;
+package org.albianj.persistence.impl.db;
 
 import java.sql.Types;
 
@@ -7,6 +7,7 @@ public class SqlParameter implements ISqlParameter
 	private int sqlType = Types.NVARCHAR;
 	private String name = null;
 	private Object value = null;
+	private String sqlFieldName = null;
 //	private Class valueClass;
 //	private int length = 200;
 	
@@ -34,7 +35,17 @@ public class SqlParameter implements ISqlParameter
 	{
 		this.value = value;
 	}
-//	public Class getValueClass()
+
+	public void setSqlFieldName(String sqlFieldName)
+	{
+		this.sqlFieldName = sqlFieldName;
+	}
+	public String getSqlFieldName()
+	{
+		return this.sqlFieldName;
+	}
+	
+	//	public Class getValueClass()
 //	{
 //		return valueClass;
 //	}

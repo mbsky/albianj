@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.List;
 
+import org.albianj.persistence.impl.db.ICommand;
 import org.albianj.persistence.object.IStorageAttribute;
 
 public interface ITask
