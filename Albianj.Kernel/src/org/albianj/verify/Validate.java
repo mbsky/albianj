@@ -15,6 +15,10 @@ public class Validate
 	{
 		return null == map || map.isEmpty();
 	}
+	public static boolean isNull(Map map)
+	{
+		return null == map;
+	}
 	public static boolean isNullOrEmpty(String value)
 	{
 		return null == value || value.isEmpty();
