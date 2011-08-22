@@ -7,7 +7,7 @@ import org.albianj.persistence.object.IMemberAttribute;
 public class MemberAttribute implements IMemberAttribute
 {
 	private String name = null;
-	private String fieldName = null;
+	private String sqlFieldName = null;
 	private boolean allowNull = true;
 	private int length = 200;
 	private boolean primaryKey = false;
@@ -29,17 +29,17 @@ public class MemberAttribute implements IMemberAttribute
 	}
 
 	@Override
-	public String getFieldName()
+	public String getSqlFieldName()
 	{
 		// TODO Auto-generated method stub
-		return this.fieldName;
+		return this.sqlFieldName;
 	}
 
 	@Override
-	public void setFieldName(String fieldName)
+	public void setSqlFieldName(String sqlFieldName)
 	{
 		// TODO Auto-generated method stub
-		this.fieldName = fieldName;
+		this.sqlFieldName = sqlFieldName;
 	}
 
 	@Override
