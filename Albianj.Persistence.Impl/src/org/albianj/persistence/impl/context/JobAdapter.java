@@ -13,7 +13,6 @@ import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.persistence.impl.cached.AlbianObjectsCached;
 import org.albianj.persistence.impl.cached.BeanPropertyDescriptorCached;
 import org.albianj.persistence.impl.cached.RoutingCached;
-import org.albianj.persistence.impl.db.CreateCommandAdapter;
 import org.albianj.persistence.impl.db.ICommand;
 import org.albianj.persistence.impl.db.IUpdateCommand;
 import org.albianj.persistence.object.IAlbianObject;
@@ -24,35 +23,16 @@ import org.albianj.persistence.object.IRoutingAttribute;
 import org.albianj.persistence.object.IRoutingsAttribute;
 import org.albianj.verify.Validate;
 
-public class JobAdapter
+public class JobAdapter extends FreeJobAdapter
 {
-	public IJob buildInsert(IAlbianObject object)
-	{
-		IJob job = new Job();
-		IUpdateCommand cca = new CreateCommandAdapter();
-		buildSingleObjectJob(object,job,cca);
-		return job;
-	}
-	
-	public IJob buildInsert(IAlbianObject[] objects)
-	{
-		IJob job = new Job();
-		IUpdateCommand cca = new CreateCommandAdapter();
-		for(IAlbianObject object : objects)
-		{
-			buildSingleObjectJob(object,job,cca);
-		}
-		return job;
-	}
-	
-	private void buildSingleObjectJob(IAlbianObject object,IJob job,IUpdateCommand update)
+	protected void buildJob(IAlbianObject object,IJob job,IUpdateCommand update)
 	{
 		String className = object.getClass().getName();
 		IRoutingsAttribute routings = (IRoutingsAttribute) RoutingCached.get(className);
 		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached.get(className);
 		PropertyDescriptor[] propertyDesc = (PropertyDescriptor[]) BeanPropertyDescriptorCached.get(className);
 		Map<String, Object> mapValue = buildSqlParameter(object, albianObject,propertyDesc);
-		
+				
 		List<IRoutingAttribute> useRoutings = parserRoutings(object, routings,albianObject);
 		
 		for (IRoutingAttribute routing : useRoutings)
@@ -86,9 +66,8 @@ public class JobAdapter
 			}
 		}
 	}
-	
 
-	private Map<String, Object> buildSqlParameter(IAlbianObject object,
+	protected Map<String, Object> buildSqlParameter(IAlbianObject object,
 			IAlbianObjectAttribute albianObject,
 			PropertyDescriptor[] propertyDesc)
 	{
@@ -118,35 +97,19 @@ public class JobAdapter
 				}
 				
 			}
-			catch (IllegalArgumentException e)
+			catch (Exception e)
 			{
 				if(null != logger)
 				{
 					logger.error(e,"invoke bean read method is error.");
 				}
-				return null;
-			}
-			catch (IllegalAccessException e)
-			{
-				if(null != logger)
-				{
-					logger.error(e,"invoke bean read method is error.");
-				}
-				return null;
-			}
-			catch (InvocationTargetException e)
-			{
-				if(null != logger)
-				{
-					logger.error(e,"invoke bean read method is error.");
-				}
-				return null;
+				throw new RuntimeException("invoke bean read method is error");
 			}
 		}
 		return mapValue;
 	}
 	
-	private List<IRoutingAttribute> parserRoutings(IAlbianObject object,
+	protected List<IRoutingAttribute> parserRoutings(IAlbianObject object,
 			IRoutingsAttribute routings, IAlbianObjectAttribute albianObject)
 	{
 		List<IRoutingAttribute> useRoutings = new Vector<IRoutingAttribute>();
