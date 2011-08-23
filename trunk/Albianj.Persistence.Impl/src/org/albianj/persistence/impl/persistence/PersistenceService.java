@@ -9,6 +9,7 @@ import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.persistence.impl.cached.AlbianObjectsCached;
 import org.albianj.persistence.impl.cached.BeanPropertyDescriptorCached;
+import org.albianj.persistence.impl.routing.RoutingService;
 import org.albianj.persistence.impl.storage.StorageService;
 import org.albianj.persistence.impl.toolkit.Convert;
 import org.albianj.persistence.object.IAlbianObjectAttribute;
@@ -29,8 +30,6 @@ public class PersistenceService extends FreePersistenceParser
 
 	private static final String cacheTagName = "Cache";
 	private static final String memberTagName = "Members/Member";
-	public static final String DEFAULT_ROUTING_NAME = "!@#$%Albianj_Default_Routing%$#@!";
-
 	public void loading()
 	{
 		super.init();
@@ -90,7 +89,7 @@ public class PersistenceService extends FreePersistenceParser
 		}
 
 		IRoutingAttribute defaultRouting = new RoutingAttribute();
-		defaultRouting.setName(DEFAULT_ROUTING_NAME);
+		defaultRouting.setName(RoutingService.DEFAULT_ROUTING_NAME);
 		defaultRouting.setOwner("dbo");
 		defaultRouting.setStorageName(StorageService.DEFAULT_STORAGE_NAME);
 		defaultRouting.setTableName(ReflectionHelper.getClassSimpleName(type));

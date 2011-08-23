@@ -20,6 +20,8 @@ import org.dom4j.Node;
 public class RoutingService extends FreeRoutingParser
 {
 	
+	public static final String DEFAULT_ROUTING_NAME = "!@#$%Albianj_Default_Routing%$#@!";
+
 	public void loading()
 	{
 		super.init();
