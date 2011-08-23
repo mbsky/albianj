@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <AlbianObjects>
+
+<AlbianObject Type="albianj.objects.LogInfo" HashMapping="albianj.objects.LogHashMapping">
+</AlbianObject>
+
+<AlbianObject Type="albianj.objects.User" HashMapping="albianj.objects.UserHashMapping">
+</AlbianObject>
+
+<!-- 
 	<AlbianObject Type="AppTest.Model.Imp.BizOffer" HashMapping="">
 		<WriterRoutings Hash="true">
 			<WriteRouting Name="IdRouting" StorageName="2thStorage"
@@ -10,4 +18,6 @@
 				TableName="BizOfferByCreateTime" Enable="true" Owner="dbo"></ReaderRouting>
 		</ReaderRoutings>
 	</AlbianObject>
+	
+	 -->
 </AlbianObjects>

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <AlbianObjects>
-  <AlbianObject Type="albianj.main.Order">
+  <AlbianObject Type="albianj.objects.LogInfo">
     <Cache Enable="true" LifeTime="300"></Cache>
     <Members>
-      <Member Name="id" FieldName="OrderId" AllowNull="false" Length="32" PrimaryKey="true" DbType="string" IsSave="true"/>
+      <Member Name="id" FieldName="LogId" AllowNull="false" Length="32" PrimaryKey="true" DbType="char" IsSave="true"/>
+      <Member Name="creator" FieldName="Creator" Length="60"/>
     </Members>
+  </AlbianObject>
+  <AlbianObject Type="albianj.objects.User">
+    <Cache Enable="true" LifeTime="300"></Cache>
   </AlbianObject>
 </AlbianObjects>

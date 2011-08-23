@@ -186,7 +186,6 @@ public class PoolingDriverTest
 			{
 			}
 			printDataSourceStats(dataSource);
-
 		}
 	}
 
