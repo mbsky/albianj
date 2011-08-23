@@ -1,4 +1,4 @@
-package albianj.main;
+package albianj.objects;
 
 import org.albianj.persistence.object.IAlbianObject;
 import org.albianj.persistence.object.impl.FreeAlbianObject;
