@@ -38,9 +38,12 @@ public final class AlbianBootService
 		LinkedHashMap<String,IAlbianServiceAttribute> map = (LinkedHashMap<String, IAlbianServiceAttribute>) ServiceAttributeCached.get(FreeServiceParser.ALBIANJSERVICEKEY);
 		LinkedHashMap<String,IAlbianServiceAttribute> failMap = new LinkedHashMap<String,IAlbianServiceAttribute>();
 		int lastFailSize = 0;
+		int currentFailSize = 0;
 		
 		while(true)
 		{
+			lastFailSize = currentFailSize;
+			currentFailSize = 0;
 			for(Map.Entry<String,IAlbianServiceAttribute> entry : map.entrySet())
 			{
 				try
@@ -55,11 +58,11 @@ public final class AlbianBootService
 				}
 				catch(Exception exc)
 				{
-					lastFailSize++;
+					currentFailSize++;
 					failMap.put(entry.getKey(), entry.getValue());
 				}
 			}
-			if(0 == lastFailSize) 
+			if(0 == currentFailSize) 
 			{
 				state = AlbianState.Running;
 				IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
@@ -69,7 +72,8 @@ public final class AlbianBootService
 				}
 				break;//all success
 			}
-			if(lastFailSize == failMap.size())//create instance but all fail in this times,so throw exception
+			
+			if(lastFailSize == currentFailSize)//create instance but all fail in this times,so throw exception
 			{
 				state = AlbianState.Unloading;
 				String msg = "the service maybe cross reference.";
@@ -87,9 +91,8 @@ public final class AlbianBootService
 			{
 				map.clear();
 				map.putAll(failMap);
-				failMap.clear();
-				lastFailSize = 0;	
-			}			
+				failMap.clear();	
+			}		
 		}
 	}
 	
