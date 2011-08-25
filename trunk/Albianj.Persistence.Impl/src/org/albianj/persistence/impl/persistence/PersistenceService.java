@@ -152,27 +152,27 @@ public class PersistenceService extends FreePersistenceParser
 		String primaryKey = XmlParser.getAttributeValue(elt, "PrimaryKey");
 		String dbType = XmlParser.getAttributeValue(elt, "DbType");
 		String isSave = XmlParser.getAttributeValue(elt, "IsSave");
-		if (Validate.isNullOrEmpty(fieldName))
+		if (!Validate.isNullOrEmpty(fieldName))
 		{
 			member.setSqlFieldName(fieldName);
 		}
-		if (Validate.isNullOrEmpty(allowNull))
+		if (!Validate.isNullOrEmpty(allowNull))
 		{
 			member.setAllowNull(new Boolean(allowNull));
 		}
-		if (Validate.isNullOrEmpty(length))
+		if (!Validate.isNullOrEmpty(length))
 		{
 			member.setLength(new Integer(length));
 		}
-		if (Validate.isNullOrEmpty(primaryKey))
+		if (!Validate.isNullOrEmpty(primaryKey))
 		{
 			member.setPrimaryKey(new Boolean(primaryKey));
 		}
-		if (Validate.isNullOrEmpty(dbType))
+		if (!Validate.isNullOrEmpty(dbType))
 		{
 			member.setDatabaseType(Convert.toSqlType(dbType));
 		}
-		if (Validate.isNullOrEmpty(isSave))
+		if (!Validate.isNullOrEmpty(isSave))
 		{
 			member.setIsSave(new Boolean(isSave));
 		}
@@ -204,7 +204,7 @@ public class PersistenceService extends FreePersistenceParser
 					.getPropertyType()));
 			member.setSqlFieldName(propertyDescriptor.getName());
 			member.setIsSave(true);
-			member.setLength(36);
+			member.setLength(32);
 			member.setPrimaryKey(true);
 			member.setName(propertyDescriptor.getName());
 			return member;
@@ -213,6 +213,7 @@ public class PersistenceService extends FreePersistenceParser
 		{
 			member.setIsSave(false);
 			member.setName(propertyDescriptor.getName());
+			return member;
 		}
 		member.setAllowNull(true);
 		member.setDatabaseType(Convert.toSqlType(propertyDescriptor

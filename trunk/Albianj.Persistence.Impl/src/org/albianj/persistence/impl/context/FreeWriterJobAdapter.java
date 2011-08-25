@@ -13,68 +13,68 @@ import org.albianj.persistence.object.IAlbianObjectAttribute;
 import org.albianj.persistence.object.IRoutingAttribute;
 import org.albianj.persistence.object.IRoutingsAttribute;
 
-public abstract class FreeJobAdapter implements IJobAdapter
+public abstract class FreeWriterJobAdapter implements IWriterJobAdapter
 {
-	public IJob buildCreation(IAlbianObject object)
+	public IWriterJob buildCreation(IAlbianObject object)
 	{
-		IJob job = new Job();
+		IWriterJob job = new WriterJob();
 		IUpdateCommand cca = new CreateCommandAdapter();
-		buildJob(object,job,cca);
+		buildWriterJob(object,job,cca);
 		return job;
 	}
 	
-	public IJob buildCreation(List<IAlbianObject> objects)
+	public IWriterJob buildCreation(List<IAlbianObject> objects)
 	{
-		IJob job = new Job();
+		IWriterJob job = new WriterJob();
 		IUpdateCommand cca = new CreateCommandAdapter();
 		for(IAlbianObject object : objects)
 		{
-			buildJob(object,job,cca);
+			buildWriterJob(object,job,cca);
 		}
 		return job;
 	}
 	
-	public IJob buildModification(IAlbianObject object)
+	public IWriterJob buildModification(IAlbianObject object)
 	{
-		IJob job = new Job();
+		IWriterJob job = new WriterJob();
 		IUpdateCommand mca = new ModifyCommandAdapter();
-		buildJob(object,job,mca);
+		buildWriterJob(object,job,mca);
 		return job;
 	}
 	
-	public IJob buildModification(List<IAlbianObject> objects)
+	public IWriterJob buildModification(List<IAlbianObject> objects)
 	{
-		IJob job = new Job();
+		IWriterJob job = new WriterJob();
 		IUpdateCommand mca = new ModifyCommandAdapter();
 		for(IAlbianObject object : objects)
 		{
-			buildJob(object,job,mca);
+			buildWriterJob(object,job,mca);
 		}
 		return job;
 	}
 	
-	public IJob buildRemoved(IAlbianObject object)
+	public IWriterJob buildRemoved(IAlbianObject object)
 	{
-		IJob job = new Job();
+		IWriterJob job = new WriterJob();
 		IUpdateCommand rca = new RemoveCommandAdapter();
-		buildJob(object,job,rca);
+		buildWriterJob(object,job,rca);
 		return job;
 	}
 	
-	public IJob buildRemoved(List<IAlbianObject> objects)
+	public IWriterJob buildRemoved(List<IAlbianObject> objects)
 	{
-		IJob job = new Job();
+		IWriterJob job = new WriterJob();
 		IUpdateCommand rca = new RemoveCommandAdapter();
 		for(IAlbianObject object : objects)
 		{
-			buildJob(object,job,rca);
+			buildWriterJob(object,job,rca);
 		}
 		return job;
 	}
 	
-	public IJob buildSaving(IAlbianObject object)
+	public IWriterJob buildSaving(IAlbianObject object)
 	{
-		IJob job = new Job();
+		IWriterJob job = new WriterJob();
 		IUpdateCommand iuc;
 		if(object.getIsAlbianNew())
 		{
@@ -85,31 +85,31 @@ public abstract class FreeJobAdapter implements IJobAdapter
 			iuc= new ModifyCommandAdapter();
 		}
 		 
-		buildJob(object,job,iuc);
+		buildWriterJob(object,job,iuc);
 		return job;
 	}
 	
-	public IJob buildSaving(List<IAlbianObject> objects)
+	public IWriterJob buildSaving(List<IAlbianObject> objects)
 	{
-		IJob job = new Job();
+		IWriterJob job = new WriterJob();
 		IUpdateCommand cca = new CreateCommandAdapter();
 		IUpdateCommand mca = new ModifyCommandAdapter();
 		for(IAlbianObject object : objects)
 		{
 			if(object.getIsAlbianNew())
 			{
-				buildJob(object,job,cca);
+				buildWriterJob(object,job,cca);
 			}
 			else
 			{
-				buildJob(object,job,mca);
+				buildWriterJob(object,job,mca);
 			}
 		}
 		return job;
 	}
 	
 	
-	protected abstract void buildJob(IAlbianObject object,IJob job,IUpdateCommand update);
+	protected abstract void buildWriterJob(IAlbianObject object,IWriterJob writerJob,IUpdateCommand update);
 
 	protected abstract Map<String, Object> buildSqlParameter(IAlbianObject object,
 			IAlbianObjectAttribute albianObject,

@@ -7,7 +7,7 @@ import java.util.List;
 import org.albianj.persistence.impl.db.ICommand;
 import org.albianj.persistence.object.IStorageAttribute;
 
-public class Task implements ITask
+public class WriterTask implements IWriterTask
 {
 	private IStorageAttribute storage = null;
 	private List<ICommand> commands = null;

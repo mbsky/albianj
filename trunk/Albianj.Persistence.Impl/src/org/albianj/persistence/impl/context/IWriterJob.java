@@ -2,12 +2,12 @@ package org.albianj.persistence.impl.context;
 
 import java.util.Map;
 
-public interface IJob
+public interface IWriterJob
 {
-	public Map<String,ITask> getTasks();
-	public void setTasks(Map<String,ITask> tasks);
-	public JobLifeTime getJobLifeTime();
-	public void setJobLifeTime(JobLifeTime jobLifeTime);
+	public Map<String,IWriterTask> getWriterTasks();
+	public void setWriterTasks(Map<String,IWriterTask> writerTasks);
+	public WriterJobLifeTime getWriterJobLifeTime();
+	public void setWriterJobLifeTime(WriterJobLifeTime writerJobLifeTime);
 	public String getCurrentStorage();
 	public void setCurrentStorage(String currentStorage);
 	public INotify getNotifyCallback();
