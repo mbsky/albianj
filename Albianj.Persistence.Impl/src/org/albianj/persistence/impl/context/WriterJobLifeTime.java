@@ -1,6 +1,6 @@
 package org.albianj.persistence.impl.context;
 
-public enum JobLifeTime
+public enum WriterJobLifeTime
 {
 	Normal,
     NoStarted,

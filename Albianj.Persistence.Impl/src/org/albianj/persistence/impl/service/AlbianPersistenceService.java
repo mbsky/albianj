@@ -4,10 +4,10 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.albianj.persistence.impl.context.ICompensateCallback;
-import org.albianj.persistence.impl.context.IJob;
-import org.albianj.persistence.impl.context.IJobAdapter;
+import org.albianj.persistence.impl.context.IWriterJob;
+import org.albianj.persistence.impl.context.IWriterJobAdapter;
 import org.albianj.persistence.impl.context.INotify;
-import org.albianj.persistence.impl.context.JobAdapter;
+import org.albianj.persistence.impl.context.WriterJobAdapter;
 import org.albianj.persistence.impl.db.ITransactionClusterScope;
 import org.albianj.persistence.impl.db.TransactionClusterScope;
 import org.albianj.persistence.object.IAlbianObject;
@@ -16,23 +16,23 @@ public class AlbianPersistenceService
 {
 	public static boolean create(IAlbianObject object)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildCreation(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildCreation(object);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean create(IAlbianObject object,INotify notifyCallback)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildCreation(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildCreation(object);
 		job.setNotifyCallback(notifyCallback);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean create(IAlbianObject object,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildCreation(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildCreation(object);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
@@ -40,8 +40,8 @@ public class AlbianPersistenceService
 	}
 	public static boolean create(IAlbianObject object,INotify notifyCallback,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildCreation(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildCreation(object);
 		job.setNotifyCallback(notifyCallback);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
@@ -51,23 +51,23 @@ public class AlbianPersistenceService
 
 	public static boolean create(List<IAlbianObject> objects)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildCreation(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildCreation(objects);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean create(List<IAlbianObject> objects,INotify notifyCallback)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildCreation(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildCreation(objects);
 		job.setNotifyCallback(notifyCallback);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean create(List<IAlbianObject> objects,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildCreation(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildCreation(objects);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
@@ -75,8 +75,8 @@ public class AlbianPersistenceService
 	}
 	public static boolean create(List<IAlbianObject> objects,INotify notifyCallback,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildCreation(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildCreation(objects);
 		job.setNotifyCallback(notifyCallback);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
@@ -87,23 +87,23 @@ public class AlbianPersistenceService
 
 	public static boolean modify(IAlbianObject object)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildModification(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildModification(object);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean modify(IAlbianObject object,INotify notifyCallback)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildModification(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildModification(object);
 		job.setNotifyCallback(notifyCallback);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean modify(IAlbianObject object,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildModification(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildModification(object);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
@@ -111,8 +111,8 @@ public class AlbianPersistenceService
 	}
 	public static boolean modify(IAlbianObject object,INotify notifyCallback,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildModification(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildModification(object);
 		job.setNotifyCallback(notifyCallback);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
@@ -122,23 +122,23 @@ public class AlbianPersistenceService
 
 	public static boolean modify(List<IAlbianObject> objects)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildModification(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildModification(objects);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean modify(List<IAlbianObject> objects,INotify notifyCallback)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildModification(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildModification(objects);
 		job.setNotifyCallback(notifyCallback);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean modify(List<IAlbianObject> objects,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildModification(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildModification(objects);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
@@ -146,8 +146,8 @@ public class AlbianPersistenceService
 	}
 	public static boolean modify(List<IAlbianObject> objects,INotify notifyCallback,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildModification(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildModification(objects);
 		job.setNotifyCallback(notifyCallback);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
@@ -157,23 +157,23 @@ public class AlbianPersistenceService
 	
 	public static boolean remove(IAlbianObject object)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildRemoved(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildRemoved(object);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean remove(IAlbianObject object,INotify notifyCallback)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildRemoved(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildRemoved(object);
 		job.setNotifyCallback(notifyCallback);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean remove(IAlbianObject object,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildRemoved(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildRemoved(object);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
@@ -181,8 +181,8 @@ public class AlbianPersistenceService
 	}
 	public static boolean remove(IAlbianObject object,INotify notifyCallback,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildRemoved(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildRemoved(object);
 		job.setNotifyCallback(notifyCallback);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
@@ -192,23 +192,23 @@ public class AlbianPersistenceService
 	
 	public static boolean remove(List<IAlbianObject> objects)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildRemoved(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildRemoved(objects);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean remove(List<IAlbianObject> objects,INotify notifyCallback)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildRemoved(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildRemoved(objects);
 		job.setNotifyCallback(notifyCallback);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean remove(List<IAlbianObject> objects,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildRemoved(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildRemoved(objects);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
@@ -216,8 +216,8 @@ public class AlbianPersistenceService
 	}
 	public static boolean remove(List<IAlbianObject> objects,INotify notifyCallback,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildRemoved(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildRemoved(objects);
 		job.setNotifyCallback(notifyCallback);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
@@ -227,23 +227,23 @@ public class AlbianPersistenceService
 	
 	public static boolean save(IAlbianObject object)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildSaving(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildSaving(object);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean save(IAlbianObject object,INotify notifyCallback)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildSaving(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildSaving(object);
 		job.setNotifyCallback(notifyCallback);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean save(IAlbianObject object,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildSaving(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildSaving(object);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
@@ -251,8 +251,8 @@ public class AlbianPersistenceService
 	}
 	public static boolean save(IAlbianObject object,INotify notifyCallback,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildSaving(object);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildSaving(object);
 		job.setNotifyCallback(notifyCallback);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
@@ -262,23 +262,23 @@ public class AlbianPersistenceService
 	
 	public static boolean save(List<IAlbianObject> objects)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildSaving(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildSaving(objects);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean save(List<IAlbianObject> objects,INotify notifyCallback)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildSaving(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildSaving(objects);
 		job.setNotifyCallback(notifyCallback);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
 		return tcs.execute(job);
 	}
 	public static boolean save(List<IAlbianObject> objects,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildSaving(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildSaving(objects);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
 		ITransactionClusterScope tcs = new TransactionClusterScope();
@@ -286,8 +286,8 @@ public class AlbianPersistenceService
 	}
 	public static boolean save(List<IAlbianObject> objects,INotify notifyCallback,ICompensateCallback compensateCallback,Object compensateCallbackObject)
 	{
-		IJobAdapter ja = new JobAdapter();
-		IJob job = ja.buildSaving(objects);
+		IWriterJobAdapter ja = new WriterJobAdapter();
+		IWriterJob job = ja.buildSaving(objects);
 		job.setNotifyCallback(notifyCallback);
 		job.setCompensateCallback(compensateCallback);
 		job.setCompensateCallbackObject(compensateCallbackObject);
@@ -466,7 +466,7 @@ public class AlbianPersistenceService
 	//    }
 	}
 	
-	protected static  <T extends IAlbianObject> List<T> doFindObjects(Class<T> cls,String routingName, int top, IFilterCondition[] where,
+	protected static  <T extends IAlbianObject> List<T> doFindObjects(Class<T> cls,String routingName, int start,int step, IFilterCondition[] where,
 	                                         IOrderByCondition[] orderby)
 	{
 		return null;
@@ -541,7 +541,7 @@ public class AlbianPersistenceService
 	//    }
 	}
 	
-	protected static  <T extends IAlbianObject> List<T> doLoadObjects(Class<T> cls,String routingName, int top, IFilterCondition[] where,
+	protected static  <T extends IAlbianObject> List<T> doLoadObjects(Class<T> cls,String routingName, int start,int step, IFilterCondition[] where,
 	                                         IOrderByCondition[] orderby)
 	{
 		return null;

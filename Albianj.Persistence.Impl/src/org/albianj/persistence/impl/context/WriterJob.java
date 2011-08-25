@@ -3,41 +3,41 @@ package org.albianj.persistence.impl.context;
 import java.util.Map;
 
 
-public class Job implements IJob
+public class WriterJob implements IWriterJob
 {
-	private Map<String,ITask> tasks = null;
-	private JobLifeTime jobLifeTime = JobLifeTime.Normal;
+	private Map<String,IWriterTask> writerTasks = null;
+	private WriterJobLifeTime writerJobLifeTime = WriterJobLifeTime.Normal;
 	private ICompensateCallback compensateCallback = null;
 	private Object compensateCallbackObject = null;
 	private INotify notifyCallback = null;
 	private String currentStorage = null;
 	
 	@Override
-	public Map<String,ITask> getTasks()
+	public Map<String,IWriterTask> getWriterTasks()
 	{
 		// TODO Auto-generated method stub
-		return this.tasks;
+		return this.writerTasks;
 	}
 
 	@Override
-	public void setTasks(Map<String,ITask> tasks)
+	public void setWriterTasks(Map<String,IWriterTask> writerTasks)
 	{
 		// TODO Auto-generated method stub
-		this.tasks = tasks;
+		this.writerTasks = writerTasks;
 	}
 
 	@Override
-	public JobLifeTime getJobLifeTime()
+	public WriterJobLifeTime getWriterJobLifeTime()
 	{
 		// TODO Auto-generated method stub
-		return this.jobLifeTime;
+		return this.writerJobLifeTime;
 	}
 
 	@Override
-	public void setJobLifeTime(JobLifeTime jobLifeTime)
+	public void setWriterJobLifeTime(WriterJobLifeTime writerJobLifeTime)
 	{
 		// TODO Auto-generated method stub
-		this.jobLifeTime = jobLifeTime;
+		this.writerJobLifeTime = writerJobLifeTime;
 	}
 
 	@Override

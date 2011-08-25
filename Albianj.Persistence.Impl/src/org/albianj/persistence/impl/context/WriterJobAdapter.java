@@ -1,7 +1,6 @@
 package org.albianj.persistence.impl.context;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.persistence.impl.cached.AlbianObjectsCached;
 import org.albianj.persistence.impl.cached.BeanPropertyDescriptorCached;
 import org.albianj.persistence.impl.cached.RoutingCached;
+import org.albianj.persistence.impl.cached.StorageAttributeCache;
 import org.albianj.persistence.impl.db.ICommand;
 import org.albianj.persistence.impl.db.IUpdateCommand;
 import org.albianj.persistence.object.IAlbianObject;
@@ -21,11 +21,12 @@ import org.albianj.persistence.object.IAlbianObjectHashMapping;
 import org.albianj.persistence.object.IMemberAttribute;
 import org.albianj.persistence.object.IRoutingAttribute;
 import org.albianj.persistence.object.IRoutingsAttribute;
+import org.albianj.persistence.object.IStorageAttribute;
 import org.albianj.verify.Validate;
 
-public class JobAdapter extends FreeJobAdapter
+public class WriterJobAdapter extends FreeWriterJobAdapter
 {
-	protected void buildJob(IAlbianObject object,IJob job,IUpdateCommand update)
+	protected void buildWriterJob(IAlbianObject object,IWriterJob writerJob,IUpdateCommand update)
 	{
 		String className = object.getClass().getName();
 		IRoutingsAttribute routings = (IRoutingsAttribute) RoutingCached.get(className);
@@ -39,29 +40,33 @@ public class JobAdapter extends FreeJobAdapter
 		{
 			ICommand cmd = update.builder(object, routings, albianObject,	mapValue, routing);
 			
-			if (Validate.isNull(job.getTasks()))
+			if (Validate.isNull(writerJob.getWriterTasks()))
 			{
-				Map<String, ITask> tasks = new LinkedHashMap<String, ITask>();
-				ITask task = new Task();
+				Map<String, IWriterTask> tasks = new LinkedHashMap<String, IWriterTask>();
+				IWriterTask task = new WriterTask();
 				List<ICommand> cmds = new Vector<ICommand>();
 				cmds.add(cmd);
 				task.setCommands(cmds);
+				IStorageAttribute storage =(IStorageAttribute) StorageAttributeCache.get(routing.getStorageName());
+				task.setStorage(storage);
 				tasks.put(routing.getStorageName(), task);
-				job.setTasks(tasks);
+				writerJob.setWriterTasks(tasks);
 			}
 			else
 			{
-				if (job.getTasks().containsKey(routing.getStorageName()))
+				if (writerJob.getWriterTasks().containsKey(routing.getStorageName()))
 				{
-					job.getTasks().get(routing.getStorageName()).getCommands().add(cmd);
+					writerJob.getWriterTasks().get(routing.getStorageName()).getCommands().add(cmd);
 				}
 				else
 				{
-					ITask task = new Task();
+					IWriterTask task = new WriterTask();
 					List<ICommand> cmds = new Vector<ICommand>();
 					cmds.add(cmd);
 					task.setCommands(cmds);
-					job.getTasks().put(routing.getStorageName(), task);
+					IStorageAttribute storage =(IStorageAttribute) StorageAttributeCache.get(routing.getStorageName());
+					task.setStorage(storage);
+					writerJob.getWriterTasks().put(routing.getStorageName(), task);
 				}
 			}
 		}
@@ -78,17 +83,25 @@ public class JobAdapter extends FreeJobAdapter
 			try
 			{
 				String name = p.getName();
-				if("string".equalsIgnoreCase(p.getClass().getSimpleName()))
+				if("string".equalsIgnoreCase(p.getPropertyType().getSimpleName()))
 				{
-					String value = p.getReadMethod().invoke(object).toString();
-					IMemberAttribute member = albianObject.getMembers().get(name);
-					if(member.getLength() < value.length())//sub the property value for database length
+					Object oValue = p.getReadMethod().invoke(object);
+					if(null == oValue)
 					{
-						mapValue.put(p.getName(),value.substring(0, member.getLength()));
+						mapValue.put(name,null);
 					}
 					else
 					{
-						mapValue.put(name,value);
+						String value = oValue.toString();
+						IMemberAttribute member = albianObject.getMembers().get(name);
+						if(member.getLength() < value.length())//sub the property value for database length
+						{
+							mapValue.put(p.getName(),value.substring(0, member.getLength()));
+						}
+						else
+						{
+							mapValue.put(name,value);
+						}
 					}
 				}
 				else
