@@ -1,5 +1,6 @@
 package org.albianj.persistence.impl.db;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -32,9 +33,8 @@ public class CreateCommandAdapter implements IUpdateCommand
 			}
 		}
 
-		int index = 1;
 		Map<String, IMemberAttribute> mapMemberAttributes = albianObject.getMembers();
-		Map<Integer, ISqlParameter> sqlParas = new LinkedHashMap<Integer, ISqlParameter>();
+		Map<String, ISqlParameter> sqlParas = new HashMap<String, ISqlParameter>();
 		for (Map.Entry<String, IMemberAttribute> entry : mapMemberAttributes.entrySet())
 		{
 			IMemberAttribute member = entry.getValue();
@@ -44,10 +44,9 @@ public class CreateCommandAdapter implements IUpdateCommand
 			para.setSqlFieldName(member.getSqlFieldName());
 			para.setSqlType(member.getDatabaseType());
 			para.setValue(mapValue.get(member.getName()));
-			sqlParas.put(index, para);
+			sqlParas.put(String.format("#%1$s#",member.getSqlFieldName()) , para);
 			cols.append(member.getSqlFieldName()).append(",");
-			paras.append("?,");
-			index++;
+			paras.append("#").append(member.getSqlFieldName()).append("# ,");
 		}
 		if (0 < cols.length())
 		{
@@ -62,6 +61,7 @@ public class CreateCommandAdapter implements IUpdateCommand
 		cmd.setCommandText(sqlText.toString());
 		cmd.setCommandType(CommandType.Text);
 		cmd.setParameters(sqlParas);
+		NameSqlParameter.parseSql(cmd);
 		return cmd;
 	}
 

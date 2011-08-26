@@ -140,7 +140,7 @@ public class TransactionClusterScope implements ITransactionClusterScope
 			for(ICommand cmd : cmds)
 			{
 				PreparedStatement prepareStatement = task.getValue().getConnection().prepareStatement(cmd.getCommandText());
-				Map<Integer,ISqlParameter>  map = cmd.getParameters();
+				Map<Integer,String>  map = cmd.getParameterMapper();
 				if(Validate.isNullOrEmpty(map))
 				{
 					continue;
@@ -149,7 +149,8 @@ public class TransactionClusterScope implements ITransactionClusterScope
 				{
 					for(int i = 1; i<= map.size(); i++)
 					{
-						ISqlParameter para =(ISqlParameter) map.get(i);
+						String paraName = map.get(i);
+						ISqlParameter para = cmd.getParameters().get(paraName);
 						if(null == para.getValue())
 						{
 							prepareStatement.setNull(i, para.getSqlType());

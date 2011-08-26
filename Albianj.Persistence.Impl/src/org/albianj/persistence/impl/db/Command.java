@@ -8,9 +8,9 @@ public class Command implements ICommand
 {
 	private String commandText = null;
 	private CommandType commandType = CommandType.Text;
-	private Map<Integer,ISqlParameter> paramsters = null;
+	private Map<String,ISqlParameter> paramsters = null;
+	private Map<Integer,String> parameterMapper = null; 
 	@Override
-
 	public String getCommandText()
 	{
 		// TODO Auto-generated method stub
@@ -38,15 +38,24 @@ public class Command implements ICommand
 		this.commandType = commandType;
 	}
 
+	public Map<Integer,String> getParameterMapper()
+	{
+		return this.parameterMapper;
+	}
+	public void setParameterMapper(Map<Integer,String> parameterMapper)
+	{
+		this.parameterMapper = parameterMapper;
+	}
+	
 	@Override
-	public Map<Integer, ISqlParameter> getParameters()
+	public Map<String, ISqlParameter> getParameters()
 	{
 		// TODO Auto-generated method stub
 		return this.paramsters;
 	}
 
 	@Override
-	public void setParameters(Map<Integer, ISqlParameter> parameters)
+	public void setParameters(Map<String, ISqlParameter> parameters)
 	{
 		// TODO Auto-generated method stub
 		this.paramsters = parameters;

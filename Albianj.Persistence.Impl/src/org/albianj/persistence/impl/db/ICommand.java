@@ -9,6 +9,8 @@ public interface ICommand
 	public void setCommandText(String commandText);
 	public CommandType getCommandType();
 	public void setCommandType(CommandType commandType);
-	public Map<Integer,ISqlParameter> getParameters();
-	public void setParameters(Map<Integer,ISqlParameter> parameters);
+	public Map<Integer,String> getParameterMapper();
+	public void setParameterMapper(Map<Integer,String> parameterMapper);
+	public Map<String,ISqlParameter> getParameters();
+	public void setParameters(Map<String,ISqlParameter> parameters);
 }
