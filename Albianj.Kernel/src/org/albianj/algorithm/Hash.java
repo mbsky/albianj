@@ -17,6 +17,6 @@ public class Hash
 		{
 			llen = llen ^ ((llen << 5) + (llen >> 2) + value.charAt(i - 1));
 		}
-		return llen;
+		return Math.abs(llen);
 	}
 }
