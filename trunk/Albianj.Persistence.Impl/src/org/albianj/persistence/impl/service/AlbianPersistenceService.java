@@ -11,6 +11,8 @@ import org.albianj.persistence.impl.context.WriterJobAdapter;
 import org.albianj.persistence.impl.db.ITransactionClusterScope;
 import org.albianj.persistence.impl.db.TransactionClusterScope;
 import org.albianj.persistence.object.IAlbianObject;
+import org.albianj.persistence.object.IFilterCondition;
+import org.albianj.persistence.object.IOrderByCondition;
 
 public class AlbianPersistenceService
 {
