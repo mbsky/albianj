@@ -1,6 +1,5 @@
 package org.albianj.persistence.object;
 
-import java.util.List;
 import java.util.Map;
 
 public interface IRoutingsAttribute
