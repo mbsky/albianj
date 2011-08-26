@@ -1,7 +1,7 @@
 package org.albianj.persistence.impl.toolkit;
 
-import org.albianj.persistence.impl.db.LogicalOperation;
-import org.albianj.persistence.impl.db.RelationalOperator;
+import org.albianj.persistence.object.LogicalOperation;
+import org.albianj.persistence.object.RelationalOperator;
 
 public class EnumMapping
 {
