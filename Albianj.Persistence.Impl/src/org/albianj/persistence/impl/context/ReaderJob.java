@@ -1,6 +1,7 @@
 package org.albianj.persistence.impl.context;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 import org.albianj.persistence.impl.db.ICommand;
@@ -12,6 +13,7 @@ public class ReaderJob implements IReaderJob
 	private ICommand command = null;
 	private Connection connection = null;
 	private Statement statement = null;
+	private ResultSet result = null;
 	public IStorageAttribute getStorage()
 	{
 		return storage;
@@ -45,4 +47,12 @@ public class ReaderJob implements IReaderJob
 		this.statement = statement;
 	}
 	
+	public ResultSet getResult()
+	{
+		return this.result;
+	}
+	public void setResult(ResultSet result)
+	{
+		this.result = result;
+	}
 }

@@ -9,7 +9,6 @@ import java.util.Vector;
 
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
-import org.albianj.persistence.impl.context.ICompensateCallback;
 import org.albianj.persistence.impl.context.IWriterJob;
 import org.albianj.persistence.impl.context.IWriterTask;
 import org.albianj.persistence.impl.context.WriterJobLifeTime;
@@ -17,103 +16,9 @@ import org.albianj.persistence.impl.storage.StorageService;
 import org.albianj.persistence.object.IStorageAttribute;
 import org.albianj.verify.Validate;
 
-public class TransactionClusterScope implements ITransactionClusterScope
+public class TransactionClusterScope extends FreeTransactionClusterScope implements ITransactionClusterScope
 {
-	@Override
-	public boolean execute(IWriterJob writerJob)
-	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
-		boolean isSuccess = true;
-		try
-		{
-			writerJob.setWriterJobLifeTime(WriterJobLifeTime.NoStarted);
-			this.preLoadExecute(writerJob);
-			writerJob.setWriterJobLifeTime(WriterJobLifeTime.Opened);
-			this.executeHandler(writerJob);
-			writerJob.setWriterJobLifeTime(WriterJobLifeTime.Runned);
-			this.executed(writerJob);
-			writerJob.setWriterJobLifeTime(WriterJobLifeTime.Commited);
-		}
-		catch(Exception e)
-		{
-			isSuccess = false;
-			if(null != logger)
-			{
-				logger.error(e,"Execute the query is error.");
-			}
-			if(null != writerJob.getNotifyCallback())
-			{
-				try
-				{
-					StringBuilder sbMsg = new StringBuilder();
-					sbMsg.append("Execute job is error.Job lifetime is:")
-					.append(writerJob.getWriterJobLifeTime()).append(",exception msg:")
-					.append(e.getMessage()).append(",Current task:")
-					.append(writerJob.getCurrentStorage());
-					writerJob.getNotifyCallback().notice(sbMsg.toString());
-				}
-				catch(Exception exc)
-				{
-					if(null != logger)
-					{
-						logger.error(e,"the job error notice is error.");
-					}	
-				}
-			}
-			
-			try
-			{
-				writerJob.setWriterJobLifeTime(WriterJobLifeTime.Rollbacking);
-				this.exceptionHandler(writerJob);
-				writerJob.setWriterJobLifeTime(WriterJobLifeTime.Rollbacked);
-			}
-			catch(Exception exc)
-			{
-				if(null != logger)
-				{
-					logger.error(exc,"rollback the query is error.");
-				}
-			}
-		}
-		finally
-		{
-			try
-			{
-				ICompensateCallback callback = writerJob.getCompensateCallback();
-				if(null != callback)
-				{
-					callback.Compensate(writerJob.getCompensateCallbackObject());
-				}
-			}
-			catch(Exception e)
-			{
-				if(null != logger)
-				{
-					logger.error(e,"execute the compensate callback is error.");
-				}
-			}
-			finally
-			{
-				try
-				{
-					unLoadExecute(writerJob);
-				}
-				catch(Exception exc)
-				{
-					if(null != logger)
-					{
-						logger.error(exc,"unload the job is error.");
-					}
-				}
-			}
-			writerJob.setCurrentStorage(null);
-		}
-		
-		return isSuccess;		
-	}
-
-	protected void preLoadExecute(IWriterJob writerJob) throws SQLException
+	protected void preExecute(IWriterJob writerJob) throws SQLException
 	{
 		writerJob.setWriterJobLifeTime(WriterJobLifeTime.Opening);
 		Map<String,IWriterTask> tasks =  writerJob.getWriterTasks();
@@ -203,19 +108,35 @@ public class TransactionClusterScope implements ITransactionClusterScope
 	
 	protected void exceptionHandler(IWriterJob writerJob) throws SQLException
 	{
+		boolean isThrow = false;
 		Map<String,IWriterTask> tasks = writerJob.getWriterTasks();
+		IAlbianLoggerService logger = AlbianServiceRouter.getService(
+				IAlbianLoggerService.class, "logger");
 		if(Validate.isNullOrEmpty(tasks))
 		{
 			throw new RuntimeException("The task is null or empty.");
 		}
 		for(Map.Entry<String, IWriterTask> task : tasks.entrySet())
 		{
-			task.getValue().getConnection().rollback();
+			try
+			{
+				task.getValue().getConnection().rollback();
+			}
+			catch(Exception e)
+			{
+				if(null != logger)
+					logger.error(e,"rollback the trancation is error.");
+				isThrow = true;
+			}
 		}
+		if(isThrow) throw new SQLException("rollback the trancation is error");
 	}
 	
 	protected void unLoadExecute(IWriterJob writerJob) throws SQLException
 	{
+		boolean isThrow = false;
+		IAlbianLoggerService logger = AlbianServiceRouter.getService(
+				IAlbianLoggerService.class, "logger");
 		Map<String,IWriterTask> tasks = writerJob.getWriterTasks();
 		if(Validate.isNullOrEmpty(tasks))
 		{
@@ -223,14 +144,33 @@ public class TransactionClusterScope implements ITransactionClusterScope
 		}
 		for(Map.Entry<String, IWriterTask> task : tasks.entrySet())
 		{
-			List<Statement> statements = task.getValue().getStatements();
-			for(Statement statement : statements)
+			try
 			{
-				((PreparedStatement)statement).clearParameters();
-				statement.close();
+				List<Statement> statements = task.getValue().getStatements();
+				for(Statement statement : statements)
+				{
+					try
+					{
+						((PreparedStatement)statement).clearParameters();
+						statement.close();
+					}
+					catch(Exception e)
+					{
+						isThrow = true;
+						if(null != logger)
+							logger.error(e,"clear the statement is error.");
+					}
+				}
+				task.getValue().getConnection().close();
 			}
-			task.getValue().getConnection().close();
+			catch(Exception exc)
+			{
+				isThrow = true;
+				if(null != logger)
+					logger.error(exc,"close the connection is error.");
+			}
 		}
+		if(isThrow) throw new SQLException("there is error in the unload trancation scope.");
 	}
 	  
 	
