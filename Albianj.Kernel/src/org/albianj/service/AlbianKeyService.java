@@ -10,7 +10,7 @@ import org.albianj.text.StringHelper;
 public class AlbianKeyService
 {
 	//length is 32
-	//4-bit kenerl length + 6-bit appName length + 18-bit timestamep + 4-bit serial number
+	//4-bit kenerl length - 7-bit appName length - 14-bit timestamep + 4-bit serial number
 	
 	public synchronized static String generate()
 	{
