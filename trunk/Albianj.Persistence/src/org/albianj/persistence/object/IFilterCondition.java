@@ -11,5 +11,7 @@ public interface IFilterCondition
 	public void setFieldClass(Class<?> cls);
 	public LogicalOperation getLogicalOperation();
 	public void setLogicalOperation(LogicalOperation logicalOperation);
+	public Object getValue();
+	public void setValue(Object value);
 	
 }
