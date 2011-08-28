@@ -1,6 +1,7 @@
 package org.albianj.persistence.impl.context;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 import org.albianj.persistence.impl.db.ICommand;
@@ -16,4 +17,6 @@ public interface IReaderJob
 	public void setConnection(Connection connection);
 	public Statement getStatement();
 	public void setStatement(Statement statement);
+	public ResultSet getResult();
+	public void setResult(ResultSet result);
 }

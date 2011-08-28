@@ -1,14 +1,21 @@
 package org.albianj.persistence.impl.service;
 
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
 import org.albianj.persistence.impl.context.ICompensateCallback;
+import org.albianj.persistence.impl.context.INotify;
+import org.albianj.persistence.impl.context.IReaderJob;
+import org.albianj.persistence.impl.context.IReaderJobAdapter;
 import org.albianj.persistence.impl.context.IWriterJob;
 import org.albianj.persistence.impl.context.IWriterJobAdapter;
-import org.albianj.persistence.impl.context.INotify;
+import org.albianj.persistence.impl.context.ReaderJobAdapter;
 import org.albianj.persistence.impl.context.WriterJobAdapter;
+import org.albianj.persistence.impl.db.CommandType;
+import org.albianj.persistence.impl.db.IQueryScope;
 import org.albianj.persistence.impl.db.ITransactionClusterScope;
+import org.albianj.persistence.impl.db.QueryScope;
 import org.albianj.persistence.impl.db.TransactionClusterScope;
 import org.albianj.persistence.object.IAlbianObject;
 import org.albianj.persistence.object.IFilterCondition;
@@ -429,8 +436,6 @@ public class AlbianPersistenceService
 		return null;
 	}
 	
-	
-	
 	protected static  <T extends IAlbianObject> T doFindObject(Class<T> cls,String routingName, IFilterCondition[] where)
 	{
 		return null;
@@ -543,41 +548,36 @@ public class AlbianPersistenceService
 	//    }
 	}
 	
-	protected static  <T extends IAlbianObject> List<T> doLoadObjects(Class<T> cls,String routingName, int start,int step, IFilterCondition[] where,
-	                                         IOrderByCondition[] orderby)
+	protected static  <T extends IAlbianObject> List<T> doLoadObjects(Class<T> cls,String routingName, int start,int step, List<IFilterCondition> wheres,
+	                                         List<IOrderByCondition> orderbys)
 	{
-		return null;
-	//    try
-	//    {
-	//        ITaskBuilder taskBuilder = new TaskBuilder();
-	//        ITask task = taskBuilder.BuildQueryTask<T>(routingName, top, where, orderby);
-	//        IQueryCluster query = new QueryCluster();
-	//        IList<T> targets = query.QueryObjects<T>(task);
-	//        ResultCache.CachingObjects(routingName, top, where, orderby, targets);
-	//        return targets;
-	//    }
-	//    catch (Exception exc)
-	//    {
-	//        if (null != Logger)
-	//            Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
-	//        throw;
-	//    }
+		IReaderJobAdapter ad = new ReaderJobAdapter();
+		IReaderJob job = ad.buildReaderJob(cls, routingName, start, step, wheres, orderbys);
+		IQueryScope scope = new QueryScope();
+		List<T> list = null;
+		try
+		{
+			list = scope.execute(cls, job);
+		}
+		catch (SQLException e)
+		{
+			throw new RuntimeException(e);
+		}
+		return list;
 	}
-	protected static  <T extends IAlbianObject> List<T> doLoadObjects(Class<T> cls,Statement statement)
+	
+	protected static  <T extends IAlbianObject> List<T> doLoadObjects(Class<T> cls,CommandType cmdType,Statement statement)
 	{
-		return null;
-	//    try
-	//    {
-	//        IQueryCluster query = new QueryCluster();
-	//        IList<T> targets = query.QueryObjects<T>(cmd);
-	//        ResultCache.CachingObjects(cmd, targets);
-	//        return targets;
-	//    }
-	//    catch (Exception exc)
-	//    {
-	//        if (null != Logger)
-	//            Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
-	//        throw;
-	//    }
+		IQueryScope scope = new QueryScope();
+		List<T> list = null;
+		try
+		{
+			list = scope.execute(cls, cmdType,statement);
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+		return list;
 	}
 }

@@ -1,15 +1,14 @@
 package org.albianj.persistence.impl.db;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-
-//import javax.xml.transform.Result;
 
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.IAlbianLoggerService;
@@ -20,18 +19,16 @@ import org.albianj.persistence.object.IAlbianObject;
 import org.albianj.persistence.object.IStorageAttribute;
 import org.albianj.verify.Validate;
 
-public class QueryScope implements IQueryScope
+public class QueryScope extends FreeQueryScope implements IQueryScope
 {
-	public <T extends IAlbianObject> List<T> query(Class<T> cls,IReaderJob job) throws SQLException
+	protected void perExecute(IReaderJob job) throws SQLException
 	{
-		String className = cls.getName();
 		NameSqlParameter.parseSql(job.getCommand());
 		IStorageAttribute storage = job.getStorage();
 		job.setConnection(StorageService.getConnection(storage.getName()));
 		ICommand cmd = job.getCommand();
 		PreparedStatement statement = job.getConnection().prepareStatement(cmd.getCommandText());
 		Map<Integer,String>  map = cmd.getParameterMapper();
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		if(!Validate.isNullOrEmpty(map))
 		{
 			for(int i = 1; i<= map.size(); i++)
@@ -49,19 +46,65 @@ public class QueryScope implements IQueryScope
 			}
 		}
 		job.setStatement(statement);
-		
-		 statement.executeQuery();
-		 ResultSet set = statement.getResultSet();
+		return;
+	}
+	
+	protected void executing(IReaderJob job) throws SQLException
+	{
+		ResultSet result = ((PreparedStatement) job.getStatement()).executeQuery();
+		job.setResult(result);
+	}
+	
+	protected <T extends IAlbianObject> List<T> executed(Class<T> cls,IReaderJob job) throws SQLException
+	{
+		return executed(cls,job.getResult());
+	}
+	
+	protected  void unloadExecute(IReaderJob job) throws SQLException
+	{ 
+		try
+		{
+			job.getResult().close();
+			job.setResult(null);
+		}
+		finally
+		{
+			try
+			{
+				((PreparedStatement) job.getStatement()).clearParameters();
+				job.getStatement().close();
+				job.setStatement(null);
+			}
+			finally
+			{
+				job.getConnection().close();
+			}
+		}
+	}
+
+	
+	protected ResultSet executing(CommandType cmdType,Statement statement) throws SQLException
+	{
+		if(CommandType.Text == cmdType)
+		{
+			return ((PreparedStatement) statement).executeQuery();
+		}
+		return ((CallableStatement) statement).executeQuery();
+	}
+	protected <T extends IAlbianObject> List<T> executed(Class<T> cls,ResultSet result) throws SQLException
+	{
+		String className = cls.getName();
+		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		 PropertyDescriptor[] propertyDesc = (PropertyDescriptor[]) BeanPropertyDescriptorCached.get(className);
 		 List<T> list = new Vector<T>();
-		 while(set.next())
+		 while(result.next())
 		 {
 			 try
 			{
 				T obj = (T) cls.newInstance();
 				for(PropertyDescriptor desc : propertyDesc)
 				{	if(desc.getName().equals("isAlbianNew")) continue;
-					desc.getWriteMethod().invoke(obj, set.getObject(desc.getName()));
+					desc.getWriteMethod().invoke(obj, result.getObject(desc.getName()));
 				}
 				obj.setIsAlbianNew(false);
 				list.add(obj);
@@ -73,8 +116,6 @@ public class QueryScope implements IQueryScope
 				throw new RuntimeException(e);
 			}
 		 }
-		 set.close();
-		 job.getConnection().close();	
-		return list;
+		 return list;
 	}
 }
