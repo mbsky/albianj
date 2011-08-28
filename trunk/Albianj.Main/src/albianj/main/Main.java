@@ -19,11 +19,20 @@ import org.albianj.kernel.AlbianBootService;
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.kernel.AlbianState;
 import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.persistence.impl.context.IReaderJob;
+import org.albianj.persistence.impl.context.IReaderJobAdapter;
+import org.albianj.persistence.impl.context.ReaderJobAdapter;
+import org.albianj.persistence.impl.db.IQueryScope;
+import org.albianj.persistence.impl.db.QueryScope;
 import org.albianj.persistence.impl.persistence.PersistenceService;
 import org.albianj.persistence.impl.persistence.ReflectionHelper;
 import org.albianj.persistence.impl.service.AlbianPersistenceService;
+import org.albianj.persistence.impl.service.FilterCondition;
 import org.albianj.persistence.impl.storage.StorageService;
 import org.albianj.persistence.object.IAlbianObject;
+import org.albianj.persistence.object.IFilterCondition;
+import org.albianj.persistence.object.LogicalOperation;
+import org.albianj.persistence.object.RelationalOperator;
 import org.albianj.persistence.object.impl.FreeAlbianObject;
 import org.albianj.runtime.IStackTrace;
 import org.albianj.runtime.RuningTrace;
@@ -110,18 +119,21 @@ public class Main
 				log.setCreateTime(new Date());
 				log.setId(UUID.randomUUID().toString());
 				log.setCreator("seapeak");
-				log.setRemark("remark");
+//				log.setRemark("remark");
+				log.setStyle(log.LOGGER_USER_STYLE);
 
 				IUser user = new User();
 				user.setCreateTime(new Date());
 				user.setCreator("seapeak");
-				user.setId(UUID.randomUUID().toString());
+				user.setId("aaaaa");
 				user.setLastModifier("Seapeak");
 				user.setLastMofidyTime(new Date());
 				user.setMail("xvhfeng@126.com");
 				user.setMobile("13611644029");
 				user.setPassword("password");
 				user.setUserName("xvhfeng");
+				user.setNickname("nickname");
+				user.setRegistrDate(new Date());
 
 				Vector<IAlbianObject> list = new Vector<IAlbianObject>();
 				list.add(log);
@@ -131,6 +143,22 @@ public class Main
 				{
 					logger.info("success");
 				}
+				
+				//96791e91-1864-4840-8279-dd378b8f
+				IReaderJobAdapter adapter = new ReaderJobAdapter();
+				IFilterCondition filter = new FilterCondition();
+				filter.setFieldName("id");
+				filter.setFieldClass(String.class);
+				filter.setLogicalOperation(LogicalOperation.Equal);
+				filter.setRelationalOperator(RelationalOperator.And);
+				filter.setValue("aaaaa");
+				List<IFilterCondition> filters = new Vector<IFilterCondition>();
+				filters.add(filter);
+				IReaderJob job = adapter.buildReaderJob(User.class, "", 0, 0, filters, null);
+				IQueryScope scope = new QueryScope();
+				List<User> users = scope.query(User.class, job);
+				return;
+				
 			}
 			catch (Exception e)
 			{
