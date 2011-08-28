@@ -10,7 +10,9 @@ public class FilterCondition implements IFilterCondition
 	private String fieldName = null;
 	private Class<?> fieldClass = String.class;
 	private LogicalOperation logicalOperation = LogicalOperation.Equal;
+	private Object value = null;
 	
+
 	public RelationalOperator getRelationalOperator()
 	{
 		return relationalOperator;
@@ -42,5 +44,14 @@ public class FilterCondition implements IFilterCondition
 	public void setLogicalOperation(LogicalOperation logicalOperation)
 	{
 		this.logicalOperation = logicalOperation;
+	}
+	public Object getValue()
+	{
+		return this.value;
+	}
+	
+	public void setValue(Object value)
+	{
+		this.value = value;
 	}
 }

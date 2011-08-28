@@ -2,10 +2,11 @@ package org.albianj.persistence.impl.toolkit;
 
 import org.albianj.persistence.object.LogicalOperation;
 import org.albianj.persistence.object.RelationalOperator;
+import org.albianj.persistence.object.SortStyle;
 
 public class EnumMapping
 {
-	 public static String GetRelationalOperators(RelationalOperator opt)
+	 public static String toRelationalOperators(RelationalOperator opt)
      {
          switch (opt)
          {
@@ -24,7 +25,7 @@ public class EnumMapping
          }
      }
 
-     public static String GetLogicalOperation(LogicalOperation opt)
+     public static String toLogicalOperation(LogicalOperation opt)
      {
          switch (opt)
          {
@@ -63,4 +64,22 @@ public class EnumMapping
          }
      }
 
+     public static String toSortOperation(SortStyle sort)
+     {
+    	 switch(sort)
+    	 {
+    		 case Asc :
+    		 {
+    			 return "ASC";
+    		 }
+    		 case Desc :
+    		 {
+    			 return "DESC";
+    		 }
+    		 default:
+    		 {
+    			 return "ASC";
+    		 }
+    	 }
+     }
 }
