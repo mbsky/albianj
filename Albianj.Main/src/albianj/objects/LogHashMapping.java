@@ -1,8 +1,12 @@
 package albianj.objects;
 
+import java.util.List;
+
 import org.albianj.persistence.impl.routing.RoutingService;
 import org.albianj.persistence.object.IAlbianObject;
 import org.albianj.persistence.object.IAlbianObjectHashMapping;
+import org.albianj.persistence.object.IFilterCondition;
+import org.albianj.persistence.object.IOrderByCondition;
 import org.albianj.persistence.object.impl.FreeAlbianObjectHashMapping;
 
 public class LogHashMapping extends FreeAlbianObjectHashMapping implements
@@ -17,27 +21,29 @@ public class LogHashMapping extends FreeAlbianObjectHashMapping implements
 	}
 
 	@Override
-	public String mappingReaderRouting(IAlbianObject obj)
+	public String mappingReaderRouting(List<IFilterCondition> wheres,
+			List<IOrderByCondition> orderbys)
 	{
 		// TODO Auto-generated method stub
-		return super.mappingReaderRouting(obj);
+		return super.mappingReaderRouting(wheres,orderbys);
 	}
 
 	@Override
-	public String mappingWriterTable(IAlbianObject obj, String routingName)
+	public String mappingWriterTable(String routingName,IAlbianObject obj)
 	{
 		// TODO Auto-generated method stub
-		return super.mappingWriterTable(obj, routingName);
+		return writerTableMapper(routingName,obj);
 	}
 
 	@Override
-	public String mappingReaderTable(IAlbianObject obj, String routingName)
+	public String mappingReaderTable(String routingName,List<IFilterCondition> wheres,
+			List<IOrderByCondition> orderbys)
 	{
 		// TODO Auto-generated method stub
-		return super.mappingReaderTable(obj, routingName);
+		return readerTableMapper(routingName,wheres,orderbys);
 	}
 	
-	protected String mappingTable(IAlbianObject obj,String routingName)
+	protected String writerTableMapper(String routingName,IAlbianObject obj)
 	{
 		if(routingName.equals(RoutingService.DEFAULT_ROUTING_NAME))
 		{
@@ -50,6 +56,31 @@ public class LogHashMapping extends FreeAlbianObjectHashMapping implements
 					return "_order";
 				case ILogInfo.LOGGER_USER_STYLE:
 					return "_user";
+			}
+		}
+		return "";
+	}
+	
+	protected String readerTableMapper(String routingName,List<IFilterCondition> wheres,
+			List<IOrderByCondition> orderbys)
+	{
+		if(routingName.equals(RoutingService.DEFAULT_ROUTING_NAME))
+		{
+			for(IFilterCondition filter : wheres)
+			{
+				if(filter.getFieldName().equals("style"))
+				{
+					int style = Integer.parseInt(filter.getValue().toString());
+					switch(style)
+					{
+						case ILogInfo.LOGGER_BIZOFFER_STYLE:
+							return "_bizoffer";
+						case ILogInfo.LOGGER_ORDER_STYLE :
+							return "_order";
+						case ILogInfo.LOGGER_USER_STYLE:
+							return "_user";
+					}
+				}
 			}
 		}
 		return "";
