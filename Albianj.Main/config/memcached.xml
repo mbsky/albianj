@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Memcached>
+	<Group Id="" Enable="">
+		<Server Address="" Port="" Enable="" Weight=""/>
+	</Group>
+</Memcached>
