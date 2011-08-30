@@ -6,8 +6,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.albianj.kernel.AlbianServiceRouter;
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.persistence.impl.cached.DataSourceCached;
 import org.albianj.persistence.impl.cached.StorageAttributeCache;
 import org.albianj.persistence.object.DatabaseStyle;
@@ -45,12 +44,9 @@ public class StorageService extends FreeStorageParser
 	@Override
 	protected void parserStorages(@SuppressWarnings("rawtypes") List nodes) throws StorageAttributeException
 	{
-		// TODO Auto-generated method stub
 		if (Validate.isNullOrEmpty(nodes))
 		{
-			IAlbianLoggerService logger = AlbianServiceRouter.getService(
-					IAlbianLoggerService.class, "logger");
-			if (null != logger) logger
+				AlbianLoggerService
 					.error("Storage node is null or size is 0.");
 			return;
 		}
@@ -74,43 +70,29 @@ public class StorageService extends FreeStorageParser
 	@Override
 	protected IStorageAttribute parserStorage(Element node)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		String name = XmlParser.getSingleChildNodeValue(node, "Name");
 		if (null == name)
 		{
-			if (null != logger)
-			{
-				logger.error("There is no name attribute in the storage node.");
-			}
+			AlbianLoggerService.error("There is no name attribute in the storage node.");
 			return null;
 		}
 		String databaseStyle = XmlParser.getSingleChildNodeValue(node, "DatabaseStyle");
 		String server = XmlParser.getSingleChildNodeValue(node, "Server");
 		if (null == server)
 		{
-			if (null != logger)
-			{
-				logger.error("There is no server attribute in the storage node.");
-			}
+			AlbianLoggerService.error("There is no server attribute in the storage node.");
 			return null;
 		}
 		String database = XmlParser.getSingleChildNodeValue(node, "Database");
 		if (null == database)
 		{
-			if (null != logger)
-			{
-				logger.error("There is no database attribute in the storage node.");
-			}
+			AlbianLoggerService.error("There is no database attribute in the storage node.");
 			return null;
 		}
 		String user = XmlParser.getSingleChildNodeValue(node, "User");
 		if (null == user)
 		{
-			if (null != logger)
-			{
-				logger.error( "There is no uid attribute in the storage node.");
-			}
+			AlbianLoggerService.error( "There is no uid attribute in the storage node.");
 			return null;
 		}
 		String password = XmlParser.getSingleChildNodeValue(node, "Password");
@@ -191,15 +173,13 @@ public class StorageService extends FreeStorageParser
 	public synchronized static Connection getConnection(String storageName)
 	{
 		DataSource ds =(DataSource) DataSourceCached.get(storageName);
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		try
 		{
 			return ds.getConnection();
 		}
 		catch (SQLException e)
 		{
-			if (null != logger) logger.error(e,"Get the '",storageName,"' connection form connection pool is error.");
+				AlbianLoggerService.error(e,"Get the '%s' connection form connection pool is error.",storageName);
 			return null;
 		}
 	}

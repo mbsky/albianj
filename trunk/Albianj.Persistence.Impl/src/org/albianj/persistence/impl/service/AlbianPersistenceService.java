@@ -2,10 +2,7 @@ package org.albianj.persistence.impl.service;
 
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 
 import org.albianj.persistence.impl.context.ICompensateCallback;
 import org.albianj.persistence.impl.context.INotify;

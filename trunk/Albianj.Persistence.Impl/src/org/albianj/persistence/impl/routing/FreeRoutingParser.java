@@ -2,9 +2,9 @@ package org.albianj.persistence.impl.routing;
 
 import java.util.List;
 import java.util.Map;
+
 import org.albianj.io.Path;
-import org.albianj.kernel.AlbianServiceRouter;
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.persistence.object.IRoutingAttribute;
 import org.albianj.service.FreeAlbianService;
 import org.albianj.xml.IParser;
@@ -38,12 +38,10 @@ public abstract class FreeRoutingParser extends FreeAlbianService implements IPa
 		}
 		@SuppressWarnings("rawtypes")
 		List nodes = XmlParser.analyze(doc, tagName);
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		if (null == nodes || 0 == nodes.size())
 		{
 			String msg = String.format("There is not %1$s nodes.", tagName);
-			if (null != logger)
-				logger.error(msg);
+				AlbianLoggerService.error(msg);
 			throw new UnsupportedOperationException(msg);
 		}
 		parserRoutings(nodes);
