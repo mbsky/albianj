@@ -2,7 +2,10 @@ package org.albianj.persistence.impl.service;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 
 import org.albianj.persistence.impl.context.ICompensateCallback;
 import org.albianj.persistence.impl.context.INotify;
@@ -20,6 +23,9 @@ import org.albianj.persistence.impl.db.TransactionClusterScope;
 import org.albianj.persistence.object.IAlbianObject;
 import org.albianj.persistence.object.IFilterCondition;
 import org.albianj.persistence.object.IOrderByCondition;
+import org.albianj.persistence.object.LogicalOperation;
+import org.albianj.persistence.object.RelationalOperator;
+import org.albianj.verify.Validate;
 
 public class AlbianPersistenceService
 {
@@ -373,67 +379,80 @@ public class AlbianPersistenceService
 		return null;
 	}
 	
-	public static  <T extends IAlbianObject> T loadObject(Class<T> cls,String routingName, IFilterCondition[] where)
+	public static  <T extends IAlbianObject> T loadObject(Class<T> cls,String routingName, IFilterCondition[] wheres)
 	{
-		return null;
+		return doLoadObject(cls, routingName, wheres);
 	}
 	public static  <T extends IAlbianObject> T loadObject(Class<T> cls,String id)
 	{
-		return null;
+		IFilterCondition[] wheres = new IFilterCondition[1];
+		wheres[0].setFieldClass(String.class);
+		wheres[0].setFieldName("id");
+		wheres[0].setLogicalOperation(LogicalOperation.Equal);
+		wheres[0].setRelationalOperator(RelationalOperator.And);
+		wheres[0].setValue(id);
+		
+		return doLoadObject(cls, null, wheres);
 	}
 	public static  <T extends IAlbianObject> T loadObject(Class<T> cls,String routingName, String id)
 	{
-		return null;
+		IFilterCondition[] wheres = new IFilterCondition[1];
+		wheres[0].setFieldClass(String.class);
+		wheres[0].setFieldName("id");
+		wheres[0].setLogicalOperation(LogicalOperation.Equal);
+		wheres[0].setRelationalOperator(RelationalOperator.And);
+		wheres[0].setValue(id);
+		
+		return doLoadObject(cls, routingName, wheres);
 	}
-	public static  <T extends IAlbianObject> T loadObject(Class<T> cls,IFilterCondition[] where)
+	public static  <T extends IAlbianObject> T loadObject(Class<T> cls,IFilterCondition[] wheres)
 	{
-		return null;
+		return doLoadObject(cls, null, wheres);
 	}
-	public static  <T extends IAlbianObject> T loadObject(Class<T> cls,Statement statement)
+	public static  <T extends IAlbianObject> T loadObject(Class<T> cls,CommandType cmdType, Statement statement)
 	{
-		return null;
+		return doLoadObject(cls, cmdType, statement);
 	}
 	
-	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,int start,int step, IFilterCondition[] wheres, IOrderByCondition[] orderbys)
 	{
-		return null;
+		return doLoadObjects(cls, null, start, step, wheres, orderbys);
 	}
-	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,IFilterCondition[] where)
+	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,IFilterCondition[] wheres)
 	{
-		return null;
+		return doLoadObjects(cls, null, 0, 30, wheres, null);
 	}
-	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,IFilterCondition[] where, IOrderByCondition[] orderby)
+	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,IFilterCondition[] wheres, IOrderByCondition[] orderbys)
 	{
-		return null;
+		return doLoadObjects(cls, null, 0, 30, null, orderbys);
 	}
-	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,IOrderByCondition[] orderby)
+	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,IOrderByCondition[] orderbys)
 	{
-		return null;
+		return doLoadObjects(cls, null, 0, 30, null, orderbys);
 	}
-	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,String routingName, IFilterCondition[] where, IOrderByCondition[] orderby)
+	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,String routingName, IFilterCondition[] wheres, IOrderByCondition[] orderbys)
 	{
-		return null;
+		return doLoadObjects(cls, routingName, 0, 30, wheres, orderbys);
 	}
-	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,String routingName, IOrderByCondition[] orderby)
+	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,String routingName, IOrderByCondition[] orderbys)
 	{
-	return null;
+		return doLoadObjects(cls, routingName, 0, 30, null, orderbys);
 	}
-	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,String routingName, IFilterCondition[] where)
+	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,String routingName, IFilterCondition[] wheres)
 	{
-		return null;
+		return doLoadObjects(cls, routingName, 0, 30, wheres, null);
 	}
-	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,String routingName, int top, IFilterCondition[] where,
-	                                      IOrderByCondition[] orderby)
+	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,String routingName, int start,int step,IFilterCondition[] wheres, IOrderByCondition[] orderbys)
 	{
-	return  null;
+	return  doLoadObjects(cls, routingName, start, step, wheres, orderbys);
 	}
-	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,String routingName, int top, IFilterCondition[] where)
+	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,String routingName, int start,int step,IFilterCondition[] wheres)
 	{
-	return null;
+		return doLoadObjects(cls, routingName, start, step, wheres, null);
 	}
-	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,Statement statement)
+	public static  <T extends IAlbianObject> List<T> loadObjects(Class<T> cls,CommandType cmdType,Statement statement)
 	{
-		return null;
+		return doLoadObjects(cls, cmdType, statement);
 	}
 	
 	protected static  <T extends IAlbianObject> T doFindObject(Class<T> cls,String routingName, IFilterCondition[] where)
@@ -511,45 +530,20 @@ public class AlbianPersistenceService
 	//    }
 	}
 	
-	protected static  <T extends IAlbianObject> List<T> doLoadObject(Class<T> cls,String routingName, IFilterCondition[] where)
+	protected static  <T extends IAlbianObject> T doLoadObject(Class<T> cls,String routingName,  IFilterCondition[] wheres)
 	{
-		return null;
-	//    try
-	//    {
-	//        ITaskBuilder taskBuilder = new TaskBuilder();
-	//        ITask task = taskBuilder.BuildQueryTask<T>(routingName, 0, where, null);
-	//        IQueryCluster query = new QueryCluster();
-	//        T target = query.QueryObject<T>(task);
-	//        ResultCache.CachingObject(routingName, where, target);
-	//        return target;
-	//    }
-	//    catch (Exception exc)
-	//    {
-	//        if (null != Logger)
-	//            Logger.ErrorFormat("load Object is error..info:{0}.", exc.Message);
-	//        throw;
-	//    }
+		List<T> list = doLoadObjects(cls,routingName,0,0,wheres,null);
+		if(Validate.isNullOrEmpty(list)) return null;
+		return list.get(0);
 	}
-	protected static  <T extends IAlbianObject> T doLoadObject(Class<T> cls,Statement statement)
+	protected static  <T extends IAlbianObject> T doLoadObject(Class<T> cls,CommandType cmdType,Statement statement)
 	{
-		return null;
-	//    try
-	//    {
-	//        IQueryCluster query = new QueryCluster();
-	//        T target = query.QueryObject<T>(cmd);
-	//        ResultCache.CachingObject(cmd, target);
-	//        return target;
-	//    }
-	//    catch (Exception exc)
-	//    {
-	//        if (null != Logger)
-	//            Logger.ErrorFormat("load Object is error..info:{0}.", exc.Message);
-	//        throw;
-	//    }
+		List<T> list = doLoadObjects(cls,cmdType,statement);
+		if(Validate.isNullOrEmpty(list)) return null;
+		return list.get(0);
 	}
 	
-	protected static  <T extends IAlbianObject> List<T> doLoadObjects(Class<T> cls,String routingName, int start,int step, List<IFilterCondition> wheres,
-	                                         List<IOrderByCondition> orderbys)
+	protected static  <T extends IAlbianObject> List<T> doLoadObjects(Class<T> cls,String routingName, int start,int step, IFilterCondition[] wheres, IOrderByCondition[] orderbys)
 	{
 		IReaderJobAdapter ad = new ReaderJobAdapter();
 		IReaderJob job = ad.buildReaderJob(cls, routingName, start, step, wheres, orderbys);
@@ -565,7 +559,6 @@ public class AlbianPersistenceService
 		}
 		return list;
 	}
-	
 	protected static  <T extends IAlbianObject> List<T> doLoadObjects(Class<T> cls,CommandType cmdType,Statement statement)
 	{
 		IQueryScope scope = new QueryScope();

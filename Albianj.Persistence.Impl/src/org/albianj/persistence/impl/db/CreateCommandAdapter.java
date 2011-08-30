@@ -25,10 +25,10 @@ public class CreateCommandAdapter implements IUpdateCommand
 		sqlText.append("INSERT INTO ").append(routing.getTableName());
 		if (null != routings && null != routings.getHashMapping())
 		{
-			String tableSuffixName = routings.getHashMapping().mappingWriterTable( routing.getName(),object);
-			if (!Validate.isNullOrEmptyOrAllSpace(tableSuffixName))
+			String tableName = routings.getHashMapping().mappingWriterTable(routing,object);
+			if (!Validate.isNullOrEmptyOrAllSpace(tableName))
 			{
-				sqlText.append(tableSuffixName);
+				sqlText.append(tableName);
 			}
 		}
 

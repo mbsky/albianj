@@ -1,6 +1,6 @@
 package org.albianj.persistence.impl.context;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.albianj.kernel.AlbianServiceRouter;
@@ -17,8 +17,8 @@ import org.albianj.verify.Validate;
 
 public class ReaderJobAdapter extends FreeReaderJobAdapter implements IReaderJobAdapter
 {
-	protected IRoutingAttribute parserReaderRouting(Class<?> cls,String routingName,List<IFilterCondition> wheres,
-			List<IOrderByCondition> orderbys)
+	protected IRoutingAttribute parserReaderRouting(Class<?> cls,String routingName,Map<String,IFilterCondition> hashWheres,
+			Map<String,IOrderByCondition> hashOrderbys)
 	{
 		IAlbianLoggerService logger = AlbianServiceRouter.getService(
 				IAlbianLoggerService.class, "logger");
@@ -89,26 +89,16 @@ public class ReaderJobAdapter extends FreeReaderJobAdapter implements IReaderJob
 			IAlbianObjectHashMapping hashMapping = routings.getHashMapping();
 			if(null != hashMapping)
 			{
-				String hashRoutingName = hashMapping.mappingReaderRouting(wheres, orderbys);
-				if(!Validate.isNullOrEmptyOrAllSpace(hashRoutingName))
+				IRoutingAttribute routing  = hashMapping.mappingReaderRouting(routings.getReaderRoutings(),hashWheres, hashOrderbys);
+				if(null == routing || !routing.getEnable())
 				{
-					IRoutingAttribute routing = routings.getReaderRoutings().get(hashRoutingName);
-					if(null == routing || !routing.getEnable())
+					if(null != logger)
 					{
-						if(null != logger)
-						{
-							logger.warn("The '",className,"'hash routing is null or empty,,then use default.");
-						}
-						return albianObject.getDefaultRouting();
+						logger.warn("The '",className,"'hash routing is null or empty,,then use default.");
 					}
-					return routing;
+					return albianObject.getDefaultRouting();
 				}
-				
-				if(null != logger)
-				{
-					logger.warn("The '",className,"'there is not hash routing,then use default.");
-				}
-				return albianObject.getDefaultRouting();
+				return routing;
 			}
 			if(null != logger)
 			{
