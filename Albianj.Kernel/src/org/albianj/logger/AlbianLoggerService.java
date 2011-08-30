@@ -1,13 +1,15 @@
 package org.albianj.logger;
 
+import java.util.Formatter;
+
 import org.albianj.io.Path;
 import org.albianj.runtime.IStackTrace;
 import org.albianj.runtime.RuningTrace;
 import org.albianj.service.AlbianServiceException;
 import org.albianj.service.FreeAlbianService;
-import org.albianj.verify.Validate;
-import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AlbianLoggerService extends FreeAlbianService implements
 		IAlbianLoggerService
@@ -17,8 +19,8 @@ public class AlbianLoggerService extends FreeAlbianService implements
 	public static final String INFO = "$";
 	public static final String DEBUG = "*";
 
-	private final static String ALBIAN_LOGGER = "albian_logger";
-	private Logger albianLogger;
+	private final static String ALBIAN_LOGGER = "_ALBIAN_LOGGER_";
+	private static Logger logger;
 
 	@Override
 	public void loading() throws AlbianServiceException
@@ -28,7 +30,7 @@ public class AlbianLoggerService extends FreeAlbianService implements
 			DOMConfigurator.configure(Path
 					.getExtendResourcePath("../config/log4j.xml"));
 			super.loading();
-			albianLogger = Logger.getLogger(ALBIAN_LOGGER);
+			logger = LoggerFactory.getLogger(ALBIAN_LOGGER);
 		}
 		catch (Exception exc)
 		{
@@ -41,11 +43,10 @@ public class AlbianLoggerService extends FreeAlbianService implements
 	 * 
 	 * @see org.albianj.logger.IAlbianLoggerService#error(java.lang.String)
 	 */
-	@Override
-	public void error(Object... values)
+	public static void error(String format,Object... values)
 	{
-		if (null == albianLogger) return;
-		albianLogger.error(getErrorMsg(values));
+		if (null == logger) return;
+		logger.error(getErrorMsg(format,values));
 	}
 
 	/*
@@ -53,11 +54,10 @@ public class AlbianLoggerService extends FreeAlbianService implements
 	 * 
 	 * @see org.albianj.logger.IAlbianLoggerService#warn(java.lang.String)
 	 */
-	@Override
-	public void warn(Object... values)
+	public static void warn(String format,Object... values)
 	{
-		if (null == albianLogger) return;
-		albianLogger.warn(getWarnMsg(values));
+		if (null == logger) return;
+		logger.warn(getWarnMsg(format,values));
 	}
 
 	/*
@@ -65,11 +65,10 @@ public class AlbianLoggerService extends FreeAlbianService implements
 	 * 
 	 * @see org.albianj.logger.IAlbianLoggerService#info(java.lang.String)
 	 */
-	@Override
-	public void info(Object... values)
+	public static void info(String format,Object... values)
 	{
-		if (null == albianLogger) return;
-		albianLogger.info(getInfoMsg(values));
+		if (null == logger) return;
+		logger.info(getInfoMsg(format,values));
 	}
 
 	/*
@@ -77,35 +76,34 @@ public class AlbianLoggerService extends FreeAlbianService implements
 	 * 
 	 * @see org.albianj.logger.IAlbianLoggerService#debug(java.lang.String)
 	 */
-	@Override
-	public void debug(Object... values)
+	public static void debug(String format,Object... values)
 	{
-		if (null == albianLogger) return;
-		albianLogger.debug(getDebugMsg(values));
+		if (null == logger) return;
+		logger.debug(getDebugMsg(format,values));
 	}
 
-	public void error(Exception e, Object... values)
+	public static void error(Exception e,String format, Object... values)
 	{
-		if (null == albianLogger) return;
-		albianLogger.error(getErrorMsg(e, values));
+		if (null == logger) return;
+		logger.error(getErrorMsg(e,format, values));
 	}
 
-	public void warn(Exception e, Object... values)
+	public static void warn(Exception e,String format, Object... values)
 	{
-		if (null == albianLogger) return;
-		albianLogger.warn(getWarnMsg(e, values));
+		if (null == logger) return;
+		logger.warn(getWarnMsg(e,format, values));
 	}
 
-	public void info(Exception e, Object... values)
+	public static void info(Exception e,String format, Object... values)
 	{
-		if (null == albianLogger) return;
-		albianLogger.info(getInfoMsg(e, values));
+		if (null == logger) return;
+		logger.info(getInfoMsg(e,format, values));
 	}
 
-	public void debug(Exception e, Object... values)
+	public static void debug(Exception e,String format, Object... values)
 	{
-		if (null == albianLogger) return;
-		albianLogger.debug(getDebugMsg(e, values));
+		if (null == logger) return;
+		logger.debug(getDebugMsg(e,format, values));
 	}
 
 	/*
@@ -114,10 +112,9 @@ public class AlbianLoggerService extends FreeAlbianService implements
 	 * @see
 	 * org.albianj.logger.IAlbianLoggerService#getErrorMsg(java.lang.String)
 	 */
-	@Override
-	public String getErrorMsg(Object... values)
+	public static String getErrorMsg(String format,Object... values)
 	{
-		return getMessage(ERROR, values);
+		return getMessage(ERROR,format, values);
 	}
 
 	/*
@@ -125,10 +122,9 @@ public class AlbianLoggerService extends FreeAlbianService implements
 	 * 
 	 * @see org.albianj.logger.IAlbianLoggerService#getWarnMsg(java.lang.String)
 	 */
-	@Override
-	public String getWarnMsg(Object... values)
+	public static  String getWarnMsg(String format,Object... values)
 	{
-		return getMessage(WARN, values);
+		return getMessage(WARN,format,values);
 	}
 
 	/*
@@ -136,10 +132,9 @@ public class AlbianLoggerService extends FreeAlbianService implements
 	 * 
 	 * @see org.albianj.logger.IAlbianLoggerService#getInfoMsg(java.lang.String)
 	 */
-	@Override
-	public String getInfoMsg(Object... values)
+	public static String getInfoMsg(String format,Object... values)
 	{
-		return getMessage(INFO, values);
+		return getMessage(INFO, format,values);
 	}
 
 	/*
@@ -148,55 +143,51 @@ public class AlbianLoggerService extends FreeAlbianService implements
 	 * @see
 	 * org.albianj.logger.IAlbianLoggerService#getDebugMsg(java.lang.String)
 	 */
-	@Override
-	public String getDebugMsg(Object... values)
+	public static String getDebugMsg(String format,Object... values)
 	{
-		return getMessage(DEBUG, values);
+		return getMessage(DEBUG,format, values);
 	}
 
-	public String getErrorMsg(Exception e, Object... values)
+	public static String getErrorMsg(Exception e,String format, Object... values)
 	{
-		return getMessage(ERROR, e, values);	}
+		return getMessage(ERROR, e,format, values);	}
 
-	public String getWarnMsg(Exception e, Object... values)
+	public static String getWarnMsg(Exception e,String format, Object... values)
 	{
-		return getMessage(WARN, e, values);
+		return getMessage(WARN, e,format, values);
 	}
 
-	public String getInfoMsg(Exception e, Object... values)
+	public static String getInfoMsg(Exception e,String format, Object... values)
 	{
-		return getMessage(INFO, e, values);
+		return getMessage(INFO, e,format, values);
 	}
 
-	public String getDebugMsg(Exception e, Object... values)
+	public static String getDebugMsg(Exception e,String format, Object... values)
 	{
-		return getMessage(DEBUG, e, values);
+		return getMessage(DEBUG, e,format, values);
 	}
 
-	protected String getMessage(String level, Exception e, Object... values)
+	protected static String getMessage(String level, Exception e,String format, Object... values)
 	{
 		IStackTrace trace = RuningTrace.getTraceInfo(e);
-		StringBuilder sb = new StringBuilder(level).append(" ")
-				.append(trace.toString()).append(e.getMessage()).append(".");
-		if (null == values || 0 == values.length) return sb.toString();
-		for (Object value : values)
-		{
-			sb.append(value).append(" ");
-		}
-		return sb.toString();
+		
+		StringBuilder sb = new StringBuilder();
+		Formatter f = new Formatter(sb);
+		f.format("%s.Trace:%s,Exception:%s", level,trace.toString(),e.getMessage());
+		if(null != values)
+			f.format(format, values);
+		return f.toString();		
 	}
 
-	protected String getMessage(String level, Object... values)
+	protected static String getMessage(String level,String format,Object... values)
 	{
 		IStackTrace trace = RuningTrace.getTraceInfo();
-		StringBuilder sb = new StringBuilder(level).append(" ").append(
-				trace.toString());
-		if (null == values || 0 == values.length) return sb.toString();
-		for (Object value : values)
-		{
-			sb.append(value).append(" ");
-		}
-		return sb.toString();
+		StringBuilder sb = new StringBuilder();
+		Formatter f = new Formatter(sb);
+		f.format("%s.Trace:%s", level,trace.toString());
+		if(null != values)
+			f.format(format, values);
+		return f.toString();
 	}
 
 }

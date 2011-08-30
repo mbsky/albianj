@@ -3,7 +3,7 @@ package org.albianj.kernel;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.service.AlbianServiceException;
 import org.albianj.service.IAlbianService;
 import org.albianj.service.IAlbianServiceAttribute;
@@ -65,11 +65,7 @@ public final class AlbianBootService
 			if(0 == currentFailSize) 
 			{
 				state = AlbianState.Running;
-				IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
-				if(null != logger)
-				{
-					logger.info("start service is success!");
-				}
+					AlbianLoggerService.info("start service is success!");
 				break;//all success
 			}
 			
@@ -77,12 +73,8 @@ public final class AlbianBootService
 			{
 				state = AlbianState.Unloading;
 				String msg = "the service maybe cross reference.";
-				IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
-				if(null != logger)
-				{
-					logger.error(msg);
-					logger.error(failMap.keySet().toString());
-				}
+					AlbianLoggerService.error(msg);
+					AlbianLoggerService.error(failMap.keySet().toString());
 				ServiceCached.clear();
 				state = AlbianState.Unloaded;
 				throw new AlbianServiceException(msg);
