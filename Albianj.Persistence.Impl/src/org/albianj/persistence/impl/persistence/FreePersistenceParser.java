@@ -1,9 +1,9 @@
 package org.albianj.persistence.impl.persistence;
 
 import java.util.List;
+
 import org.albianj.io.Path;
-import org.albianj.kernel.AlbianServiceRouter;
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.persistence.object.IAlbianObjectAttribute;
 import org.albianj.service.FreeAlbianService;
 import org.albianj.verify.Validate;
@@ -28,12 +28,10 @@ public abstract class FreePersistenceParser extends FreeAlbianService implements
 		}
 		@SuppressWarnings("rawtypes")
 		List nodes = XmlParser.analyze(doc, tagName);
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		if (Validate.isNullOrEmpty(nodes))
 		{
 			String msg = String.format("There is not %1$s nodes.", tagName);
-			if (null != logger)
-				logger.error(msg);
+				AlbianLoggerService.error(msg);
 			throw new UnsupportedOperationException(msg);
 		}
 		parserAlbianObjects(nodes);

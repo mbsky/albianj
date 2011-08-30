@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.albianj.kernel.AlbianServiceRouter;
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.persistence.impl.cached.BeanPropertyDescriptorCached;
 import org.albianj.persistence.impl.context.IReaderJob;
 import org.albianj.persistence.impl.storage.StorageService;
@@ -94,7 +93,6 @@ public class QueryScope extends FreeQueryScope implements IQueryScope
 	protected <T extends IAlbianObject> List<T> executed(Class<T> cls,ResultSet result) throws SQLException
 	{
 		String className = cls.getName();
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		 PropertyDescriptor[] propertyDesc = (PropertyDescriptor[]) BeanPropertyDescriptorCached.get(className);
 		 List<T> list = new Vector<T>();
 		 while(result.next())
@@ -111,8 +109,7 @@ public class QueryScope extends FreeQueryScope implements IQueryScope
 			}
 			catch (Exception e)
 			{
-				if(null != logger)
-					logger.error(e,"create the albian object for list is error.");
+					AlbianLoggerService.error(e,"create the albian object for list is error.");
 				throw new RuntimeException(e);
 			}
 		 }

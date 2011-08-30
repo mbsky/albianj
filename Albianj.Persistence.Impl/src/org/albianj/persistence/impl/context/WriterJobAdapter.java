@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.albianj.kernel.AlbianServiceRouter;
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.persistence.impl.cached.AlbianObjectsCached;
 import org.albianj.persistence.impl.cached.BeanPropertyDescriptorCached;
 import org.albianj.persistence.impl.cached.RoutingCached;
@@ -26,20 +25,27 @@ import org.albianj.verify.Validate;
 
 public class WriterJobAdapter extends FreeWriterJobAdapter
 {
-	protected void buildWriterJob(IAlbianObject object,IWriterJob writerJob,IUpdateCommand update)
+	protected void buildWriterJob(IAlbianObject object, IWriterJob writerJob,
+			IUpdateCommand update)
 	{
 		String className = object.getClass().getName();
-		IRoutingsAttribute routings = (IRoutingsAttribute) RoutingCached.get(className);
-		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached.get(className);
-		PropertyDescriptor[] propertyDesc = (PropertyDescriptor[]) BeanPropertyDescriptorCached.get(className);
-		Map<String, Object> mapValue = buildSqlParameter(object, albianObject,propertyDesc);
-				
-		List<IRoutingAttribute> useRoutings = parserRoutings(object, routings,albianObject);
-		
+		IRoutingsAttribute routings = (IRoutingsAttribute) RoutingCached
+				.get(className);
+		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached
+				.get(className);
+		PropertyDescriptor[] propertyDesc = (PropertyDescriptor[]) BeanPropertyDescriptorCached
+				.get(className);
+		Map<String, Object> mapValue = buildSqlParameter(object, albianObject,
+				propertyDesc);
+
+		List<IRoutingAttribute> useRoutings = parserRoutings(object, routings,
+				albianObject);
+
 		for (IRoutingAttribute routing : useRoutings)
 		{
-			ICommand cmd = update.builder(object, routings, albianObject,	mapValue, routing);
-			
+			ICommand cmd = update.builder(object, routings, albianObject,
+					mapValue, routing);
+
 			if (Validate.isNull(writerJob.getWriterTasks()))
 			{
 				Map<String, IWriterTask> tasks = new LinkedHashMap<String, IWriterTask>();
@@ -47,16 +53,19 @@ public class WriterJobAdapter extends FreeWriterJobAdapter
 				List<ICommand> cmds = new Vector<ICommand>();
 				cmds.add(cmd);
 				task.setCommands(cmds);
-				IStorageAttribute storage =(IStorageAttribute) StorageAttributeCache.get(routing.getStorageName());
+				IStorageAttribute storage = (IStorageAttribute) StorageAttributeCache
+						.get(routing.getStorageName());
 				task.setStorage(storage);
 				tasks.put(routing.getStorageName(), task);
 				writerJob.setWriterTasks(tasks);
 			}
 			else
 			{
-				if (writerJob.getWriterTasks().containsKey(routing.getStorageName()))
+				if (writerJob.getWriterTasks().containsKey(
+						routing.getStorageName()))
 				{
-					writerJob.getWriterTasks().get(routing.getStorageName()).getCommands().add(cmd);
+					writerJob.getWriterTasks().get(routing.getStorageName())
+							.getCommands().add(cmd);
 				}
 				else
 				{
@@ -64,9 +73,11 @@ public class WriterJobAdapter extends FreeWriterJobAdapter
 					List<ICommand> cmds = new Vector<ICommand>();
 					cmds.add(cmd);
 					task.setCommands(cmds);
-					IStorageAttribute storage =(IStorageAttribute) StorageAttributeCache.get(routing.getStorageName());
+					IStorageAttribute storage = (IStorageAttribute) StorageAttributeCache
+							.get(routing.getStorageName());
 					task.setStorage(storage);
-					writerJob.getWriterTasks().put(routing.getStorageName(), task);
+					writerJob.getWriterTasks().put(routing.getStorageName(),
+							task);
 				}
 			}
 		}
@@ -77,51 +88,54 @@ public class WriterJobAdapter extends FreeWriterJobAdapter
 			PropertyDescriptor[] propertyDesc)
 	{
 		Map<String, Object> mapValue = new HashMap<String, Object>();
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		for (PropertyDescriptor p : propertyDesc)
 		{
 			try
 			{
 				String name = p.getName();
-				if("string".equalsIgnoreCase(p.getPropertyType().getSimpleName()))
+				if ("string".equalsIgnoreCase(p.getPropertyType()
+						.getSimpleName()))
 				{
 					Object oValue = p.getReadMethod().invoke(object);
-					if(null == oValue)
+					if (null == oValue)
 					{
-						mapValue.put(name,null);
+						mapValue.put(name, null);
 					}
 					else
 					{
 						String value = oValue.toString();
-						IMemberAttribute member = albianObject.getMembers().get(name);
-						if(member.getLength() < value.length())//sub the property value for database length
+						IMemberAttribute member = albianObject.getMembers()
+								.get(name);
+						if (member.getLength() < value.length())// sub the
+																// property
+																// value for
+																// database
+																// length
 						{
-							mapValue.put(p.getName(),value.substring(0, member.getLength()));
+							mapValue.put(p.getName(),
+									value.substring(0, member.getLength()));
 						}
 						else
 						{
-							mapValue.put(name,value);
+							mapValue.put(name, value);
 						}
 					}
 				}
 				else
 				{
-					mapValue.put(name,p.getReadMethod().invoke(object));
+					mapValue.put(name, p.getReadMethod().invoke(object));
 				}
-				
+
 			}
 			catch (Exception e)
 			{
-				if(null != logger)
-				{
-					logger.error(e,"invoke bean read method is error.");
-				}
+				AlbianLoggerService.error(e,"invoke bean read method is error.");
 				throw new RuntimeException("invoke bean read method is error");
 			}
 		}
 		return mapValue;
 	}
-	
+
 	protected List<IRoutingAttribute> parserRoutings(IAlbianObject object,
 			IRoutingsAttribute routings, IAlbianObjectAttribute albianObject)
 	{
@@ -130,26 +144,46 @@ public class WriterJobAdapter extends FreeWriterJobAdapter
 		{
 			useRoutings.add(albianObject.getDefaultRouting());
 		}
-		else// there are routings from configure file
+		else
+		// there are routings from configure file
 		{
-			if (Validate.isNullOrEmpty(routings.getWriterRoutings()))// writer routings is null or empty,teh use default
+			if (Validate.isNullOrEmpty(routings.getWriterRoutings()))// writer
+																		// routings
+																		// is
+																		// null
+																		// or
+																		// empty,teh
+																		// use
+																		// default
 			{
 				useRoutings.add(albianObject.getDefaultRouting());
 			}
-			else// there are writer routings form configure file
+			else
+			// there are writer routings form configure file
 			{
-				if (routings.getWriterHash())// use hash mapping for writer operation
+				if (routings.getWriterHash())// use hash mapping for writer
+												// operation
 				{
-					IAlbianObjectHashMapping hashMapping = routings.getHashMapping();
-					if (null == hashMapping)// there is no hash mapping function from configure file,then use default
+					IAlbianObjectHashMapping hashMapping = routings
+							.getHashMapping();
+					if (null == hashMapping)// there is no hash mapping function
+											// from configure file,then use
+											// default
 					{
 						useRoutings.add(albianObject.getDefaultRouting());
 					}
 					else
 					// there us hash mapping function from configure file
 					{
-						List<IRoutingAttribute> writerRoutings = hashMapping.mappingWriterRouting(routings.getWriterRoutings(),object);
-						if (Validate.isNullOrEmpty(writerRoutings))// there is no routings by hash mapping function
+						List<IRoutingAttribute> writerRoutings = hashMapping
+								.mappingWriterRouting(
+										routings.getWriterRoutings(), object);
+						if (Validate.isNullOrEmpty(writerRoutings))// there is
+																	// no
+																	// routings
+																	// by hash
+																	// mapping
+																	// function
 						{
 							useRoutings.add(albianObject.getDefaultRouting());
 						}
@@ -164,7 +198,8 @@ public class WriterJobAdapter extends FreeWriterJobAdapter
 							}
 							if (Validate.isNullOrEmpty(useRoutings))
 							{
-								useRoutings.add(albianObject.getDefaultRouting());
+								useRoutings.add(albianObject
+										.getDefaultRouting());
 							}
 						}
 					}

@@ -3,8 +3,7 @@ package org.albianj.persistence.impl.context;
 import java.util.Map;
 import java.util.Set;
 
-import org.albianj.kernel.AlbianServiceRouter;
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.persistence.impl.cached.AlbianObjectsCached;
 import org.albianj.persistence.impl.cached.RoutingCached;
 import org.albianj.persistence.object.IAlbianObjectAttribute;
@@ -15,102 +14,96 @@ import org.albianj.persistence.object.IRoutingAttribute;
 import org.albianj.persistence.object.IRoutingsAttribute;
 import org.albianj.verify.Validate;
 
-public class ReaderJobAdapter extends FreeReaderJobAdapter implements IReaderJobAdapter
+public class ReaderJobAdapter extends FreeReaderJobAdapter implements
+		IReaderJobAdapter
 {
-	protected IRoutingAttribute parserReaderRouting(Class<?> cls,String routingName,Map<String,IFilterCondition> hashWheres,
-			Map<String,IOrderByCondition> hashOrderbys)
+	protected IRoutingAttribute parserReaderRouting(Class<?> cls,
+			String routingName, Map<String, IFilterCondition> hashWheres,
+			Map<String, IOrderByCondition> hashOrderbys)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		String className = cls.getName();
-		IRoutingsAttribute routings = (IRoutingsAttribute) RoutingCached.get(className);
-		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached.get(className);
-		if (null == routings || Validate.isNullOrEmpty(routings.getReaderRoutings()))
+		IRoutingsAttribute routings = (IRoutingsAttribute) RoutingCached
+				.get(className);
+		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached
+				.get(className);
+		if (null == routings
+				|| Validate.isNullOrEmpty(routings.getReaderRoutings()))
 		{
-			if(null != logger)
-			{
-				logger.warn("the '",className,"' routings is null or empty.then use default.");
-			}
+			AlbianLoggerService.warn(
+					"the '%s' routings is null or empty.then use default.",
+					className);
 			return albianObject.getDefaultRouting();
 		}
-		if(!Validate.isNullOrEmptyOrAllSpace(routingName))
+		if (!Validate.isNullOrEmptyOrAllSpace(routingName))
 		{
-			IRoutingAttribute routing = routings.getReaderRoutings().get(routingName);
-			if(null == routing)
+			IRoutingAttribute routing = routings.getReaderRoutings().get(
+					routingName);
+			if (null == routing)
 			{
-				if(null != logger)
-				{
-					logger.warn("The '",routingName,"' routing is not in reader routings,then use default routing.");
-				}
+				AlbianLoggerService
+						.warn("The '%s' routing is not in reader routings,then use default routing.",
+								routingName);
 				return albianObject.getDefaultRouting();
 			}
-			if(!routing.getEnable())
+			if (!routing.getEnable())
 			{
-				if(null != logger)
-				{
-					logger.warn("The '",routingName,"' routing is not enable,then use default.");
-				}
+				AlbianLoggerService.warn(
+						"The '%s' routing is not enable,then use default.",
+						routingName);
 				return albianObject.getDefaultRouting();
 			}
 			return routing;
 		}
-	
+
 		if (1 == routings.getReaderRoutings().size())
 		{
-			if (null != logger)
-			{
-				logger.warn("The ",className," routing in configure is one,so only use it.");
-			}
+			AlbianLoggerService.warn(
+					"The %s routing in configure is one,so only use it.",
+					className);
 
 			Set<String> keys = routings.getReaderRoutings().keySet();
 			String key = (String) keys.toArray()[0];
 			IRoutingAttribute routing = routings.getReaderRoutings().get(key);
-			if(null == routing)
+			if (null == routing)
 			{
-				if(null != logger)
-				{
-					logger.warn("The '",routingName,"' routing is not in reader routings,then use default routing.");
-				}
+				AlbianLoggerService
+						.warn("The '%s' routing is not in reader routings,then use default routing.",
+								routingName);
 				return albianObject.getDefaultRouting();
 			}
-			if(!routing.getEnable())
+			if (!routing.getEnable())
 			{
-				if(null != logger)
-				{
-					logger.warn("The '",className,"' routing is only one,but not enable,then use default.");
-				}
+				AlbianLoggerService
+						.warn("The '%s' routing is only one,but not enable,then use default.",
+								className);
 				return albianObject.getDefaultRouting();
 			}
 			return routing;
 		}
-		
+
 		if (routings.getReaderHash())
 		{
 			IAlbianObjectHashMapping hashMapping = routings.getHashMapping();
-			if(null != hashMapping)
+			if (null != hashMapping)
 			{
-				IRoutingAttribute routing  = hashMapping.mappingReaderRouting(routings.getReaderRoutings(),hashWheres, hashOrderbys);
-				if(null == routing || !routing.getEnable())
+				IRoutingAttribute routing = hashMapping.mappingReaderRouting(
+						routings.getReaderRoutings(), hashWheres, hashOrderbys);
+				if (null == routing || !routing.getEnable())
 				{
-					if(null != logger)
-					{
-						logger.warn("The '",className,"'hash routing is null or empty,,then use default.");
-					}
+					AlbianLoggerService
+							.warn("The '%s'hash routing is null or empty,,then use default.",
+									className);
 					return albianObject.getDefaultRouting();
 				}
 				return routing;
 			}
-			if(null != logger)
-			{
-				logger.warn("There is not hash function for reader.then use default.");
-			}
+			AlbianLoggerService
+					.warn("There is not hash function for reader.then use default.");
 			return albianObject.getDefaultRouting();
 		}
-		
-		if(null != logger)
-		{
-			logger.warn("Not match the all parser routings condition.then use default.");
-		}
+
+		AlbianLoggerService
+				.warn("Not match the all parser routings condition.then use default.");
 		return albianObject.getDefaultRouting();
 	}
 }

@@ -3,8 +3,7 @@ package org.albianj.persistence.impl.context;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.albianj.kernel.AlbianServiceRouter;
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.persistence.impl.cached.AlbianObjectsCached;
 import org.albianj.persistence.impl.cached.RoutingCached;
 import org.albianj.persistence.impl.cached.StorageAttributeCache;
@@ -31,8 +30,6 @@ public abstract class FreeReaderJobAdapter implements IReaderJobAdapter
 			int start, int step, IFilterCondition[] wheres,
 			IOrderByCondition[] orderbys)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		String className = cls.getName();
 		IRoutingsAttribute routings = (IRoutingsAttribute) RoutingCached
 				.get(className);
@@ -120,7 +117,7 @@ public abstract class FreeReaderJobAdapter implements IReaderJobAdapter
 			sbStatement.append(" LIMIT ").append(step);
 		}
 		
-		if(null != logger) logger.debug(sbStatement);
+		AlbianLoggerService.debug(sbStatement.toString());
 		
 		ICommand cmd = new Command();
 		cmd.setCommandText(sbStatement.toString());

@@ -5,14 +5,12 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 
-import org.albianj.kernel.AlbianServiceRouter;
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 
 public class ReflectionHelper
 {
 	public static BeanInfo getBeanInfo(String className)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		try
 		{
 			@SuppressWarnings("rawtypes")
@@ -22,21 +20,18 @@ public class ReflectionHelper
 		}
 		catch (ClassNotFoundException exc)
 		{
-			if(null != logger)
-				logger.error("Reflection bean is error.Message:", exc.getMessage());
+				AlbianLoggerService.error(exc,"Reflection bean is error.");
 			return null;
 		}
 		catch (IntrospectionException exc)
 		{
-			if(null != logger)
-				logger.error("Reflection bean is error.Message:", exc.getMessage());
+				AlbianLoggerService.error(exc,"Reflection bean is error.Message:");
 			return null;
 		}
 	}
 	
 	public static PropertyDescriptor[] getBeanPropertyDescriptors(String className)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		BeanInfo beanInfo;
 		try
 		{
@@ -44,14 +39,12 @@ public class ReflectionHelper
 		}
 		catch(Exception exc)
 		{			
-			if(null != logger)
-				logger.error("Get bean info is error.Message:", exc.getMessage());
+				AlbianLoggerService.error(exc,"Get bean info is error.");
 			return null;
 		}
 		if(null == beanInfo)
 		{
-			if(null != logger)
-				logger.error("Get bean info is error.");
+			AlbianLoggerService.error("Get bean info is error.");
 			return null;
 		}
 		return beanInfo.getPropertyDescriptors();
@@ -59,7 +52,6 @@ public class ReflectionHelper
 	
 	public static String getClassSimpleName(String className)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		try
 		{
 			@SuppressWarnings("rawtypes")
@@ -68,8 +60,7 @@ public class ReflectionHelper
 		}
 		catch (ClassNotFoundException exc)
 		{
-			if(null != logger)
-				logger.error("Reflection bean is error.Message:", exc.getMessage());
+			AlbianLoggerService.error(exc,"Reflection bean is error.");
 			return null;
 		}
 	}

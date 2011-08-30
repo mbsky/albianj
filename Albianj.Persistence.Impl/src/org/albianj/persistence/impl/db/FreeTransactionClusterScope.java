@@ -2,8 +2,7 @@ package org.albianj.persistence.impl.db;
 
 import java.sql.SQLException;
 
-import org.albianj.kernel.AlbianServiceRouter;
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.persistence.impl.context.ICompensateCallback;
 import org.albianj.persistence.impl.context.IWriterJob;
 import org.albianj.persistence.impl.context.WriterJobLifeTime;
@@ -13,8 +12,6 @@ public abstract class FreeTransactionClusterScope implements ITransactionCluster
 
 	public boolean execute(IWriterJob writerJob)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		boolean isSuccess = true;
 		try
 		{
@@ -29,10 +26,7 @@ public abstract class FreeTransactionClusterScope implements ITransactionCluster
 		catch(Exception e)
 		{
 			isSuccess = false;
-			if(null != logger)
-			{
-				logger.error(e,"Execute the query is error.");
-			}
+				AlbianLoggerService.error(e,"Execute the query is error.");
 			if(null != writerJob.getNotifyCallback())
 			{
 				try
@@ -46,10 +40,7 @@ public abstract class FreeTransactionClusterScope implements ITransactionCluster
 				}
 				catch(Exception exc)
 				{
-					if(null != logger)
-					{
-						logger.error(e,"the job error notice is error.");
-					}	
+						AlbianLoggerService.error(e,"the job error notice is error.");
 				}
 			}
 			
@@ -61,10 +52,7 @@ public abstract class FreeTransactionClusterScope implements ITransactionCluster
 			}
 			catch(Exception exc)
 			{
-				if(null != logger)
-				{
-					logger.error(exc,"rollback the query is error.");
-				}
+				AlbianLoggerService.error(exc,"rollback the query is error.");
 			}
 		}
 		finally
@@ -79,10 +67,7 @@ public abstract class FreeTransactionClusterScope implements ITransactionCluster
 			}
 			catch(Exception e)
 			{
-				if(null != logger)
-				{
-					logger.error(e,"execute the compensate callback is error.");
-				}
+					AlbianLoggerService.error(e,"execute the compensate callback is error.");
 			}
 			finally
 			{
@@ -92,10 +77,7 @@ public abstract class FreeTransactionClusterScope implements ITransactionCluster
 				}
 				catch(Exception exc)
 				{
-					if(null != logger)
-					{
-						logger.error(exc,"unload the job is error.");
-					}
+						AlbianLoggerService.error(exc,"unload the job is error.");
 				}
 			}
 			writerJob.setCurrentStorage(null);

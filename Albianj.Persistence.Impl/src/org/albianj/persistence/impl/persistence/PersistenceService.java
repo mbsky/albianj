@@ -5,8 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.albianj.kernel.AlbianServiceRouter;
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.persistence.impl.cached.AlbianObjectsCached;
 import org.albianj.persistence.impl.cached.BeanPropertyDescriptorCached;
 import org.albianj.persistence.impl.routing.RoutingService;
@@ -42,16 +41,13 @@ public class PersistenceService extends FreePersistenceParser
 		{
 			throw new IllegalArgumentException("nodes");
 		}
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		for (Object node : nodes)
 		{
 			IAlbianObjectAttribute albianObjectAttribute = parserAlbianObject((Element) node);
 			if (null == albianObjectAttribute)
 			{
 				String msg = "parser the albian object is error.";
-				if(null != logger)
-					logger.warn(msg);
+					AlbianLoggerService.warn(msg);
 				throw new PersistenceAttributeException(msg);
 			}
 
@@ -63,13 +59,10 @@ public class PersistenceService extends FreePersistenceParser
 	@Override
 	protected IAlbianObjectAttribute parserAlbianObject(Element node)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		String type = XmlParser.getAttributeValue(node, "Type");
 		if (Validate.isNullOrEmptyOrAllSpace(type))
 		{
-			if (null != logger) logger
-					.error("The albianObject's type is empty or null.");
+				AlbianLoggerService.error("The albianObject's type is empty or null.");
 			return null;
 		}
 
@@ -133,15 +126,10 @@ public class PersistenceService extends FreePersistenceParser
 			Map<String, IMemberAttribute> map)
 	{
 		String name = XmlParser.getAttributeValue(elt, "Name");
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		if (Validate.isNullOrEmpty(name))
 		{
 			String msg = "AlbianObject name is null or empty.";
-			if (null != logger)
-			{
-				logger.error(msg);
-			}
+				AlbianLoggerService.error(msg);
 			throw new PersistenceAttributeException(msg);
 		}
 		IMemberAttribute member = (IMemberAttribute) map.get(name);
