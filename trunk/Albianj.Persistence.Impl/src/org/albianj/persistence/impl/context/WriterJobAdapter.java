@@ -148,19 +148,18 @@ public class WriterJobAdapter extends FreeWriterJobAdapter
 					else
 					// there us hash mapping function from configure file
 					{
-						String[] routingNames = hashMapping.mappingWriterRouting(object);
-						if (null == routingNames || 0 == routingNames.length)// there is no routings by hash mapping function
+						List<IRoutingAttribute> writerRoutings = hashMapping.mappingWriterRouting(routings.getWriterRoutings(),object);
+						if (Validate.isNullOrEmpty(writerRoutings))// there is no routings by hash mapping function
 						{
 							useRoutings.add(albianObject.getDefaultRouting());
 						}
 						else
 						{
-							for (String routingName : routingNames)
+							for (IRoutingAttribute writerRouting : writerRoutings)
 							{
-								IRoutingAttribute routing = routings.getWriterRoutings().get(routingName);
-								if (routing.getEnable())
+								if (writerRouting.getEnable())
 								{
-									useRoutings.add(routing);
+									useRoutings.add(writerRouting);
 								}
 							}
 							if (Validate.isNullOrEmpty(useRoutings))
