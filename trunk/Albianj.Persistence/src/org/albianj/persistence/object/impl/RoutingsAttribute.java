@@ -1,6 +1,5 @@
 package org.albianj.persistence.object.impl;
 
-import java.util.List;
 import java.util.Map;
 
 import org.albianj.persistence.object.IAlbianObjectHashMapping;
