@@ -4,8 +4,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
-import org.albianj.kernel.AlbianServiceRouter;
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.verify.Validate;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
@@ -18,12 +17,9 @@ public final class XmlParser
 {
 	public static Document load(String path)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		if (Validate.isNullOrEmptyOrAllSpace(path))
 		{
-			if (null != logger) 
-				logger.warn("The xml file path is null or empty.");
+			AlbianLoggerService.warn("The xml file path is null or empty.");
 			return null;
 		}
 		try
@@ -34,9 +30,7 @@ public final class XmlParser
 		}
 		catch (DocumentException exc)
 		{
-			if (null != logger) 
-				logger.error("init xml document with path",
-					path, "is error.msg:", exc.getMessage());
+			AlbianLoggerService.error(exc,"init xml document with path: %s is error.msg:",path);
 			return null;
 		}
 	}
@@ -44,17 +38,15 @@ public final class XmlParser
 	@SuppressWarnings("rawtypes")
 	public static List analyze(Document doc, String tagName)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		if (null == doc)
 		{
-			if (null != logger) logger.warn("the document is null.");
+			AlbianLoggerService.warn("the document is null.");
 			return null;
 		}
 
 		if (Validate.isNullOrEmptyOrAllSpace(tagName))
 		{
-			if (null != logger) logger.warn("the tagName is null or empty.");
+				AlbianLoggerService.warn("the tagName is null or empty.");
 			return null;
 		}
 		return doc.selectNodes(tagName);
@@ -62,11 +54,9 @@ public final class XmlParser
 
 	public static Element toElement(Object node)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		if (null == node)
 		{
-			if (null != logger) logger.warn("Node is null.");
+				AlbianLoggerService.warn("Node is null.");
 			return null;
 		}
 		return (Element) node;
@@ -74,16 +64,14 @@ public final class XmlParser
 
 	public static Element analyzeSingle(Document doc, String tagName)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		if (null == doc)
 		{
-			if (null != logger) logger.warn("the document is null.");
+				AlbianLoggerService.warn("the document is null.");
 			return null;
 		}
 		if (Validate.isNullOrEmptyOrAllSpace(tagName))
 		{
-			if (null != logger) logger.warn("tagName is null or empty.");
+				AlbianLoggerService.warn("tagName is null or empty.");
 			return null;
 		}
 		@SuppressWarnings("rawtypes")
@@ -96,16 +84,14 @@ public final class XmlParser
 
 	public static String getAttributeValue(Element elt, String attributeName)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		if (null == elt)
 		{
-			if (null != logger) logger.warn("the elt is null.");
+				AlbianLoggerService.warn("the elt is null.");
 			return null;
 		}
 		if (Validate.isNullOrEmptyOrAllSpace(attributeName))
 		{
-			if (null != logger) logger.warn("attribute name is null or empty.");
+				AlbianLoggerService.warn("attribute name is null or empty.");
 			return null;
 		}
 		Attribute attr = elt.attribute(attributeName);

@@ -2,9 +2,9 @@ package org.albianj.service.parser;
 
 import java.util.List;
 import java.util.Map;
+
 import org.albianj.io.Path;
-import org.albianj.kernel.AlbianServiceRouter;
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.service.AlbianServiceException;
 import org.albianj.service.FreeAlbianService;
 import org.albianj.service.IAlbianServiceAttribute;
@@ -26,7 +26,6 @@ public abstract class FreeServiceParser extends FreeAlbianService implements
 	public void init()
 	{
 		
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
 		Document doc = XmlParser.load(Path.getExtendResourcePath(path));
 		if(null == doc)
 		{
@@ -38,15 +37,13 @@ public abstract class FreeServiceParser extends FreeAlbianService implements
 		if (Validate.isNullOrEmpty(nodes))
 		{
 			String msg = String.format("There is not %1$s nodes.", tagName);
-			if (null != logger)
-				logger.error(msg);
+			AlbianLoggerService.error(msg);
 			throw new NullPointerException(msg);
 		}
 		Map<String, IAlbianServiceAttribute> map = parserServices(nodes);
 		if (null == map)
 		{
-			if(null != logger)
-				logger.error("The albian services is empty.");
+			AlbianLoggerService.error("The albian services is empty.");
 			return;
 		}
 		ServiceAttributeCached.insert(ALBIANJSERVICEKEY, map);

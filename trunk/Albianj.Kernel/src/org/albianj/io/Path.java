@@ -4,8 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.albianj.kernel.AlbianServiceRouter;
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 
 public final class Path
 {
@@ -39,8 +38,6 @@ public final class Path
 	
 	public static String getExtendResourcePath(@SuppressWarnings("rawtypes") Class cla,String relativePath)
 	{
-		IAlbianLoggerService logger = AlbianServiceRouter.getService(
-				IAlbianLoggerService.class, "logger");
 		URL resourceAbsoluteURL = null;
 		boolean isWindows = false;
 		String system = System.getProperty("os.name");
@@ -75,15 +72,12 @@ public final class Path
 			}
 			catch (MalformedURLException e)
 			{
-				// TODO Auto-generated catch block
-				if(null != logger)
-					logger.warn("url is error.msg:",e.getMessage());
+				AlbianLoggerService.warn(e,"url is error.");
 				return null;
 			}
 			catch (URISyntaxException e)
 			{
-				if(null != logger)
-					logger.warn("uri is error.msg:",e.getMessage());
+				AlbianLoggerService.warn(e,"uri is error.");
 				return null;
 			}
 		}

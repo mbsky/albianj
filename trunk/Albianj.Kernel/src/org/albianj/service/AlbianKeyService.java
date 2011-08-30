@@ -36,6 +36,7 @@ public class AlbianKeyService
 				,serial);
 	}
 	
+	@SuppressWarnings("static-access")
 	public synchronized static String generate32UUID()
 	{
 		return UUID.randomUUID().randomUUID().toString().replaceAll("-", "");

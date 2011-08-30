@@ -11,11 +11,11 @@ public class Validate
 		return null == collection || collection.isEmpty();
 	}
 	
-	public static boolean isNullOrEmpty(Map map)
+	public static boolean isNullOrEmpty(@SuppressWarnings("rawtypes") Map map)
 	{
 		return null == map || map.isEmpty();
 	}
-	public static boolean isNull(Map map)
+	public static boolean isNull(@SuppressWarnings("rawtypes") Map map)
 	{
 		return null == map;
 	}

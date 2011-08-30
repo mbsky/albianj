@@ -1,6 +1,6 @@
 package org.albianj.kernel;
 
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 
 public class ServiceThread extends Thread
 {
@@ -13,16 +13,9 @@ public class ServiceThread extends Thread
 		}
 		catch (Exception e)
 		{
-			IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
-			if(null != logger)
-			{
-				logger.error(String.format("start service is fail.Message:%1$s", e.getMessage()));
-			}
-			else
-			{
-				System.out.println(String.format("start service is fail.Message:%1$s", e.getMessage()));
+				AlbianLoggerService.error(e,"start service is fail.");
+				e.printStackTrace();
 				
-			}
 		}
 	}
 }

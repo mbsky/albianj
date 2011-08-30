@@ -1,6 +1,6 @@
 package org.albianj.kernel;
 
-import org.albianj.logger.IAlbianLoggerService;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.service.IAlbianService;
 
 public class AlbianServiceRouter
@@ -18,9 +18,7 @@ public class AlbianServiceRouter
 		}
 		catch(IllegalArgumentException exc)
 		{
-			IAlbianLoggerService logger = AlbianServiceRouter.getService(IAlbianLoggerService.class, "logger");
-			if(null != logger)
-				logger.error("Get service is error.Message:", exc.getMessage());
+				AlbianLoggerService.error(exc,"Get service is error.");
 			if(isThrowIfException)
 				throw exc;
 		}
