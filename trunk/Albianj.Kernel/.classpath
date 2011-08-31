@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/log4j-1.2.16.jar" sourcepath="D:/java/apache-log4j-1.2.16/src"/>
 	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/slf4j-api-1.6.2.jar" sourcepath="D:/java/slf4j-1.6.2/slf4j-api-1.6.2-sources.jar"/>
 	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/slf4j-log4j12-1.6.2.jar" sourcepath="D:/java/slf4j-1.6.2/slf4j-log4j12-1.6.2-sources.jar"/>
+	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/commons-codec-1.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
