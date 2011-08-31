@@ -9,109 +9,114 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
-/**
- * 基础加密组件
- * 
- * @author 梁栋
- * @version 1.0
- * @since 1.0
- */
-public abstract class Coder {
-	public static final String KEY_SHA = "SHA";
-	public static final String KEY_MD5 = "MD5";
+public abstract class Coder
+{
+	private static final String DEFAULT_SHA_KEY = "!@#$%^&*_ALBIAN_SHA_*&^%$#@!";
+	private static final String DEFAULT_MD5_KEY = "!@#$%^&*_ALBIAN_MD5_*&^%$#@!";
 
-	/**
-	 * MAC算法可选以下多种算法
-	 * 
-	 * <pre>
-	 * HmacMD5 
-	 * HmacSHA1 
-	 * HmacSHA256 
-	 * HmacSHA384 
-	 * HmacSHA512
-	 * </pre>
-	 */
-	public static final String KEY_MAC = "HmacMD5";
-
-	/**
-	 * BASE64解密
-	 * 
-	 * @param key
-	 * @return
-	 * @throws Exception
-	 */
-	public static byte[] decryptBASE64(String key) throws Exception {
+	public static byte[] decryptBASE64(String key) throws Exception
+	{
 		return Base64.decodeBase64(key);
 	}
 
-	/**
-	 * BASE64加密
-	 * 
-	 * @param key
-	 * @return
-	 * @throws Exception
-	 */
-	public static String encryptBASE64(byte[] key) throws Exception {
+	public static String encryptBASE64(byte[] key) throws Exception
+	{
 		return Base64.encodeBase64String(key);
 	}
 
-	/**
-	 * MD5加密
-	 * 
-	 * @param data
-	 * @return
-	 * @throws Exception
-	 */
-	public static byte[] encryptMD5(byte[] data) throws Exception {
+	public static byte[] encryptMD5(byte[] data) throws Exception
+	{
+		return encryptMD5(DEFAULT_MD5_KEY, data);
+	}
 
-		MessageDigest md5 = MessageDigest.getInstance(KEY_MD5);
+	public static byte[] encryptMD5(String key, byte[] data) throws Exception
+	{
+		MessageDigest md5 = MessageDigest.getInstance(key);
 		md5.update(data);
 		return md5.digest();
-
 	}
 
-	/**
-	 * SHA加密
-	 * 
-	 * @param data
-	 * @return
-	 * @throws Exception
-	 */
-	public static byte[] encryptSHA(byte[] data) throws Exception {
+	public static byte[] encryptSHA(byte[] data) throws Exception
+	{
+		return encryptSHA(DEFAULT_SHA_KEY, data);
+	}
 
-		MessageDigest sha = MessageDigest.getInstance(KEY_SHA);
+	public static byte[] encryptSHA(String key, byte[] data) throws Exception
+	{
+		MessageDigest sha = MessageDigest.getInstance(key);
 		sha.update(data);
-
 		return sha.digest();
-
 	}
 
-	/**
-	 * 初始化HMAC密钥
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	public static String initMacKey() throws Exception {
-		KeyGenerator keyGenerator = KeyGenerator.getInstance(KEY_MAC);
+	public static String encryptMD5(String data) throws Exception
+	{
+		return encryptBASE64(encryptMD5(decryptBASE64(data)));
+	}
+
+	public static String encryptSHA(String data) throws Exception
+	{
+		return encryptBASE64(encryptSHA(decryptBASE64(data)));
+	}
+
+	public static String initMacKey() throws Exception
+	{
+		return initMacKey(MACStyle.MD5);
+	}
+	
+	public static String initMacKey(MACStyle style) throws Exception
+	{
+		return initMacKey(StyleMapping.toMACStyleString(style));
+	}
+	
+	protected static String initMacKey(String key) throws Exception
+	{
+		KeyGenerator keyGenerator = KeyGenerator.getInstance(key);
 		SecretKey secretKey = keyGenerator.generateKey();
 		return encryptBASE64(secretKey.getEncoded());
 	}
-
-	/**
-	 * HMAC加密
-	 * 
-	 * @param data
-	 * @param key
-	 * @return
-	 * @throws Exception
-	 */
-	public static byte[] encryptHMAC(byte[] data, String key) throws Exception {
-		SecretKey secretKey = new SecretKeySpec(decryptBASE64(key), KEY_MAC);
+	
+	
+	public static String encryptHMAC(String key,MACStyle style,byte[] data) throws Exception
+	{
+		SecretKey secretKey = new SecretKeySpec(decryptBASE64(key), StyleMapping.toMACStyleString(style));
 		Mac mac = Mac.getInstance(secretKey.getAlgorithm());
 		mac.init(secretKey);
-
-		return mac.doFinal(data);
-
+		return encryptBASE64(mac.doFinal(data));
 	}
+	
+	public static String encryptHMAC(String key,MACStyle style,String data) throws Exception
+	{
+		SecretKey secretKey = new SecretKeySpec(decryptBASE64(key), StyleMapping.toMACStyleString(style));
+		Mac mac = Mac.getInstance(secretKey.getAlgorithm());
+		mac.init(secretKey);
+		return encryptBASE64(mac.doFinal(decryptBASE64(data)));
+	}
+	
+	public static String encryptHMAC(String key,byte[] data) throws Exception
+	{
+		return encryptHMAC(key,MACStyle.MD5,data);
+	}
+	
+	public static String encryptHMAC(String key,String data) throws Exception
+	{
+		return encryptHMAC(key,MACStyle.MD5,data);
+	}
+	
+//	public static byte[] encryptHMAC(String key,String macStyle,byte[] data) throws Exception
+//	{
+//		SecretKey secretKey = new SecretKeySpec(decryptBASE64(key), macStyle);
+//		Mac mac = Mac.getInstance(secretKey.getAlgorithm());
+//		mac.init(secretKey);
+//		return mac.doFinal(data);
+//
+//	}
+	
+//	public static byte[] encryptHMAC(String key,byte[] data) throws Exception
+//	{
+//		SecretKey secretKey = new SecretKeySpec(decryptBASE64(key), KEY_MAC);
+//		Mac mac = Mac.getInstance(secretKey.getAlgorithm());
+//		mac.init(secretKey);
+//		return mac.doFinal(data);
+//
+//	}
 }
