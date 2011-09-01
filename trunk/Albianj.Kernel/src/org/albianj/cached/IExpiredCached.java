@@ -1,10 +1,15 @@
 package org.albianj.cached;
 
-public interface IExpiredCached extends ICached
+
+public interface IExpiredCached
 {
 	void insert(String key, Object value, int seconds) throws IllegalArgumentException;
 
-	void update(String key, Object value, int seconds) throws IllegalArgumentException;
+	public boolean exist(String key) throws IllegalArgumentException;
 
-	void add(String key, Object value, int seconds) throws IllegalArgumentException;
+	public Object get(String key) throws IllegalArgumentException;
+
+	public void remove(String key) throws IllegalArgumentException;
+
+	public void clear();
 }
