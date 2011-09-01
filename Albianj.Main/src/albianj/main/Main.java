@@ -13,11 +13,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
+import java.util.concurrent.ThreadPoolExecutor;
 
+import org.albianj.algorithm.Hash;
 import org.albianj.io.Path;
 import org.albianj.kernel.AlbianBootService;
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.kernel.AlbianState;
+import org.albianj.logger.AlbianLoggerService;
 import org.albianj.logger.IAlbianLoggerService;
 import org.albianj.persistence.impl.context.IReaderJob;
 import org.albianj.persistence.impl.context.IReaderJobAdapter;
@@ -36,6 +39,10 @@ import org.albianj.persistence.object.RelationalOperator;
 import org.albianj.persistence.object.impl.FreeAlbianObject;
 import org.albianj.runtime.IStackTrace;
 import org.albianj.runtime.RuningTrace;
+import org.albianj.security.Coder;
+import org.albianj.security.DESCoder;
+import org.albianj.security.MACStyle;
+import org.albianj.service.AlbianKeyService;
 import org.albianj.xml.IParser;
 import org.apache.commons.dbcp.DelegatingStatement;
 import org.apache.log4j.Logger;
@@ -59,12 +66,34 @@ public class Main
 	 * @param args
 	 */
 
-	static Logger logger = Logger.getLogger(Main.class.getName());
+//	static Logger logger = Logger.getLogger(Main.class.getName());
 
 	public static void main(String[] args)
 	{
 		try
 		{
+			
+			String v1 = Coder.encryptMD5("Seapeak");
+			String v2 = Coder.encryptSHA("Seapeak");
+			System.out.println(v1);
+			System.out.println(v2);
+			String vv = Coder.encryptHMAC("key", MACStyle.SHA256, "data");
+			System.out.println(vv);
+			String v3 = DESCoder.encrypt("Seapeak");
+			System.out.println(v3);
+			String v4 = DESCoder.decrypt(v3);
+			System.out.println(v4);
+			String v5 = DESCoder.encrypt("key", "Seapeak");
+			String v6 = DESCoder.decrypt("key", v5);
+			System.out.println(v5);
+			System.out.println(v6);
+			
+			int value = Hash.hashPJW("seapeak");
+			System.out.println(value);
+			
+			
+//			ThreadPoolExecutor pool = new ThreadPoolExecutor();
+			
 			
 //			 DOMConfigurator.configure(Path.getExtendResourcePath("../config/log4_copy.xml"));
 //			 DOMConfigurator.configure(Path.getExtendResourcePath("../config/log4j.xml"));
@@ -108,61 +137,66 @@ public class Main
 			{
 				Thread.sleep(1000);
 			}
-			IAlbianLoggerService logger = AlbianServiceRouter.getService(
-					IAlbianLoggerService.class, "logger");
-			logger.info("i", "heat", "java");
+//			IAlbianLoggerService logger = AlbianServiceRouter.getService(
+//					IAlbianLoggerService.class, "logger");
+			AlbianLoggerService.debug("%s %s %s","i", "heat", "java");
 
 			try
 			{
-				ILogInfo log = new LogInfo();
-				log.setContent("add the user");
-				log.setCreateTime(new Date());
-				log.setId(UUID.randomUUID().toString());
-				log.setCreator("seapeak");
-//				log.setRemark("remark");
-				log.setStyle(log.LOGGER_USER_STYLE);
-
-				IUser user = new User();
-				user.setCreateTime(new Date());
-				user.setCreator("seapeak");
-				user.setId("aaaaa");
-				user.setLastModifier("Seapeak");
-				user.setLastMofidyTime(new Date());
-				user.setMail("xvhfeng@126.com");
-				user.setMobile("13611644029");
-				user.setPassword("password");
-				user.setUserName("xvhfeng");
-				user.setNickname("nickname");
-				user.setRegistrDate(new Date());
-
-				Vector<IAlbianObject> list = new Vector<IAlbianObject>();
-				list.add(log);
-				list.add(user);
-				boolean isSuccess = AlbianPersistenceService.create(list);
-				if (isSuccess)
-				{
-					logger.info("success");
-				}
-				
-				//96791e91-1864-4840-8279-dd378b8f
-				IReaderJobAdapter adapter = new ReaderJobAdapter();
-				IFilterCondition filter = new FilterCondition();
-				filter.setFieldName("id");
-				filter.setFieldClass(String.class);
-				filter.setLogicalOperation(LogicalOperation.Equal);
-				filter.setRelationalOperator(RelationalOperator.And);
-				filter.setValue("aaaaa");
-				List<IFilterCondition> filters = new Vector<IFilterCondition>();
-				filters.add(filter);
-				IReaderJob job = adapter.buildReaderJob(User.class, "", 0, 0, filters, null);
-				IQueryScope scope = new QueryScope();
-				List<User> users = scope.query(User.class, job);
+				String key = AlbianKeyService.generate("dd7777777777");
+				AlbianLoggerService.info(key);
+				AlbianLoggerService.info("%d",key.length());
 				return;
+//				return;
+//				ILogInfo log = new LogInfo();
+//				log.setContent("add the user");
+//				log.setCreateTime(new Date());
+//				log.setId(UUID.randomUUID().toString());
+//				log.setCreator("seapeak");
+////				log.setRemark("remark");
+//				log.setStyle(log.LOGGER_USER_STYLE);
+//
+//				IUser user = new User();
+//				user.setCreateTime(new Date());
+//				user.setCreator("seapeak");
+//				user.setId("aaaaa");
+//				user.setLastModifier("Seapeak");
+//				user.setLastMofidyTime(new Date());
+//				user.setMail("xvhfeng@126.com");
+//				user.setMobile("13611644029");
+//				user.setPassword("password");
+//				user.setUserName("xvhfeng");
+//				user.setNickname("nickname");
+//				user.setRegistrDate(new Date());
+//
+//				Vector<IAlbianObject> list = new Vector<IAlbianObject>();
+//				list.add(log);
+//				list.add(user);
+//				boolean isSuccess = AlbianPersistenceService.create(list);
+//				if (isSuccess)
+//				{
+//					logger.info("success");
+//				}
+//				
+//				//96791e91-1864-4840-8279-dd378b8f
+//				IReaderJobAdapter adapter = new ReaderJobAdapter();
+//				IFilterCondition filter = new FilterCondition();
+//				filter.setFieldName("id");
+//				filter.setFieldClass(String.class);
+//				filter.setLogicalOperation(LogicalOperation.Equal);
+//				filter.setRelationalOperator(RelationalOperator.And);
+//				filter.setValue("aaaaa");
+//				List<IFilterCondition> filters = new Vector<IFilterCondition>();
+//				filters.add(filter);
+//				IReaderJob job = adapter.buildReaderJob(User.class, "", 0, 0, filters, null);
+//				IQueryScope scope = new QueryScope();
+//				List<User> users = scope.query(User.class, job);
+//				return;
 				
 			}
 			catch (Exception e)
 			{
-				logger.error(e, "fail");
+				AlbianLoggerService.error(e, "fail");
 			}
 			//
 			// Field[] fields = getField(Order.class);

@@ -6,6 +6,8 @@
   <Service Id="StorageService" Type="org.albianj.persistence.impl.storage.StorageService"/>
   <Service Id="RoutingService" Type="org.albianj.persistence.impl.routing.RoutingService"/>
   <Service Id="PersistenceService" Type="org.albianj.persistence.impl.persistence.PersistenceService"/>
+  <Service Id="LocalCacheService" Type="org.albianj.cached.impl.LocalCachedService"/>
+  <Service Id="ThreadPoolService" Type="org.albianj.concurrent.ThreadPoolService"/>
   
   <!-- business -->
 </Services>
