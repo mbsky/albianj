@@ -1,7 +1,5 @@
 package org.albianj.security;
 
-import java.security.MessageDigest;
-
 import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
@@ -24,38 +22,14 @@ public abstract class Coder
 		return Base64.encodeBase64String(key);
 	}
 
-	public static byte[] encryptMD5(byte[] data) throws Exception
-	{
-		return encryptMD5(DEFAULT_MD5_KEY, data);
-	}
-
-	public static byte[] encryptMD5(String key, byte[] data) throws Exception
-	{
-		MessageDigest md5 = MessageDigest.getInstance(key);
-		md5.update(data);
-		return md5.digest();
-	}
-
-	public static byte[] encryptSHA(byte[] data) throws Exception
-	{
-		return encryptSHA(DEFAULT_SHA_KEY, data);
-	}
-
-	public static byte[] encryptSHA(String key, byte[] data) throws Exception
-	{
-		MessageDigest sha = MessageDigest.getInstance(key);
-		sha.update(data);
-		return sha.digest();
-	}
-
 	public static String encryptMD5(String data) throws Exception
 	{
-		return encryptBASE64(encryptMD5(decryptBASE64(data)));
+		return encryptHMAC(DEFAULT_MD5_KEY,MACStyle.MD5,data);
 	}
 
 	public static String encryptSHA(String data) throws Exception
 	{
-		return encryptBASE64(encryptSHA(decryptBASE64(data)));
+		return encryptHMAC(DEFAULT_SHA_KEY,MACStyle.SHA1,data);
 	}
 
 	public static String initMacKey() throws Exception
@@ -101,22 +75,4 @@ public abstract class Coder
 	{
 		return encryptHMAC(key,MACStyle.MD5,data);
 	}
-	
-//	public static byte[] encryptHMAC(String key,String macStyle,byte[] data) throws Exception
-//	{
-//		SecretKey secretKey = new SecretKeySpec(decryptBASE64(key), macStyle);
-//		Mac mac = Mac.getInstance(secretKey.getAlgorithm());
-//		mac.init(secretKey);
-//		return mac.doFinal(data);
-//
-//	}
-	
-//	public static byte[] encryptHMAC(String key,byte[] data) throws Exception
-//	{
-//		SecretKey secretKey = new SecretKeySpec(decryptBASE64(key), KEY_MAC);
-//		Mac mac = Mac.getInstance(secretKey.getAlgorithm());
-//		mac.init(secretKey);
-//		return mac.doFinal(data);
-//
-//	}
 }
