@@ -15,7 +15,11 @@ import java.util.UUID;
 import java.util.Vector;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import net.rubyeye.xmemcached.MemcachedClient;
+
 import org.albianj.algorithm.Hash;
+import org.albianj.cached.service.ICacheService;
+import org.albianj.expiredcached.impl.ILocalCached;
 import org.albianj.io.Path;
 import org.albianj.kernel.AlbianBootService;
 import org.albianj.kernel.AlbianServiceRouter;
@@ -73,23 +77,23 @@ public class Main
 		try
 		{
 			
-			String v1 = Coder.encryptMD5("Seapeak");
-			String v2 = Coder.encryptSHA("Seapeak");
-			System.out.println(v1);
-			System.out.println(v2);
-			String vv = Coder.encryptHMAC("key", MACStyle.SHA256, "data");
-			System.out.println(vv);
-			String v3 = DESCoder.encrypt("Seapeak");
-			System.out.println(v3);
-			String v4 = DESCoder.decrypt(v3);
-			System.out.println(v4);
-			String v5 = DESCoder.encrypt("key", "Seapeak");
-			String v6 = DESCoder.decrypt("key", v5);
-			System.out.println(v5);
-			System.out.println(v6);
-			
-			int value = Hash.hashPJW("seapeak");
-			System.out.println(value);
+//			String v1 = Coder.encryptMD5("Seapeak");
+//			String v2 = Coder.encryptSHA("Seapeak");
+//			System.out.println(v1);
+//			System.out.println(v2);
+//			String vv = Coder.encryptHMAC("key", MACStyle.SHA256, "data");
+//			System.out.println(vv);
+//			String v3 = DESCoder.encrypt("Seapeak");
+//			System.out.println(v3);
+//			String v4 = DESCoder.decrypt(v3);
+//			System.out.println(v4);
+//			String v5 = DESCoder.encrypt("key", "Seapeak");
+//			String v6 = DESCoder.decrypt("key", v5);
+//			System.out.println(v5);
+//			System.out.println(v6);
+//			
+//			int value = Hash.hashPJW("seapeak");
+//			System.out.println(value);
 			
 			
 //			ThreadPoolExecutor pool = new ThreadPoolExecutor();
@@ -140,6 +144,19 @@ public class Main
 //			IAlbianLoggerService logger = AlbianServiceRouter.getService(
 //					IAlbianLoggerService.class, "logger");
 			AlbianLoggerService.debug("%s %s %s","i", "heat", "java");
+			
+			ICacheService service = AlbianServiceRouter.getService(ICacheService.class, "CacheService");
+			MemcachedClient client = service.getRemoterClient("list");
+			client.add("key", 1000, "value");
+			String value = client.get("key");
+			System.out.println(value);
+			
+			ILocalCached cache = service.getLocalCache("Single");
+			cache.put("kkkk", "i am success.");
+			String vvv = (String) cache.get("kkkk");
+			System.out.println(vvv);
+			
+			Thread.sleep(10 * 1000);
 
 			try
 			{

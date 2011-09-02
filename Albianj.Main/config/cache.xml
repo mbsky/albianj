@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Cache>
+	<Memcached>
+		<Group Id="list" Enable="true" Addresses="127.0.0.1:11211"
+			Weights="1" PoolSize="5" />
+	</Memcached>
+	<Local>
+		<Group Enable="true" Id="Single" Size="500" Seconds="300" />
+	</Local>
+</Cache>
