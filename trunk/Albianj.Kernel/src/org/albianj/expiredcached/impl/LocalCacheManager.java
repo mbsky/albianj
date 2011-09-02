@@ -1,9 +1,8 @@
-package org.albianj.cached.impl;
+package org.albianj.expiredcached.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.albianj.expiredcached.impl.Cache;
 
 public class LocalCacheManager
 {
@@ -36,19 +35,19 @@ public class LocalCacheManager
 	 */
 	public static void initializeCache(String name, int defaultMaxCacheSize)
 	{
-		Cache cache = (Cache) caches.get(name);
+		LocalCache cache = (LocalCache) caches.get(name);
 		if (cache == null)
 		{
-			caches.put(name, new Cache(name, defaultMaxCacheSize, maxLifetime));
+			caches.put(name, new LocalCache(name, defaultMaxCacheSize, maxLifetime));
 		}
 	}
 	
 	public static void initializeCache(String name, int defaultMaxCacheSize,int defaultSecond)
 	{
-		Cache cache = (Cache) caches.get(name);
+		LocalCache cache = (LocalCache) caches.get(name);
 		if (cache == null)
 		{
-			caches.put(name, new Cache(name, defaultMaxCacheSize, defaultSecond * 1000));
+			caches.put(name, new LocalCache(name, defaultMaxCacheSize, defaultSecond * 1000));
 		}
 	}
 
@@ -60,9 +59,9 @@ public class LocalCacheManager
 	 * @return the cache found, or null if no cache by that name has been
 	 *         initialized.
 	 */
-	public static Cache getCache(String name)
+	public static ILocalCached getCache(String name)
 	{
-		return (Cache) caches.get(name);
+		return (ILocalCached) caches.get(name);
 	}
 
 }
