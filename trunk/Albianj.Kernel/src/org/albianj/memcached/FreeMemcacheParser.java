@@ -33,5 +33,5 @@ public abstract class FreeMemcacheParser extends FreeAlbianService implements IP
 		return;
 	}
 	
-	protected abstract void parserGroups(List nodes);
+	protected abstract void parserGroups(@SuppressWarnings("rawtypes") List nodes);
 }
