@@ -7,10 +7,8 @@ import java.util.Set;
 public interface ILocalCached
 {
 
-	@SuppressWarnings("unchecked")
 	public Object put(Object key, Object value);
 
-	@SuppressWarnings("unchecked")
 	public Object put(Object key, Object value, long timespan);
 
 	public Object get(Object key);
@@ -33,16 +31,10 @@ public interface ILocalCached
 
 	public boolean containsValue(Object value);
 
-	@SuppressWarnings(
-	{
-			"rawtypes", "unchecked"
-	})
+	@SuppressWarnings("rawtypes")
 	public Set entrySet();
 
-	@SuppressWarnings(
-	{
-			"rawtypes", "unchecked"
-	})
+	@SuppressWarnings("rawtypes")
 	public Set keySet();
 
 	/**
