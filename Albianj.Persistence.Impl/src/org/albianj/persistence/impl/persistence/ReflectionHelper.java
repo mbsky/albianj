@@ -64,4 +64,14 @@ public class ReflectionHelper
 			return null;
 		}
 	}
+
+	public static String getClassName(Class<?> cls)
+	{
+		return cls.getName();
+	}
+	
+	public static String getSimpleName(Class<?> cls)
+	{
+		return cls.getSimpleName();
+	}
 }
