@@ -8,4 +8,6 @@ public interface ILocalGroup
 	public void setSize(int size);
 	public int getSeconds();
 	public void setSeconds(int seconds);
+	public boolean getEnable();
+	public void setEnable(boolean enable);
 }

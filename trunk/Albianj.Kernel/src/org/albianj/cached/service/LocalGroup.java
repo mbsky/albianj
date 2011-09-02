@@ -5,6 +5,7 @@ public class LocalGroup implements ILocalGroup
 	private String id = null;
 	private int size = 500;
 	private int seconds = 300;
+	private boolean enable = false;
 	
 	public String getId()
 	{
@@ -30,5 +31,12 @@ public class LocalGroup implements ILocalGroup
 	{
 		this.seconds = seconds;
 	}
-	
+	public boolean getEnable()
+	{
+		return this.enable;
+	}
+	public void setEnable(boolean enable)
+	{
+		this.enable = enable;
+	}
 }
