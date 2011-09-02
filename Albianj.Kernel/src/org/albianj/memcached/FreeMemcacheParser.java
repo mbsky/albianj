@@ -26,11 +26,17 @@ public abstract class FreeMemcacheParser extends FreeAlbianService implements IP
 		{
 			String msg = String.format("There is not %1$s nodes.", tagName);
 				AlbianLoggerService.error(msg);
-			throw new UnsupportedOperationException(msg);
+			return;
 		}
 //		List<IMemcacheGroup> groups = 
 				parserGroups(nodes);
 		return;
+	}
+	
+	public void loading()
+	{
+		init();
+		super.loading();
 	}
 	
 	protected abstract void parserGroups(@SuppressWarnings("rawtypes") List nodes);

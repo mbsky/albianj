@@ -53,10 +53,13 @@ public class AlbianRollingFileAppender extends RollingFileAppender
 	  synchronized
 	  void setFile(String fileName, boolean append, boolean bufferedIO, int bufferSize)
 	                                                                 throws IOException {
+		if(fileName.endsWith(this.suffix))
+		{
+			fileName = fileName.substring(0,fileName.lastIndexOf(this.getFileName()));
+		}
 	    StringBuilder sbFileName = new StringBuilder();
 			 SimpleDateFormat dateFormat=new SimpleDateFormat(this.format);   
-			 sbFileName.append(super.getFile())
-//			 append(super.getFile().endsWith(File.separator)? "" : File.pathSeparator)
+			 sbFileName.append(fileName)
 			 .append(this.getFileName()).append("_").append(dateFormat.format(new Date()))
 			 .append(".").append(this.suffix);	    	
 		 
