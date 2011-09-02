@@ -314,17 +314,14 @@ public class AlbianPersistenceService
 	{
 	    return doFindObject(cls,routingName, where);
 	}
-	
 	public static <T extends IAlbianObject> T findObject(Class<T> cls,String id)
 	{
 	return null;
 	}
-	
 	public static  <T extends IAlbianObject> T findObject(Class<T> cls,String routingName, String id)
 	{
 	   return null;
 	}
-	
 	public static <T extends IAlbianObject> T findObject(Class<T> cls,IFilterCondition[] where)
 	{
 	    return null;
@@ -470,7 +467,7 @@ public class AlbianPersistenceService
 	//        throw;
 	//    }
 	}
-	protected static  <T extends IAlbianObject> T doFindObject(Class<T> cls,Statement statement)
+	protected static  <T extends IAlbianObject> T doFindObject(Class<T> cls,String cacheKey,CommandType cmdType,Statement statement)
 	{
 		return null;
 	//    try
@@ -508,23 +505,9 @@ public class AlbianPersistenceService
 	//        throw exc;
 	//    }
 	}
-	protected static  <T extends IAlbianObject> List<T> doFindObjects(Class<T> cls,Statement statement)
+	protected static  <T extends IAlbianObject> List<T> doFindObjects(Class<T> cls,String cacheKey,CommandType cmdType,Statement statement)
 	{
 		return null;
-	//    try
-	//    {
-	//        IList<T> target = ResultCache.GetCachingObjects<T>(cmd);
-	//        if (null != target) return target;
-	//        target = DoLoadObjects<T>(cmd);
-	//        //ResultCache.CachingObjects(cmd, target);
-	//        return target;
-	//    }
-	//    catch (Exception exc)
-	//    {
-	//        if (null != Logger)
-	//            Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
-	//        throw exc;
-	//    }
 	}
 	
 	protected static  <T extends IAlbianObject> T doLoadObject(Class<T> cls,String routingName,  IFilterCondition[] wheres)
