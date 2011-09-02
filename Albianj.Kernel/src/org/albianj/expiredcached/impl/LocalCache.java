@@ -32,7 +32,7 @@ import java.util.*;
  * 
  * @author Matt Tucker
  */
-public class Cache {
+public class LocalCache implements ILocalCached {
 
 	/**
 	 * The map the keys and values are stored in.
@@ -97,7 +97,7 @@ public class Cache {
 	 *            being deleted. -1 means objects never expire.
 	 */
 	@SuppressWarnings("rawtypes")
-	public Cache(String name, int maxSize, long maxLifetime) {
+	public LocalCache(String name, int maxSize, long maxLifetime) {
 		this.name = name;
 		this.maxCacheSize = maxSize;
 		this.defaultLifetime = maxLifetime;
@@ -110,6 +110,9 @@ public class Cache {
 		ageList = new LinkedList();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#put(java.lang.Object, java.lang.Object)
+	 */
 	@SuppressWarnings("unchecked")
 	public synchronized Object put(Object key, Object value) {
 		// Delete an old entry if it exists.
@@ -147,6 +150,9 @@ public class Cache {
 		return value;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#put(java.lang.Object, java.lang.Object, long)
+	 */
 	@SuppressWarnings("unchecked")
 	public synchronized Object put(Object key, Object value,long timespan) {
 		// Delete an old entry if it exists.
@@ -189,6 +195,9 @@ public class Cache {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#get(java.lang.Object)
+	 */
 	public synchronized Object get(Object key) {
 		// First, clear all entries that have been in cache longer than the
 		// maximum defined age.
@@ -214,6 +223,9 @@ public class Cache {
 		return cacheObject.object;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#remove(java.lang.Object)
+	 */
 	public synchronized Object remove(Object key) {
 		CacheObject cacheObject = (CacheObject) map.get(key);
 		// If the object is not in cache, stop trying to remove it.
@@ -233,6 +245,9 @@ public class Cache {
 		return cacheObject.object;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#clear()
+	 */
 	public synchronized void clear() {
 		Object[] keys = map.keySet().toArray();
 		for (int i = 0; i < keys.length; i++) {
@@ -251,6 +266,9 @@ public class Cache {
 		cacheMisses = 0;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#size()
+	 */
 	public int size() {
 		// First, clear all entries that have been in cache longer than the
 		// maximum defined age.
@@ -259,6 +277,9 @@ public class Cache {
 		return map.size();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#isEmpty()
+	 */
 	public boolean isEmpty() {
 		// First, clear all entries that have been in cache longer than the
 		// maximum defined age.
@@ -267,6 +288,9 @@ public class Cache {
 		return map.isEmpty();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#values()
+	 */
 	@SuppressWarnings("rawtypes")
 	public Collection values() {
 		// First, clear all entries that have been in cache longer than the
@@ -281,6 +305,9 @@ public class Cache {
 		return Collections.unmodifiableList(Arrays.asList(values));
 	}
 
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#containsKey(java.lang.Object)
+	 */
 	public boolean containsKey(Object key) {
 		// First, clear all entries that have been in cache longer than the
 		// maximum defined age.
@@ -289,6 +316,9 @@ public class Cache {
 		return map.containsKey(key);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#putAll(java.util.Map)
+	 */
 	@SuppressWarnings("rawtypes")
 	public void putAll(Map map) {
 		for (Iterator i = map.keySet().iterator(); i.hasNext();) {
@@ -298,6 +328,9 @@ public class Cache {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#containsValue(java.lang.Object)
+	 */
 	public boolean containsValue(Object value) {
 		// First, clear all entries that have been in cache longer than the
 		// maximum defined age.
@@ -308,6 +341,9 @@ public class Cache {
 		return map.containsValue(cacheObject);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#entrySet()
+	 */
 	@SuppressWarnings({
 			"rawtypes", "unchecked"
 	})
@@ -319,6 +355,9 @@ public class Cache {
 		return Collections.unmodifiableSet(map.entrySet());
 	}
 
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#keySet()
+	 */
 	@SuppressWarnings({
 			"rawtypes", "unchecked"
 	})
@@ -330,75 +369,43 @@ public class Cache {
 		return Collections.unmodifiableSet(map.keySet());
 	}
 
-	/**
-	 * Returns the name of this cache. The name is completely arbitrary and used
-	 * only for display to administrators.
-	 * 
-	 * @return the name of this cache.
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#getName()
 	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * Returns the number of cache hits. A cache hit occurs every time the get
-	 * method is called and the cache contains the requested object.
-	 * <p>
-	 * 
-	 * Keeping track of cache hits and misses lets one measure how efficient the
-	 * cache is; the higher the percentage of hits, the more efficient.
-	 * 
-	 * @return the number of cache hits.
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#getCacheHits()
 	 */
 	public long getCacheHits() {
 		return cacheHits;
 	}
 
-	/**
-	 * Returns the number of cache misses. A cache miss occurs every time the
-	 * get method is called and the cache does not contain the requested object.
-	 * <p>
-	 * 
-	 * Keeping track of cache hits and misses lets one measure how efficient the
-	 * cache is; the higher the percentage of hits, the more efficient.
-	 * 
-	 * @return the number of cache hits.
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#getCacheMisses()
 	 */
 	public long getCacheMisses() {
 		return cacheMisses;
 	}
 
-	/**
-	 * Returns the size of the cache contents in bytes. This value is only a
-	 * rough approximation, so cache users should expect that actual VM memory
-	 * used by the cache could be significantly higher than the value reported
-	 * by this method.
-	 * 
-	 * @return the size of the cache contents in bytes.
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#getCacheSize()
 	 */
 	public int getCacheSize() {
 		return cacheSize;
 	}
 
-	/**
-	 * Returns the maximum size of the cache (in bytes). If the cache grows
-	 * larger than the max size, the least frequently used items will be
-	 * removed. If the max cache size is set to -1, there is no size limit.
-	 * 
-	 * @return the maximum size of the cache (-1 indicates unlimited max size).
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#getMaxCacheSize()
 	 */
 	public int getMaxCacheSize() {
 		return maxCacheSize;
 	}
 
-	/**
-	 * Sets the maximum size of the cache. If the cache grows larger than the
-	 * max size, the least frequently used items will be removed. If the max
-	 * cache size is set to -1, there is no size limit.
-	 * 
-	 * @param maxCacheSize
-	 *            the maximum size of this cache (-1 indicates unlimited max
-	 *            size).
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#setMaxCacheSize(int)
 	 */
 	public void setMaxCacheSize(int maxCacheSize) {
 		this.maxCacheSize = maxCacheSize;
@@ -407,26 +414,15 @@ public class Cache {
 		cullCache();
 	}
 
-	/**
-	 * Returns the maximum number of milleseconds that any object can live in
-	 * cache. Once the specified number of milleseconds passes, the object will
-	 * be automatically expried from cache. If the max lifetime is set to -1,
-	 * then objects never expire.
-	 * 
-	 * @return the maximum number of milleseconds before objects are expired.
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#getDefaultLifetime()
 	 */
 	public long getDefaultLifetime() {
 		return defaultLifetime;
 	}
 
-	/**
-	 * Sets the maximum number of milleseconds that any object can live in
-	 * cache. Once the specified number of milleseconds passes, the object will
-	 * be automatically expried from cache. If the max lifetime is set to -1,
-	 * then objects never expire.
-	 * 
-	 * @param maxLifetime
-	 *            the maximum number of milleseconds before objects are expired.
+	/* (non-Javadoc)
+	 * @see org.albianj.expiredcached.impl.ICache#setDefaultLifetime(long)
 	 */
 	public void setDefaultLifetime(long defaultLifetime) {
 		this.defaultLifetime = defaultLifetime;

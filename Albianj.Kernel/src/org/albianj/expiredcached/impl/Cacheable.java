@@ -11,7 +11,7 @@ package org.albianj.expiredcached.impl;
  * to minimize the computation time so that cache operations are speedy.
  * 
  * @author Jive Software
- * @see org.jivesoftware.util.Cache
+ * @see org.LocalCache.util.Cache
  */
 public interface Cacheable extends java.io.Serializable {
 
