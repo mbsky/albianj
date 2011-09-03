@@ -6,8 +6,9 @@ import java.util.Map;
 
 public class LocalCacheManager
 {
+	@SuppressWarnings("rawtypes")
 	private static Map caches = new HashMap();
-	private static long maxLifetime = 300 * 1000;
+	private static int maxLifetime = 300;
 
 	/**
 	 * <p>
@@ -35,13 +36,10 @@ public class LocalCacheManager
 	 */
 	public static void initializeCache(String name, int defaultMaxCacheSize)
 	{
-		LocalCache cache = (LocalCache) caches.get(name);
-		if (cache == null)
-		{
-			caches.put(name, new LocalCache(name, defaultMaxCacheSize, maxLifetime));
-		}
+		initializeCache(name,defaultMaxCacheSize,maxLifetime);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void initializeCache(String name, int defaultMaxCacheSize,int defaultSecond)
 	{
 		LocalCache cache = (LocalCache) caches.get(name);
