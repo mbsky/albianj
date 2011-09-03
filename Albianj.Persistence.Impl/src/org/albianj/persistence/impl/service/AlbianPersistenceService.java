@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import org.albianj.persistence.impl.cached.AlbianObjectsCached;
 import org.albianj.persistence.impl.context.ICompensateCallback;
 import org.albianj.persistence.impl.context.INotify;
 import org.albianj.persistence.impl.context.IReaderJob;
@@ -17,7 +18,9 @@ import org.albianj.persistence.impl.db.IQueryScope;
 import org.albianj.persistence.impl.db.ITransactionClusterScope;
 import org.albianj.persistence.impl.db.QueryScope;
 import org.albianj.persistence.impl.db.TransactionClusterScope;
+import org.albianj.persistence.impl.dbcached.CacheOperator;
 import org.albianj.persistence.object.IAlbianObject;
+import org.albianj.persistence.object.IAlbianObjectAttribute;
 import org.albianj.persistence.object.IFilterCondition;
 import org.albianj.persistence.object.IOrderByCondition;
 import org.albianj.persistence.object.LogicalOperation;
@@ -310,67 +313,85 @@ public class AlbianPersistenceService
 	
 
 	
-	public static <T extends IAlbianObject> T findObject(Class<T> cls,String routingName, IFilterCondition[] where)
+	public static <T extends IAlbianObject> T findObject(Class<T> cls,String routingName, IFilterCondition[] wheres)
 	{
-	    return doFindObject(cls,routingName, where);
+	    return doFindObject(cls,routingName, wheres);
 	}
 	public static <T extends IAlbianObject> T findObject(Class<T> cls,String id)
 	{
-	return null;
+		IFilterCondition[] wheres = new IFilterCondition[1];
+		wheres[0].setFieldClass(String.class);
+		wheres[0].setFieldName("id");
+		wheres[0].setLogicalOperation(LogicalOperation.Equal);
+		wheres[0].setRelationalOperator(RelationalOperator.And);
+		wheres[0].setValue(id);
+		
+		return doFindObject(cls, null, wheres);
 	}
 	public static  <T extends IAlbianObject> T findObject(Class<T> cls,String routingName, String id)
 	{
-	   return null;
+		IFilterCondition[] wheres = new IFilterCondition[1];
+		wheres[0].setFieldClass(String.class);
+		wheres[0].setFieldName("id");
+		wheres[0].setLogicalOperation(LogicalOperation.Equal);
+		wheres[0].setRelationalOperator(RelationalOperator.And);
+		wheres[0].setValue(id);
+		
+		return doFindObject(cls, routingName, wheres);
 	}
-	public static <T extends IAlbianObject> T findObject(Class<T> cls,IFilterCondition[] where)
+	public static <T extends IAlbianObject> T findObject(Class<T> cls,IFilterCondition[] wheres)
 	{
-	    return null;
+	    return doFindObject(cls, null, wheres);
 	}
-	public static <T extends IAlbianObject> T findObject(Class<T> cls,Statement statement)
+	public static <T extends IAlbianObject> T findObject(Class<T> cls,String cacheKey,CommandType cmdType,Statement statement)
 	{
-		return null;
+		return doFindObject(cls, cacheKey, cmdType, statement);
 	}
 	
-	public static <T extends IAlbianObject> List<T> findObjects(Class<T> cls,int top, IFilterCondition[] where, IOrderByCondition[] orderby)
+	public static <T extends IAlbianObject> List<T> findObjects(Class<T> cls,int start,int step, IFilterCondition[] wheres, IOrderByCondition[] orderbys)
 	{
-		return null;
+		return doFindObjects(cls, null, start, step, wheres, orderbys);
 	}
-	public static <T extends IAlbianObject> List<T> findObjects(Class<T> cls,IFilterCondition[] where)
+	public static <T extends IAlbianObject> List<T> findObjects(Class<T> cls,IFilterCondition[] wheres)
 	{
-	    return null;
+	    return doFindObjects(cls, null, 0, 30, wheres, null);
 	}
-	public static <T extends IAlbianObject> List<T> findObjects(Class<T> cls, IFilterCondition[] where, IOrderByCondition[] orderby)
+	public static <T extends IAlbianObject> List<T> findObjects(Class<T> cls, IFilterCondition[] wheres, IOrderByCondition[] orderbys)
 	{
-	    return null;
+	    return doFindObjects(cls, null, 0, 30, wheres, orderbys);
 	}
-	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,IOrderByCondition[] orderby)
+	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,IOrderByCondition[] orderbys)
 	{
-	    return null;
+	    return doFindObjects(cls, null, 0, 30, null, orderbys);
 	}
-	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,String routingName, IFilterCondition[] where, IOrderByCondition[] orderby)
+	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,String routingName, IFilterCondition[] wheres, IOrderByCondition[] orderbys)
 	{
-	    return null;
+	    return doFindObjects(cls, routingName, 0, 30, wheres, orderbys);
 	}
-	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,String routingName, IOrderByCondition[] orderby)
+	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,String routingName, IOrderByCondition[] orderbys)
 	{
-		return null;
+		return doFindObjects(cls, routingName, 0, 30, null, orderbys);
 	}
-	public static <T extends IAlbianObject> List<T> findObjects(Class<T> cls,String routingName, IFilterCondition[] where)
+	public static <T extends IAlbianObject> List<T> findObjects(Class<T> cls,String routingName, IFilterCondition[] wheres)
 	{
-		return null;
+		return doFindObjects(cls, routingName, 0, 30, wheres, null);
 	}
-	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,String routingName, int top, IFilterCondition[] where,
-	                                      IOrderByCondition[] orderby)
+	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,String routingName, int start,int step, IFilterCondition[] wheres,
+	                                      IOrderByCondition[] orderbys)
 	{
-		return null;
+		return doFindObjects(cls, routingName, start, step, wheres, orderbys);
 	}
-	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,String routingName, int top, IFilterCondition[] where)
+	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,String routingName, int start,int step, IFilterCondition[] wheres)
 	{
-		return null;
+		return doFindObjects(cls, routingName, start, step, wheres, null);
 	}
-	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,Statement statement)
+	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,String routingName, int start,int step, IOrderByCondition[] orderbys)
 	{
-		return null;
+		return doFindObjects(cls, routingName, start, step, null, orderbys);
+	}
+	public static  <T extends IAlbianObject> List<T> findObjects(Class<T> cls,String cacheKey,CommandType cmdType,Statement statement)
+	{
+		return doFindObjects(cls, cacheKey, cmdType, statement);
 	}
 	
 	public static  <T extends IAlbianObject> T loadObject(Class<T> cls,String routingName, IFilterCondition[] wheres)
@@ -449,65 +470,51 @@ public class AlbianPersistenceService
 		return doLoadObjects(cls, cmdType, statement);
 	}
 	
-	protected static  <T extends IAlbianObject> T doFindObject(Class<T> cls,String routingName, IFilterCondition[] where)
+	protected static  <T extends IAlbianObject> T doFindObject(Class<T> cls,String routingName, IFilterCondition[] wheres)
 	{
-		return null;
-	//    try
-	//    {
-	//        T target = ResultCache.GetCachingObject<T>(routingName, where);
-	//        if (null != target) return target;
-	//        target = DoLoadObject<T>(routingName, where);
-	//        //ResultCache.CachingObject(routingName, where, target);
-	//        return target;
-	//    }
-	//    catch (Exception exc)
-	//    {
-	//        if (null != Logger)
-	//            Logger.ErrorFormat("Find Object is error.info:{0}.", exc.Message);
-	//        throw;
-	//    }
+		Object obj = CacheOperator.getObjectFromRemoterCache(cls,0,0, wheres, null);
+		if(null != obj) return (T) obj;
+		T newObj = doLoadObject(cls, routingName, wheres);
+		if(null == newObj) return null;
+		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached
+				.get(cls.getName());
+		CacheOperator.storeObjectToRemoterCache(cls, 0,0,wheres, null, newObj, null == albianObject.getCache() ? 300 : albianObject.getCache().getLifeTime());
+		return newObj;
 	}
 	protected static  <T extends IAlbianObject> T doFindObject(Class<T> cls,String cacheKey,CommandType cmdType,Statement statement)
 	{
-		return null;
-	//    try
-	//    {
-	//        T target = ResultCache.GetCachingObject<T>(cmd);
-	//        if (null != target) return target;
-	//        target = DoLoadObject<T>(cmd);
-	//        //ResultCache.CachingObject(cmd, target);
-	//        return target;
-	//    }
-	//    catch (Exception exc)
-	//    {
-	//        if (null != Logger)
-	//            Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
-	//        throw;
-	//    }
+		Object obj = CacheOperator.getObjectFromRemoterCache(cacheKey);
+		if(null != obj) return (T) obj;
+		T newObj = doLoadObject(cls, cmdType, statement);
+		if(null == newObj) return null;
+		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached
+				.get(cls.getName());
+		CacheOperator.storeObjectToRemoterCache(cacheKey, newObj, null == albianObject.getCache() ? 300 : albianObject.getCache().getLifeTime());
+		return newObj;
 	}
 	
-	protected static  <T extends IAlbianObject> List<T> doFindObjects(Class<T> cls,String routingName, int start,int step, IFilterCondition[] where,
-	                                         IOrderByCondition[] orderby)
+	protected static  <T extends IAlbianObject> List<T> doFindObjects(Class<T> cls,String routingName, int start,int step, IFilterCondition[] wheres,
+	                                         IOrderByCondition[] orderbys)
 	{
-		return null;
-	//    try
-	//    {
-	//        IList<T> target = ResultCache.GetCachingObjects<T>(routingName, top, where, orderby);
-	//        if (null != target) return target;
-	//        target = DoLoadObjects<T>(routingName, top, where, orderby);
-	//        //ResultCache.CachingObjects(routingName, top, where, orderby, target);
-	//        return target;
-	//    }
-	//    catch (Exception exc)
-	//    {
-	//        if (null != Logger)
-	//            Logger.ErrorFormat("Find Object is error..info:{0}.", exc.Message);
-	//        throw exc;
-	//    }
+		Object obj = CacheOperator.getObjectFromLocalCache(cls, start,step,wheres, orderbys);
+		if(null != obj) return (List<T>) obj;
+		List<T> newObj = doLoadObjects(cls, routingName,start,step, wheres,orderbys);
+		if(null == newObj) return null;
+		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached
+				.get(cls.getName());
+		CacheOperator.storeObjectToRemoterCache(cls, start,step,wheres, null, newObj, null == albianObject.getCache() ? 300 : albianObject.getCache().getLifeTime());
+		return newObj;
 	}
 	protected static  <T extends IAlbianObject> List<T> doFindObjects(Class<T> cls,String cacheKey,CommandType cmdType,Statement statement)
 	{
-		return null;
+		Object obj = CacheOperator.getObjectFromLocalCache(cacheKey);
+		if(null != obj) return (List<T>) obj;
+		List<T> newObj = doLoadObjects(cls, cmdType, statement);
+		if(null == newObj) return null;
+		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached
+				.get(cls.getName());
+		CacheOperator.storeObjectToRemoterCache(cacheKey, newObj, null == albianObject.getCache() ? 300 : albianObject.getCache().getLifeTime());
+		return newObj;
 	}
 	
 	protected static  <T extends IAlbianObject> T doLoadObject(Class<T> cls,String routingName,  IFilterCondition[] wheres)
