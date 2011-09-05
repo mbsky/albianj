@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Services>
+	<!-- Kernel -->
+	<Service Id="logger" Type="org.albianj.logger.AlbianLoggerService" />
+	<Service Id="Kernel" Type="org.albianj.service.parser.KernelServiceParser" />
+	<Service Id="MgrService" Type="albianj.mgr.service.MgrService" />
+	<Service Id="ThreadPoolService" Type="org.albianj.concurrent.ThreadPoolService" />
+	<!-- business -->
+</Services>
