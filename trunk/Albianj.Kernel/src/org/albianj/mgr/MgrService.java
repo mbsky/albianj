@@ -18,9 +18,6 @@ import org.albianj.service.FreeAlbianService;
 import org.albianj.service.parser.PropertiesParser;
 import org.albianj.socket.client.TcpClient;
 import org.albianj.verify.Validate;
-import org.albianj.xml.IParser;
-
-import com.google.code.yanf4j.nio.TCPController;
 
 public class MgrService extends FreeAlbianService implements IMgrService
 {
