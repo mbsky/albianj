@@ -2,6 +2,7 @@ package org.albianj.kernel;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.albianj.logger.AlbianLoggerService;
 import org.albianj.service.AlbianServiceException;
@@ -25,7 +26,6 @@ public final class AlbianBootService
 	public static void start() throws Exception
 	{
 		Thread thread = new ServiceThread(); 
-		
 		thread.start();
 	}
 	
@@ -96,4 +96,25 @@ public final class AlbianBootService
 		}
 		return "";
 	}
+	
+	public static void unload() throws Exception
+	{
+		Set<String> keys = ServiceCached.getKeys();
+		for(String key : keys)
+		{
+			try
+			{
+				IAlbianService service = (IAlbianService) ServiceCached.get(key);
+				service.beforeUnload();
+				service.unload();
+				service.afterUnload();
+			}
+			catch(Exception e)
+			{
+				AlbianLoggerService.error(e, "unload the service is error.");
+				e.printStackTrace();
+			}
+		}
+	}
+
 }

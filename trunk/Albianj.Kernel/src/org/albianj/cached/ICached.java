@@ -1,5 +1,7 @@
 package org.albianj.cached;
 
+import java.util.Set;
+
 public interface ICached
 {
 	public boolean exist(String key) throws IllegalArgumentException;
@@ -11,6 +13,7 @@ public interface ICached
 	public void remove(String key) throws IllegalArgumentException;
 
 	public void clear();
+	public Set<String> getKeys();
 	
 //	public boolean hasNext();
 //	public Object getNext();

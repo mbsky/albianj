@@ -6,6 +6,7 @@ import org.albianj.io.Path;
 import org.albianj.kernel.KernelSetting;
 import org.albianj.logger.AlbianLoggerService;
 import org.albianj.service.FreeAlbianService;
+import org.albianj.verify.Validate;
 
 public class KernelServiceParser extends FreeAlbianService implements IServiceParser
 {
@@ -26,8 +27,31 @@ public class KernelServiceParser extends FreeAlbianService implements IServicePa
 	
 	public void parser(Properties props)
 	{
-		KernelSetting.setKernelId(PropertiesParser.getValue(props, "Id"));
+		String id = PropertiesParser.getValue(props, "Id");
+		if(Validate.isNullOrEmptyOrAllSpace(id)) throw new RuntimeException("the kernel is is null pr empty.");
+		KernelSetting.setKernelId(id);
 		KernelSetting.setKernelKey(PropertiesParser.getValue(props, "Key"));
+		String appName = PropertiesParser.getValue(props, "AppName");
+		if(Validate.isNullOrEmptyOrAllSpace(appName)) throw new RuntimeException("The appName is null or empty.");
+		KernelSetting.setAppName(appName);
+		String coreSize = PropertiesParser.getValue(props, "ThreadPoolCoreSize");
+		if(Validate.isNullOrEmptyOrAllSpace(coreSize))
+		{
+			KernelSetting.setThreadPoolCoreSize(5);
+		}
+		else
+		{
+			KernelSetting.setThreadPoolCoreSize(new Integer(coreSize));
+		}
+		String maxSize = PropertiesParser.getValue(props, "ThreadPoolMaxSize");
+		if(Validate.isNullOrEmptyOrAllSpace(maxSize))
+		{
+			KernelSetting.setThreadPoolMaxSize(Runtime.getRuntime().availableProcessors() * 2 + 1);
+		}
+		else
+		{
+			KernelSetting.setThreadPoolMaxSize(new Integer(maxSize));
+		}
 	}
 
 
