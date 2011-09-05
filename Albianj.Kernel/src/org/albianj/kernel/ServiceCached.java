@@ -2,6 +2,8 @@ package org.albianj.kernel;
 
 //import java.util.HashMap;
 
+import java.util.Set;
+
 import org.albianj.cached.ICached;
 //import org.albianj.cached.impl.FreeCached;
 //import org.albianj.cached.impl.HashCached;
@@ -40,5 +42,10 @@ public class ServiceCached
 	public synchronized static void clear()
 	{
 		cached.clear();
+	}
+
+	public synchronized static Set<String> getKeys()
+	{
+		return cached.getKeys();
 	}
 }

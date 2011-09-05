@@ -1,9 +1,8 @@
 package org.albianj.logger;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
+import org.albianj.datetime.DateTime;
 import org.apache.log4j.RollingFileAppender;
 
 public class AlbianRollingFileAppender extends RollingFileAppender
@@ -58,9 +57,9 @@ public class AlbianRollingFileAppender extends RollingFileAppender
 			fileName = fileName.substring(0,fileName.lastIndexOf(this.getFileName()));
 		}
 	    StringBuilder sbFileName = new StringBuilder();
-			 SimpleDateFormat dateFormat=new SimpleDateFormat(this.format);   
+//			 SimpleDateFormat dateFormat=new SimpleDateFormat(this.format);   
 			 sbFileName.append(fileName)
-			 .append(this.getFileName()).append("_").append(dateFormat.format(new Date()))
+			 .append(this.getFileName()).append("_").append(DateTime.getDateTimeString())
 			 .append(".").append(this.suffix);	    	
 		 
 		 super.setFile(sbFileName.toString(), append, this.bufferedIO, this.bufferSize);

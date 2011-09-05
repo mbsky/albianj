@@ -1,6 +1,7 @@
 package org.albianj.cached.impl;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.albianj.cached.ICached;
 import org.albianj.verify.Validate;
@@ -54,6 +55,9 @@ public abstract class FreeCached implements ICached
 		map.clear();		
 	}
 
-//	public abstract  boolean hasNext();
-//	public abstract Object getNext();
+	
+	public Set<String> getKeys()
+	{
+		return map.keySet();
+	}
 }

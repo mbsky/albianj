@@ -4,6 +4,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.albianj.kernel.KernelSetting;
 import org.albianj.logger.AlbianLoggerService;
 import org.albianj.service.FreeAlbianService;
 
@@ -13,8 +14,8 @@ public class ThreadPoolService extends FreeAlbianService implements IThreadPoolS
 	
 	public void loading() throws org.albianj.service.AlbianServiceException
 	{
-		threadPool = new ThreadPoolExecutor(5, 15, 300,
-				TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(3),
+		threadPool = new ThreadPoolExecutor(KernelSetting.getThreadPoolCoreSize(),KernelSetting.getThreadPoolMaxSize() , 300,
+				TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(KernelSetting.getThreadPoolMaxSize() - KernelSetting.getThreadPoolCoreSize()),
 				new ThreadPoolExecutor.DiscardOldestPolicy());
 		super.loading();
 	}
