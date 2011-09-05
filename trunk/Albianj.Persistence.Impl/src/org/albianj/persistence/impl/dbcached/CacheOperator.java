@@ -5,10 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.concurrent.TimeoutException;
 
 import net.rubyeye.xmemcached.MemcachedClient;
-import net.rubyeye.xmemcached.exception.MemcachedException;
 
 import org.albianj.cached.service.ICacheService;
 import org.albianj.concurrent.IThreadPoolService;
@@ -77,7 +75,6 @@ public class CacheOperator
 			}
 			catch (IOException e)
 			{
-				// TODO Auto-generated catch block
 				AlbianLoggerService.warn(e,"close out stream is error when clone object.");
 			}
 			try
@@ -87,7 +84,6 @@ public class CacheOperator
 			}
 			catch (IOException e)
 			{
-				// TODO Auto-generated catch block
 				AlbianLoggerService.warn(e,"close bytes out stream is error when clone object.");
 			}
 			try
@@ -97,7 +93,6 @@ public class CacheOperator
 			}
 			catch (IOException e)
 			{
-				// TODO Auto-generated catch block
 				AlbianLoggerService.warn(e,"close in stream is error when clone object.");
 			}
 			try
@@ -107,7 +102,6 @@ public class CacheOperator
 			}
 			catch (IOException e)
 			{
-				// TODO Auto-generated catch block
 				AlbianLoggerService.warn(e,"close bytes in stream is error when clone object.");
 			}
 			

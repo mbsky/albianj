@@ -470,6 +470,7 @@ public class AlbianPersistenceService
 		return doLoadObjects(cls, cmdType, statement);
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected static  <T extends IAlbianObject> T doFindObject(Class<T> cls,String routingName, IFilterCondition[] wheres)
 	{
 		Object obj = CacheOperator.getObjectFromRemoterCache(cls,0,0, wheres, null);
@@ -481,6 +482,8 @@ public class AlbianPersistenceService
 		CacheOperator.storeObjectToRemoterCache(cls, 0,0,wheres, null, newObj, null == albianObject.getCache() ? 300 : albianObject.getCache().getLifeTime());
 		return newObj;
 	}
+	
+	@SuppressWarnings("unchecked")
 	protected static  <T extends IAlbianObject> T doFindObject(Class<T> cls,String cacheKey,CommandType cmdType,Statement statement)
 	{
 		Object obj = CacheOperator.getObjectFromRemoterCache(cacheKey);
@@ -493,6 +496,7 @@ public class AlbianPersistenceService
 		return newObj;
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected static  <T extends IAlbianObject> List<T> doFindObjects(Class<T> cls,String routingName, int start,int step, IFilterCondition[] wheres,
 	                                         IOrderByCondition[] orderbys)
 	{
@@ -505,6 +509,7 @@ public class AlbianPersistenceService
 		CacheOperator.storeObjectToRemoterCache(cls, start,step,wheres, null, newObj, null == albianObject.getCache() ? 300 : albianObject.getCache().getLifeTime());
 		return newObj;
 	}
+	@SuppressWarnings("unchecked")
 	protected static  <T extends IAlbianObject> List<T> doFindObjects(Class<T> cls,String cacheKey,CommandType cmdType,Statement statement)
 	{
 		Object obj = CacheOperator.getObjectFromLocalCache(cacheKey);
