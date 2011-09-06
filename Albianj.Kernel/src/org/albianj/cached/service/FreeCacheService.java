@@ -5,7 +5,7 @@ import java.util.List;
 import org.albianj.io.Path;
 import org.albianj.logger.AlbianLoggerService;
 import org.albianj.service.FreeAlbianService;
-import org.albianj.xml.IParser;
+import org.albianj.service.parser.IParser;
 import org.albianj.xml.XmlParser;
 import org.dom4j.Document;
 
