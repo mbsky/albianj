@@ -1,4 +1,4 @@
-package org.albianj.Controller.config1;
+package org.albianj.controller1.config;
 
 public class MgrServerSettings
 {

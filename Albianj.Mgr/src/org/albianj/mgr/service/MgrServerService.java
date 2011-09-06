@@ -2,7 +2,7 @@ package org.albianj.mgr.service;
 
 import java.util.Properties;
 
-import org.albianj.Controller.config1.MgrServerSettings;
+import org.albianj.controller1.config.MgrServerSettings;
 import org.albianj.io.Path;
 import org.albianj.logger.AlbianLoggerService;
 import org.albianj.service.FreeAlbianService;
