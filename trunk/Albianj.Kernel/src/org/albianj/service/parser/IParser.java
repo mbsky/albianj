@@ -1,4 +1,4 @@
-package org.albianj.xml;
+package org.albianj.service.parser;
 
 public interface IParser
 {
