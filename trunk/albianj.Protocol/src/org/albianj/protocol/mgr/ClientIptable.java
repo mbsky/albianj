@@ -2,26 +2,28 @@ package org.albianj.protocol.mgr;
 
 import com.google.gson.Gson;
 
-public class Iptable
+public class ClientIptable
 {
 	private String appName;
 	private String kernelId;
 	private String ip;
 	private String startTime;
 	private EngineState state = EngineState.Normal;
+	private String serialId;
 	
-	public Iptable()
+	public ClientIptable()
 	{
 		
 	}
 	
-	public Iptable(String json)
+	public ClientIptable(String json)
 	{
 		Gson gson = new Gson();
-		Iptable iptable = gson.fromJson(json, Iptable.class);
+		ClientIptable iptable = gson.fromJson(json, ClientIptable.class);
 		this.setAppName(iptable.getAppName());
 		this.setIp(iptable.getAppName());
 		this.setKernelId(iptable.getAppName());
+		this.setSerialId(iptable.getSerialId());
 		this.setStartTime(iptable.getStartTime());
 		this.setState(iptable.getState());
 	}
@@ -57,7 +59,6 @@ public class Iptable
 	{
 		this.startTime = startTime;
 	}
-	
 	public EngineState getState()
 	{
 		return this.state;
@@ -66,9 +67,17 @@ public class Iptable
 	{
 		this.state = state;
 	}
+	public void setSerialId(String serialId)
+	{
+		this.serialId = serialId;
+	}
+	public String getSerialId()
+	{
+		return this.serialId;
+	}
 	public String toString()
 	{
 		Gson gson = new Gson();
-		return  gson.toJson(this, Iptable.class);
+		return  gson.toJson(this, ClientIptable.class);
 	}
 }

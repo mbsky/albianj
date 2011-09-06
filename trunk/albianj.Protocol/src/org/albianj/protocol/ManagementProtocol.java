@@ -4,6 +4,7 @@ public class ManagementProtocol
 {
 	public static final byte REGISTER = 1;
 	public static final byte REPORT = 2;
+	public static final byte LOGOUT = 3;
 	public static final byte RESP = 127;
 	
 	public static final int HEADER_LEN = 10;
