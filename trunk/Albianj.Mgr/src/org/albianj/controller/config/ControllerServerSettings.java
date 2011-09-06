@@ -1,6 +1,6 @@
 package org.albianj.controller.config;
 
-public class MgrServerSettings
+public class ControllerServerSettings
 {
 	private static String host;
 	private static int port = 5035;
@@ -15,7 +15,7 @@ public class MgrServerSettings
 	}
 	public static void setHost(String host)
 	{
-		MgrServerSettings.host = host;
+		ControllerServerSettings.host = host;
 	}
 	public static int getPort()
 	{
@@ -23,7 +23,7 @@ public class MgrServerSettings
 	}
 	public static void setPort(int port)
 	{
-		MgrServerSettings.port = port;
+		ControllerServerSettings.port = port;
 	}
 	public static int getBacklog()
 	{
@@ -31,7 +31,7 @@ public class MgrServerSettings
 	}
 	public static void setBacklog(int backlog)
 	{
-		MgrServerSettings.backlog = backlog;
+		ControllerServerSettings.backlog = backlog;
 	}
 	public static int getReceiveBufferSize()
 	{
@@ -39,7 +39,7 @@ public class MgrServerSettings
 	}
 	public static void setReceiveBufferSize(int receiveBufferSize)
 	{
-		MgrServerSettings.receiveBufferSize = receiveBufferSize;
+		ControllerServerSettings.receiveBufferSize = receiveBufferSize;
 	}
 	public static boolean getReuseAddress()
 	{
@@ -47,7 +47,7 @@ public class MgrServerSettings
 	}
 	public static void setReuseAddress(boolean reuseAddress)
 	{
-		MgrServerSettings.reuseAddress = reuseAddress;
+		ControllerServerSettings.reuseAddress = reuseAddress;
 	}
 	public static int getTimeout()
 	{
@@ -55,7 +55,7 @@ public class MgrServerSettings
 	}
 	public static void setTimeout(int timeout)
 	{
-		MgrServerSettings.timeout = timeout;
+		ControllerServerSettings.timeout = timeout;
 	}
 	public static int getReport_timespan()
 	{
@@ -63,7 +63,7 @@ public class MgrServerSettings
 	}
 	public static void setReport_timespan(int report_timespan)
 	{
-		MgrServerSettings.report_timespan = report_timespan;
+		ControllerServerSettings.report_timespan = report_timespan;
 	}
 	
 }
