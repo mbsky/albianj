@@ -1,6 +1,6 @@
 package org.albianj.mgr.config;
 
-public class MgrSettings
+public class MgrServerSettings
 {
 	private static String host;
 	private static int port = 5035;
@@ -8,14 +8,14 @@ public class MgrSettings
 	private static int receiveBufferSize = 0;
 	private static boolean reuseAddress = true;
 	private static int timeout = 30;
-	
+	private static int report_timespan = 300;
 	public static String getHost()
 	{
 		return host;
 	}
 	public static void setHost(String host)
 	{
-		MgrSettings.host = host;
+		MgrServerSettings.host = host;
 	}
 	public static int getPort()
 	{
@@ -23,7 +23,7 @@ public class MgrSettings
 	}
 	public static void setPort(int port)
 	{
-		MgrSettings.port = port;
+		MgrServerSettings.port = port;
 	}
 	public static int getBacklog()
 	{
@@ -31,7 +31,7 @@ public class MgrSettings
 	}
 	public static void setBacklog(int backlog)
 	{
-		MgrSettings.backlog = backlog;
+		MgrServerSettings.backlog = backlog;
 	}
 	public static int getReceiveBufferSize()
 	{
@@ -39,7 +39,7 @@ public class MgrSettings
 	}
 	public static void setReceiveBufferSize(int receiveBufferSize)
 	{
-		MgrSettings.receiveBufferSize = receiveBufferSize;
+		MgrServerSettings.receiveBufferSize = receiveBufferSize;
 	}
 	public static boolean getReuseAddress()
 	{
@@ -47,7 +47,7 @@ public class MgrSettings
 	}
 	public static void setReuseAddress(boolean reuseAddress)
 	{
-		MgrSettings.reuseAddress = reuseAddress;
+		MgrServerSettings.reuseAddress = reuseAddress;
 	}
 	public static int getTimeout()
 	{
@@ -55,8 +55,15 @@ public class MgrSettings
 	}
 	public static void setTimeout(int timeout)
 	{
-		MgrSettings.timeout = timeout;
+		MgrServerSettings.timeout = timeout;
 	}
-	
+	public static int getReport_timespan()
+	{
+		return report_timespan;
+	}
+	public static void setReport_timespan(int report_timespan)
+	{
+		MgrServerSettings.report_timespan = report_timespan;
+	}
 	
 }

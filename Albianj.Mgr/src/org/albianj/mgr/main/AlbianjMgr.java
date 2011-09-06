@@ -4,7 +4,7 @@ import java.net.ServerSocket;
 
 import org.albianj.kernel.AlbianBootService;
 import org.albianj.kernel.AlbianState;
-import org.albianj.mgr.config.MgrSettings;
+import org.albianj.mgr.config.MgrServerSettings;
 import org.albianj.socket.server.TcpServer;
 
 
@@ -24,8 +24,8 @@ public class AlbianjMgr
 				Thread.sleep(1000);
 			}
 			TcpServer tcpServer = new TcpServer();
-			ServerSocket socket = tcpServer.create(MgrSettings.getHost(), MgrSettings.getPort(), MgrSettings.getBacklog(),
-					MgrSettings.getReceiveBufferSize(), MgrSettings.getReuseAddress(), MgrSettings.getTimeout());
+			ServerSocket socket = tcpServer.create(MgrServerSettings.getHost(), MgrServerSettings.getPort(), MgrServerSettings.getBacklog(),
+					MgrServerSettings.getReceiveBufferSize(), MgrServerSettings.getReuseAddress(), MgrServerSettings.getTimeout());
 			tcpServer.accept(socket,new Worker());		
 		}
 		catch (Exception e)

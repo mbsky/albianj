@@ -4,13 +4,13 @@ import java.util.Properties;
 
 import org.albianj.io.Path;
 import org.albianj.logger.AlbianLoggerService;
-import org.albianj.mgr.config.MgrSettings;
+import org.albianj.mgr.config.MgrServerSettings;
 import org.albianj.service.FreeAlbianService;
 import org.albianj.service.parser.PropertiesParser;
 import org.albianj.verify.Validate;
 
 
-public class MgrService extends FreeAlbianService
+public class MgrServerService extends FreeAlbianService
 {
 	private final static String path = "../config/mgr.properties";
 	public void init()
@@ -35,32 +35,37 @@ public class MgrService extends FreeAlbianService
 		String recvBuffSize = PropertiesParser.getValue(props, "receiveBufferSize");
 		String reuseAddress = PropertiesParser.getValue(props, "reuseAddress");
 		String timeout = PropertiesParser.getValue(props, "timeout");
+		String report_timespan = PropertiesParser.getValue(props, "report_timespan");
 		if(!Validate.isNullOrEmptyOrAllSpace(host))
 		{
-			MgrSettings.setHost(host);
+			MgrServerSettings.setHost(host);
 		}
 		if(!Validate.isNullOrEmptyOrAllSpace(port))
 		{
-			MgrSettings.setPort(new Integer(port));
+			MgrServerSettings.setPort(new Integer(port));
 		}
 		if(!Validate.isNullOrEmptyOrAllSpace(backlog))
 		{
-			MgrSettings.setBacklog(new Integer(backlog));
+			MgrServerSettings.setBacklog(new Integer(backlog));
 		}
 		if(!Validate.isNullOrEmptyOrAllSpace(recvBuffSize))
 		{
-			MgrSettings.setReceiveBufferSize(new Integer(recvBuffSize));
+			MgrServerSettings.setReceiveBufferSize(new Integer(recvBuffSize));
 		}
 		if(!Validate.isNullOrEmptyOrAllSpace(reuseAddress))
 		{
-			MgrSettings.setReuseAddress(new Boolean(reuseAddress));
+			MgrServerSettings.setReuseAddress(new Boolean(reuseAddress));
 		}
 		if(!Validate.isNullOrEmptyOrAllSpace(timeout))
 		{
-			MgrSettings.setTimeout(new Integer(timeout));
+			MgrServerSettings.setTimeout(new Integer(timeout));
 		}
+		if(!Validate.isNullOrEmptyOrAllSpace(report_timespan))
+		{
+			MgrServerSettings.setReport_timespan(new Integer(report_timespan));
+		}
+		
 	}
-
 
 	@Override
 	public void loading() throws RuntimeException
