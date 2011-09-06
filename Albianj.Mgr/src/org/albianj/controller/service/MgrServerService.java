@@ -1,8 +1,8 @@
-package org.albianj.mgr.service;
+package org.albianj.controller.service;
 
 import java.util.Properties;
 
-import org.albianj.controller.config.MgrServerSettings;
+import org.albianj.controller.config.ControllerServerSettings;
 import org.albianj.io.Path;
 import org.albianj.logger.AlbianLoggerService;
 import org.albianj.service.FreeAlbianService;
@@ -38,31 +38,31 @@ public class MgrServerService extends FreeAlbianService
 		String report_timespan = PropertiesParser.getValue(props, "report_timespan");
 		if(!Validate.isNullOrEmptyOrAllSpace(host))
 		{
-			MgrServerSettings.setHost(host);
+			ControllerServerSettings.setHost(host);
 		}
 		if(!Validate.isNullOrEmptyOrAllSpace(port))
 		{
-			MgrServerSettings.setPort(new Integer(port));
+			ControllerServerSettings.setPort(new Integer(port));
 		}
 		if(!Validate.isNullOrEmptyOrAllSpace(backlog))
 		{
-			MgrServerSettings.setBacklog(new Integer(backlog));
+			ControllerServerSettings.setBacklog(new Integer(backlog));
 		}
 		if(!Validate.isNullOrEmptyOrAllSpace(recvBuffSize))
 		{
-			MgrServerSettings.setReceiveBufferSize(new Integer(recvBuffSize));
+			ControllerServerSettings.setReceiveBufferSize(new Integer(recvBuffSize));
 		}
 		if(!Validate.isNullOrEmptyOrAllSpace(reuseAddress))
 		{
-			MgrServerSettings.setReuseAddress(new Boolean(reuseAddress));
+			ControllerServerSettings.setReuseAddress(new Boolean(reuseAddress));
 		}
 		if(!Validate.isNullOrEmptyOrAllSpace(timeout))
 		{
-			MgrServerSettings.setTimeout(new Integer(timeout));
+			ControllerServerSettings.setTimeout(new Integer(timeout));
 		}
 		if(!Validate.isNullOrEmptyOrAllSpace(report_timespan))
 		{
-			MgrServerSettings.setReport_timespan(new Integer(report_timespan));
+			ControllerServerSettings.setReport_timespan(new Integer(report_timespan));
 		}
 		
 	}

@@ -1,4 +1,4 @@
-package org.albianj.mgr.main;
+package org.albianj.controller.main;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.albianj.controller.config.MgrServerSettings;
+import org.albianj.controller.config.ControllerServerSettings;
 import org.albianj.datetime.DateTime;
 import org.albianj.logger.AlbianLoggerService;
 import org.albianj.protocol.Header;
@@ -138,7 +138,7 @@ public class Worker implements IWork
 							serverIptable.setState(clientIptable.getState());
 							return ManagementProtocol.SUCCESS;
 						}
-						else if(timespan > MgrServerSettings.getReport_timespan())
+						else if(timespan > ControllerServerSettings.getReport_timespan())
 						{
 							AlbianLoggerService.warn("The albianj enginess is Expired.the expired albianj engine is:%s,the new engine is %s.",
 									serverIptable.toString(),value);
