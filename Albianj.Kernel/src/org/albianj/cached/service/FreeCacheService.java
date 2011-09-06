@@ -18,7 +18,15 @@ public abstract class FreeCacheService extends FreeAlbianService implements
 
 	public void init()
 	{
-		Document doc = XmlParser.load(Path.getExtendResourcePath(path));
+		Document doc = null;
+		try
+		{
+			doc = XmlParser.load(Path.getExtendResourcePath(path));
+		}
+		catch(Exception e)
+		{
+			AlbianLoggerService.error(e, "There is error when parser the cache config file.");
+		}
 		if (null == doc) { throw new RuntimeException(
 				"load memcache config is error."); }
 		@SuppressWarnings("rawtypes")

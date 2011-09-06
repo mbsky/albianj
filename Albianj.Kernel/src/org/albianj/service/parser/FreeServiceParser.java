@@ -26,7 +26,15 @@ public abstract class FreeServiceParser extends FreeAlbianService implements
 	public void init()
 	{
 		
-		Document doc = XmlParser.load(Path.getExtendResourcePath(path));
+		Document doc = null;
+		try
+		{
+			doc = XmlParser.load(Path.getExtendResourcePath(path));
+		}
+		catch(Exception e)
+		{
+			AlbianLoggerService.error(e, "There is error when parser the service config file.");
+		}
 		if(null == doc)
 		{
 			throw new AlbianServiceException("load service.xml is error.");
