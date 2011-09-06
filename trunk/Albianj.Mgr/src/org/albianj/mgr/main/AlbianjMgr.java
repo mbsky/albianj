@@ -2,7 +2,7 @@ package org.albianj.mgr.main;
 
 import java.net.ServerSocket;
 
-import org.albianj.Controller.config1.MgrServerSettings;
+import org.albianj.controller1.config.MgrServerSettings;
 import org.albianj.kernel.AlbianBootService;
 import org.albianj.kernel.AlbianState;
 import org.albianj.socket.server.TcpServer;
