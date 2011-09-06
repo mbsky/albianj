@@ -1,6 +1,6 @@
 package org.albianj.mgr;
 
-public class MgrSettings
+public class MgrClientSettings
 {
 	private static String host;
 	private static int port = 5035;
@@ -11,13 +11,15 @@ public class MgrSettings
 	private static int soLinger = 30;
 	private static int soTimeout = 30;
 	private static boolean tcpNoDelay = true;
+	private static int report_timespan = 300; 
+
 	public static String getHost()
 	{
 		return host;
 	}
 	public static void setHost(String host)
 	{
-		MgrSettings.host = host;
+		MgrClientSettings.host = host;
 	}
 	public static int getPort()
 	{
@@ -25,7 +27,7 @@ public class MgrSettings
 	}
 	public static void setPort(int port)
 	{
-		MgrSettings.port = port;
+		MgrClientSettings.port = port;
 	}
 	public static boolean getKeepalive()
 	{
@@ -33,7 +35,7 @@ public class MgrSettings
 	}
 	public static void setKeepalive(boolean keepalive)
 	{
-		MgrSettings.keepalive = keepalive;
+		MgrClientSettings.keepalive = keepalive;
 	}
 	public static int getReceiveBufferSize()
 	{
@@ -41,7 +43,7 @@ public class MgrSettings
 	}
 	public static void setReceiveBufferSize(int receiveBufferSize)
 	{
-		MgrSettings.receiveBufferSize = receiveBufferSize;
+		MgrClientSettings.receiveBufferSize = receiveBufferSize;
 	}
 	public static boolean getReuseAddress()
 	{
@@ -49,7 +51,7 @@ public class MgrSettings
 	}
 	public static void setReuseAddress(boolean reuseAddress)
 	{
-		MgrSettings.reuseAddress = reuseAddress;
+		MgrClientSettings.reuseAddress = reuseAddress;
 	}
 	public static int getSendBufferSize()
 	{
@@ -57,7 +59,7 @@ public class MgrSettings
 	}
 	public static void setSendBufferSize(int sendBufferSize)
 	{
-		MgrSettings.sendBufferSize = sendBufferSize;
+		MgrClientSettings.sendBufferSize = sendBufferSize;
 	}
 	public static int getSoLinger()
 	{
@@ -65,7 +67,7 @@ public class MgrSettings
 	}
 	public static void setSoLinger(int soLinger)
 	{
-		MgrSettings.soLinger = soLinger;
+		MgrClientSettings.soLinger = soLinger;
 	}
 	public static int getSoTimeout()
 	{
@@ -73,7 +75,7 @@ public class MgrSettings
 	}
 	public static void setSoTimeout(int soTimeout)
 	{
-		MgrSettings.soTimeout = soTimeout;
+		MgrClientSettings.soTimeout = soTimeout;
 	}
 	public static boolean getTcpNoDelay()
 	{
@@ -81,8 +83,15 @@ public class MgrSettings
 	}
 	public static void setTcpNoDelay(boolean tcpNoDelay)
 	{
-		MgrSettings.tcpNoDelay = tcpNoDelay;
+		MgrClientSettings.tcpNoDelay = tcpNoDelay;
 	}
-	
+	public static void setReport_timespan(int report_timespan)
+	{
+		MgrClientSettings.report_timespan = report_timespan;
+	}
+	public static int getReport_timespan()
+	{
+		return report_timespan;
+	}
 
 }

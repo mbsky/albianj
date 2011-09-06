@@ -13,13 +13,13 @@ import org.albianj.kernel.AlbianState;
 import org.albianj.kernel.KernelSetting;
 import org.albianj.logger.AlbianLoggerService;
 import org.albianj.protocol.mgr.EngineState;
-import org.albianj.protocol.mgr.Iptable;
+import org.albianj.protocol.mgr.ClientIptable;
 import org.albianj.service.FreeAlbianService;
 import org.albianj.service.parser.PropertiesParser;
 import org.albianj.socket.client.TcpClient;
 import org.albianj.verify.Validate;
 
-public class MgrService extends FreeAlbianService implements IMgrService
+public class MgrClientService extends FreeAlbianService implements IMgrClientService
 {
 	private final static String path = "../config/mgr.properties";
 
@@ -55,39 +55,43 @@ public class MgrService extends FreeAlbianService implements IMgrService
 		String so_linger = PropertiesParser.getValue(props, "so_linger");
 		String so_timeout = PropertiesParser.getValue(props, "so_timeout");
 		String tcp_nodelay = PropertiesParser.getValue(props, "tcp_nodelay");
-
-		MgrSettings.setHost(host);
+		String report_timespan = PropertiesParser.getValue(props, "report_timespan");
+		MgrClientSettings.setHost(host);
 		if (!Validate.isNullOrEmptyOrAllSpace(port))
 		{
-			MgrSettings.setPort(new Integer(port));
+			MgrClientSettings.setPort(new Integer(port));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(so_keepalive))
 		{
-			MgrSettings.setKeepalive(new Boolean(so_keepalive));
+			MgrClientSettings.setKeepalive(new Boolean(so_keepalive));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(so_rcvbuf))
 		{
-			MgrSettings.setReceiveBufferSize(new Integer(so_rcvbuf));
+			MgrClientSettings.setReceiveBufferSize(new Integer(so_rcvbuf));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(so_reuseaddr))
 		{
-			MgrSettings.setReuseAddress(new Boolean(so_reuseaddr));
+			MgrClientSettings.setReuseAddress(new Boolean(so_reuseaddr));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(so_sndbuf))
 		{
-			MgrSettings.setSendBufferSize(new Integer(so_sndbuf));
+			MgrClientSettings.setSendBufferSize(new Integer(so_sndbuf));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(so_linger))
 		{
-			MgrSettings.setSoLinger(new Integer(so_linger));
+			MgrClientSettings.setSoLinger(new Integer(so_linger));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(so_timeout))
 		{
-			MgrSettings.setSoTimeout(new Integer(so_timeout));
+			MgrClientSettings.setSoTimeout(new Integer(so_timeout));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(tcp_nodelay))
 		{
-			MgrSettings.setTcpNoDelay(new Boolean(tcp_nodelay));
+			MgrClientSettings.setTcpNoDelay(new Boolean(tcp_nodelay));
+		}
+		if(!Validate.isNullOrEmptyOrAllSpace(report_timespan))
+		{
+			MgrClientSettings.setReport_timespan(new Integer(report_timespan));
 		}
 	}
 
@@ -113,24 +117,25 @@ public class MgrService extends FreeAlbianService implements IMgrService
 
 	public void regedit()
 	{
-		Iptable table = new Iptable();
-		table.setAppName(KernelSetting.getAppName());
+		ClientIptable table = new ClientIptable();
 		TcpClient client = new TcpClient();
 		Socket socket = null;
 		try
 		{
 			InetAddress ip4 = Inet4Address.getLocalHost();
 			table.setIp(ip4.getHostAddress());
+			table.setAppName(KernelSetting.getAppName());
 			table.setKernelId(KernelSetting.getKernelId());
-			table.setStartTime(DateTime.getDateTimeString());
+			table.setStartTime(DateTime.getDateTimeString(AlbianBootService.getStartDateTime()));
 			table.setState(EngineState.Starting);
+			table.setSerialId(AlbianBootService.getSerialId());
 
-			socket = client.create(MgrSettings.getHost(),
-					MgrSettings.getPort(), MgrSettings.getKeepalive(),
-					MgrSettings.getReceiveBufferSize(),
-					MgrSettings.getReuseAddress(),
-					MgrSettings.getSendBufferSize(), MgrSettings.getSoLinger(),
-					MgrSettings.getSoTimeout(), MgrSettings.getTcpNoDelay());
+			socket = client.create(MgrClientSettings.getHost(),
+					MgrClientSettings.getPort(), MgrClientSettings.getKeepalive(),
+					MgrClientSettings.getReceiveBufferSize(),
+					MgrClientSettings.getReuseAddress(),
+					MgrClientSettings.getSendBufferSize(), MgrClientSettings.getSoLinger(),
+					MgrClientSettings.getSoTimeout(), MgrClientSettings.getTcpNoDelay());
 			client.regist(socket, table);
 		}
 		catch (UnknownHostException e)
@@ -157,28 +162,29 @@ public class MgrService extends FreeAlbianService implements IMgrService
 						unload();
 						break;
 					}
-					Iptable table = new Iptable();
-					table.setAppName(KernelSetting.getAppName());
+					ClientIptable table = new ClientIptable();
 					TcpClient client = new TcpClient();
 					Socket socket = null;
 					try
 					{
 						InetAddress ip4 = Inet4Address.getLocalHost();
 						table.setIp(ip4.getHostAddress());
+						table.setAppName(KernelSetting.getAppName());
 						table.setKernelId(KernelSetting.getKernelId());
-						table.setStartTime(DateTime.getDateTimeString());
+						table.setStartTime(DateTime.getDateTimeString(AlbianBootService.getStartDateTime()));
+						table.setSerialId(AlbianBootService.getSerialId());
 						table.setState(EngineState.Runing);
 
-						socket = client.create(MgrSettings.getHost(),
-								MgrSettings.getPort(),
-								MgrSettings.getKeepalive(),
-								MgrSettings.getReceiveBufferSize(),
-								MgrSettings.getReuseAddress(),
-								MgrSettings.getSendBufferSize(),
-								MgrSettings.getSoLinger(),
-								MgrSettings.getSoTimeout(),
-								MgrSettings.getTcpNoDelay());
-						client.regist(socket, table);
+						socket = client.create(MgrClientSettings.getHost(),
+								MgrClientSettings.getPort(),
+								MgrClientSettings.getKeepalive(),
+								MgrClientSettings.getReceiveBufferSize(),
+								MgrClientSettings.getReuseAddress(),
+								MgrClientSettings.getSendBufferSize(),
+								MgrClientSettings.getSoLinger(),
+								MgrClientSettings.getSoTimeout(),
+								MgrClientSettings.getTcpNoDelay());
+						client.report(socket, table);
 					}
 					catch (UnknownHostException e)
 					{
@@ -191,7 +197,7 @@ public class MgrService extends FreeAlbianService implements IMgrService
 					}
 					try
 					{
-						Thread.sleep(300 * 1000);
+						Thread.sleep(MgrClientSettings.getReport_timespan() * 1000);
 					}
 					catch (InterruptedException e)
 					{
@@ -207,25 +213,26 @@ public class MgrService extends FreeAlbianService implements IMgrService
 
 	public void unloading()
 	{
-		Iptable table = new Iptable();
-		table.setAppName(KernelSetting.getAppName());
+		ClientIptable table = new ClientIptable();
 		TcpClient client = new TcpClient();
 		Socket socket = null;
 		try
 		{
 			InetAddress ip4 = Inet4Address.getLocalHost();
 			table.setIp(ip4.getHostAddress());
+			table.setAppName(KernelSetting.getAppName());
 			table.setKernelId(KernelSetting.getKernelId());
-			table.setStartTime(DateTime.getDateTimeString());
+			table.setStartTime(DateTime.getDateTimeString(AlbianBootService.getStartDateTime()));
+			table.setSerialId(AlbianBootService.getSerialId());
 			table.setState(EngineState.Stoped);
 
-			socket = client.create(MgrSettings.getHost(),
-					MgrSettings.getPort(), MgrSettings.getKeepalive(),
-					MgrSettings.getReceiveBufferSize(),
-					MgrSettings.getReuseAddress(),
-					MgrSettings.getSendBufferSize(), MgrSettings.getSoLinger(),
-					MgrSettings.getSoTimeout(), MgrSettings.getTcpNoDelay());
-			client.regist(socket, table);
+			socket = client.create(MgrClientSettings.getHost(),
+					MgrClientSettings.getPort(), MgrClientSettings.getKeepalive(),
+					MgrClientSettings.getReceiveBufferSize(),
+					MgrClientSettings.getReuseAddress(),
+					MgrClientSettings.getSendBufferSize(), MgrClientSettings.getSoLinger(),
+					MgrClientSettings.getSoTimeout(), MgrClientSettings.getTcpNoDelay());
+			client.logout(socket, table);
 		}
 		catch (UnknownHostException e)
 		{

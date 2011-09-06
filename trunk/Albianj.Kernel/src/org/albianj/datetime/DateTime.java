@@ -29,4 +29,13 @@ public class DateTime
 		return dateFormat.format(date);
 	}
 
+	/**
+	 * @param begin
+	 * @param end
+	 * @return timespan seconds
+	 */
+	public static long getTimeSpan(Date begin,Date end)
+	{
+		 return (end.getTime() - begin.getTime()) / 1000;
+	}
 }

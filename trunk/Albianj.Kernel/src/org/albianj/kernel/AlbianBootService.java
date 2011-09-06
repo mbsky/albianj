@@ -1,10 +1,12 @@
 package org.albianj.kernel;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.albianj.logger.AlbianLoggerService;
+import org.albianj.service.AlbianKeyService;
 import org.albianj.service.AlbianServiceException;
 import org.albianj.service.IAlbianService;
 import org.albianj.service.IAlbianServiceAttribute;
@@ -17,6 +19,19 @@ import org.albianj.service.parser.ServiceParser;
 public final class AlbianBootService
 {
 	private static AlbianState state = AlbianState.Normal;
+	private static Date startDateTime;
+	private static String serialId;
+	
+	public static Date getStartDateTime()
+	{
+		return startDateTime;
+	}
+	public static String getSerialId()
+	{
+		return serialId;
+	}
+	
+	
 	
 	public static AlbianState getLifeState()
 	{
@@ -25,6 +40,9 @@ public final class AlbianBootService
 	
 	public static void start() throws Exception
 	{
+		startDateTime = new Date();
+		serialId = AlbianKeyService.generate32UUID();
+		
 		Thread thread = new ServiceThread(); 
 		thread.start();
 	}
