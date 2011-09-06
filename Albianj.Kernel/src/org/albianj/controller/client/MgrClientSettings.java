@@ -1,4 +1,4 @@
-package org.albianj.mgr;
+package org.albianj.controller.client;
 
 public class MgrClientSettings
 {

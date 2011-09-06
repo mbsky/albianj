@@ -1,4 +1,4 @@
-package org.albianj.mgr;
+package org.albianj.controller.client;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
