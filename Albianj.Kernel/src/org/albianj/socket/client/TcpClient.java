@@ -11,7 +11,7 @@ import org.albianj.logger.AlbianLoggerService;
 import org.albianj.protocol.Header;
 import org.albianj.protocol.ManagementProtocol;
 import org.albianj.protocol.ResolveHeader;
-import org.albianj.protocol.mgr.Iptable;
+import org.albianj.protocol.mgr.ClientIptable;
 
 public class TcpClient
 {
@@ -52,7 +52,7 @@ public class TcpClient
 		}
 	}
 	
-	public void regist(Socket socket,Iptable iptable)
+	public void regist(Socket socket,ClientIptable iptable)
 	{
 		OutputStream out;
 		InputStream in;
@@ -83,14 +83,14 @@ public class TcpClient
 		}
 	}
 	
-	public void report(Socket socket,Iptable iptable)
+	public void report(Socket socket,ClientIptable iptable)
 	{
 		OutputStream out;
 		InputStream in;
 		try
 		{
 			Header reqHeader = new Header();
-			reqHeader.setCommand(ManagementProtocol.REGISTER);
+			reqHeader.setCommand(ManagementProtocol.REPORT);
 			String json = iptable.toString();
 			byte[] values = json.getBytes();
 			reqHeader.setBodyLen(values.length);
@@ -111,6 +111,37 @@ public class TcpClient
 		catch (IOException e)
 		{
 			AlbianLoggerService.error(e, "report the kernel to mgr service is error.");
+		}
+	}
+	
+	public void logout(Socket socket,ClientIptable iptable)
+	{
+		OutputStream out;
+		InputStream in;
+		try
+		{
+			Header reqHeader = new Header();
+			reqHeader.setCommand(ManagementProtocol.LOGOUT);
+			String json = iptable.toString();
+			byte[] values = json.getBytes();
+			reqHeader.setBodyLen(0);
+			byte[] headers = ResolveHeader.packHeader(reqHeader);
+			out = socket.getOutputStream();
+			out.write(headers);
+			out.write(values);
+			out.flush();
+			in = socket.getInputStream();
+			byte[] respHeaders =new byte[ManagementProtocol.HEADER_LEN];
+			in.read(respHeaders);
+			Header respHeader =  ResolveHeader.unpackHeader(respHeaders);
+			if(ManagementProtocol.SUCCESS != respHeader.getState())
+			{
+				AlbianLoggerService.error("logout the kernel to mgr service is error.errno:%d.", respHeader.getState());
+			}
+		}
+		catch (IOException e)
+		{
+			AlbianLoggerService.error(e, "logout the kernel to mgr service is error.");
 		}
 	}
 	
