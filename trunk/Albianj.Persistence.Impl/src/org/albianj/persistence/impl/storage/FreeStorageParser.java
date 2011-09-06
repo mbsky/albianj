@@ -8,8 +8,8 @@ import org.albianj.persistence.impl.cached.StorageAttributeCache;
 import org.albianj.persistence.object.DatabaseStyle;
 import org.albianj.persistence.object.IStorageAttribute;
 import org.albianj.service.FreeAlbianService;
+import org.albianj.service.parser.IParser;
 import org.albianj.verify.Validate;
-import org.albianj.xml.IParser;
 import org.albianj.xml.XmlParser;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -23,7 +23,15 @@ public abstract class FreeStorageParser extends FreeAlbianService implements
 	@Override
 	public void init()
 	{
-		Document doc = XmlParser.load(Path.getExtendResourcePath(path));
+		Document doc = null;
+		try
+		{
+			doc = XmlParser.load(Path.getExtendResourcePath(path));
+		}
+		catch(Exception e)
+		{
+			AlbianLoggerService.error(e, "There is error when parser the storage config file.");
+		}
 		if (null == doc) { throw new RuntimeException(
 				"load persistence is error."); }
 		@SuppressWarnings("rawtypes")

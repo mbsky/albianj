@@ -6,8 +6,8 @@ import org.albianj.io.Path;
 import org.albianj.logger.AlbianLoggerService;
 import org.albianj.persistence.object.IAlbianObjectAttribute;
 import org.albianj.service.FreeAlbianService;
+import org.albianj.service.parser.IParser;
 import org.albianj.verify.Validate;
-import org.albianj.xml.IParser;
 import org.albianj.xml.XmlParser;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -21,7 +21,15 @@ public abstract class FreePersistenceParser extends FreeAlbianService implements
 	@Override
 	public void init()
 	{
-		Document doc = XmlParser.load(Path.getExtendResourcePath(path));
+		Document doc = null;
+		try
+		{
+			doc = XmlParser.load(Path.getExtendResourcePath(path));
+		}
+		catch(Exception e)
+		{
+			AlbianLoggerService.warn(e, "There is error when parser the persistence config file.");
+		}
 		if(null == doc)
 		{
 			throw new PersistenceAttributeException("load persistence is error.");
