@@ -2,9 +2,9 @@ package org.albianj.mgr.service;
 
 import java.util.Properties;
 
+import org.albianj.Controller.config1.MgrServerSettings;
 import org.albianj.io.Path;
 import org.albianj.logger.AlbianLoggerService;
-import org.albianj.mgr.config.MgrServerSettings;
 import org.albianj.service.FreeAlbianService;
 import org.albianj.service.parser.PropertiesParser;
 import org.albianj.verify.Validate;
