@@ -5,21 +5,26 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.albianj.datetime.DateTime;
 import org.albianj.logger.AlbianLoggerService;
+import org.albianj.mgr.config.MgrServerSettings;
 import org.albianj.protocol.Header;
 import org.albianj.protocol.ManagementProtocol;
 import org.albianj.protocol.ResolveHeader;
-import org.albianj.protocol.mgr.Iptable;
+import org.albianj.protocol.mgr.ClientIptable;
+import org.albianj.protocol.mgr.EngineState;
+import org.albianj.protocol.mgr.ServerIptable;
 import org.albianj.socket.server.IWork;
 
 
 public class Worker implements IWork
 {
-	private static Map<String, Iptable> map = Collections
-			.synchronizedMap(new LinkedHashMap<String, Iptable>());
+	private static Map<String, ServerIptable> map = Collections
+			.synchronizedMap(new LinkedHashMap<String, ServerIptable>());
 
 	@Override
 	public void deal(Socket socket)
@@ -114,36 +119,97 @@ public class Worker implements IWork
 				return ManagementProtocol.ERROR_READ_BODY;
 			}
 			String value = new String(bodys);
-			Iptable iptable = new Iptable(value);
+			ClientIptable clientIptable = new ClientIptable(value);
 			switch (header.getCommand())
 			{
 				case ManagementProtocol.REGISTER:
 				{
-					if (map.containsKey(iptable.getKernelId()))
+					if (map.containsKey(clientIptable.getKernelId()))
 					{
-						AlbianLoggerService.warn("The %s kerlen id is used.IP:%s.", iptable.getKernelId(),iptable.getIp());
+						ServerIptable serverIptable = map.get(clientIptable.getKernelId());
+						long timespan = DateTime.getTimeSpan(serverIptable.getLastReportTime(),new Date());
+						if(serverIptable.getIp().equals(clientIptable.getIp()) 
+								&& serverIptable.getAppName().equals(clientIptable.getAppName()))
+						{
+							serverIptable.setLastReportTime(new Date());
+							serverIptable.setReportTimeSpan(System.currentTimeMillis());
+							serverIptable.setSerialId(clientIptable.getSerialId());
+							serverIptable.setStartTime(clientIptable.getStartTime());
+							serverIptable.setState(clientIptable.getState());
+							return ManagementProtocol.SUCCESS;
+						}
+						else if(timespan > MgrServerSettings.getReport_timespan())
+						{
+							AlbianLoggerService.warn("The albianj enginess is Expired.the expired albianj engine is:%s,the new engine is %s.",
+									serverIptable.toString(),value);
+							ServerIptable newIptable = new ServerIptable(value);
+							serverIptable.setStartTime(clientIptable.getStartTime());
+							serverIptable.setReportTimeSpan(System.currentTimeMillis());
+							map.put(clientIptable.getKernelId(), newIptable);
+							return ManagementProtocol.SUCCESS;
+						}
+						AlbianLoggerService.warn("The %s kerlen id is used.IP:%s.", clientIptable.getKernelId(),clientIptable.getIp());
 						return ManagementProtocol.EXCEPTION_REPEAT;
 					}
 					else
 					{
-						map.put(iptable.getKernelId(), iptable);
+						ServerIptable serverIptable = new ServerIptable(value);
+						serverIptable.setLastReportTime(new Date());
+						serverIptable.setReportTimeSpan(System.currentTimeMillis());
+						map.put(clientIptable.getKernelId(), serverIptable);
 						return ManagementProtocol.SUCCESS;
 					}
 				}
 				case ManagementProtocol.REPORT:
 				{
-					if (!map.containsKey(iptable.getKernelId())) 
+					if (!map.containsKey(clientIptable.getKernelId())) 
 					{ 
-						AlbianLoggerService.warn("The %s kerlen id is no used.", iptable.getKernelId());
+						AlbianLoggerService.warn("The %s kerlen id is no used.", clientIptable.getKernelId());
 						return ManagementProtocol.ERROR_UNREGISTER; 
 					}
-					map.put(iptable.getKernelId(), iptable);
-					return ManagementProtocol.SUCCESS;
+					else
+					{
+						ServerIptable serverIptable = map.get(clientIptable.getKernelId());
+						if(serverIptable.getIp().equals(clientIptable.getIp()) 
+								&& serverIptable.getAppName().equals(clientIptable.getAppName()))
+						{
+							serverIptable.setLastReportTime(new Date());
+							serverIptable.setReportTimeSpan(System.currentTimeMillis());
+							serverIptable.setSerialId(clientIptable.getSerialId());
+							serverIptable.setStartTime(clientIptable.getStartTime());
+							serverIptable.setState(clientIptable.getState());
+							return ManagementProtocol.SUCCESS;
+						}
+						AlbianLoggerService.warn("The %s kerlen id is not find used.IP:%s,appName:%s.",
+								clientIptable.getKernelId(),clientIptable.getIp(),clientIptable.getAppName());
+						return ManagementProtocol.EXCEPTION_REPEAT;
+					}
+				}
+				case ManagementProtocol.LOGOUT:
+				{
+					if (!map.containsKey(clientIptable.getKernelId())) 
+					{ 
+						AlbianLoggerService.warn("The %s kerlen id is no used.", clientIptable.getKernelId());
+						return ManagementProtocol.ERROR_UNREGISTER; 
+					}
+					ServerIptable serverIptable = map.get(clientIptable.getKernelId());
+					if(serverIptable.getIp().equals(clientIptable.getIp()) 
+							&& serverIptable.getAppName().equals(clientIptable.getAppName())
+							&&EngineState.Stoped ==  clientIptable.getState())
+					{
+						map.remove(clientIptable.getKernelId());
+						return ManagementProtocol.SUCCESS;
+					}
+					else
+					{
+						AlbianLoggerService.warn("The %s kerlen id state is error.", clientIptable.getKernelId());
+						return ManagementProtocol.ERROR_UNREGISTER; 
+					}
 				}
 				default:
 				{
 					AlbianLoggerService.warn("unkown command: %d,the kernel is is %s,ip is %s,appName is %s..",
-							header.getCommand(),iptable.getKernelId(),iptable.getIp(),iptable.getAppName());
+							header.getCommand(),clientIptable.getKernelId(),clientIptable.getIp(),clientIptable.getAppName());
 					return ManagementProtocol.ERROR_UNKOWN_COMMAND;
 				}
 			}
