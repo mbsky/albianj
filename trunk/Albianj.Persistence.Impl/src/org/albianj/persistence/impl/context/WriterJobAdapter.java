@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.albianj.logger.AlbianLoggerService;
-import org.albianj.persistence.impl.cached.AlbianObjectsCached;
-import org.albianj.persistence.impl.cached.BeanPropertyDescriptorCached;
-import org.albianj.persistence.impl.cached.RoutingCached;
-import org.albianj.persistence.impl.cached.StorageAttributeCache;
+import org.albianj.persistence.impl.cached.AlbianObjectsMap;
+import org.albianj.persistence.impl.cached.BeanPropertyDescriptorMap;
+import org.albianj.persistence.impl.cached.RoutingMap;
+import org.albianj.persistence.impl.cached.StorageAttributeMap;
 import org.albianj.persistence.impl.db.ICommand;
 import org.albianj.persistence.impl.db.IUpdateCommand;
 import org.albianj.persistence.object.IAlbianObject;
@@ -29,11 +29,11 @@ public class WriterJobAdapter extends FreeWriterJobAdapter
 			IUpdateCommand update)
 	{
 		String className = object.getClass().getName();
-		IRoutingsAttribute routings = (IRoutingsAttribute) RoutingCached
+		IRoutingsAttribute routings = (IRoutingsAttribute) RoutingMap
 				.get(className);
-		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached
+		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsMap
 				.get(className);
-		PropertyDescriptor[] propertyDesc = (PropertyDescriptor[]) BeanPropertyDescriptorCached
+		PropertyDescriptor[] propertyDesc = (PropertyDescriptor[]) BeanPropertyDescriptorMap
 				.get(className);
 		Map<String, Object> mapValue = buildSqlParameter(object, albianObject,
 				propertyDesc);
@@ -53,7 +53,7 @@ public class WriterJobAdapter extends FreeWriterJobAdapter
 				List<ICommand> cmds = new Vector<ICommand>();
 				cmds.add(cmd);
 				task.setCommands(cmds);
-				IStorageAttribute storage = (IStorageAttribute) StorageAttributeCache
+				IStorageAttribute storage = (IStorageAttribute) StorageAttributeMap
 						.get(routing.getStorageName());
 				task.setStorage(storage);
 				tasks.put(routing.getStorageName(), task);
@@ -73,7 +73,7 @@ public class WriterJobAdapter extends FreeWriterJobAdapter
 					List<ICommand> cmds = new Vector<ICommand>();
 					cmds.add(cmd);
 					task.setCommands(cmds);
-					IStorageAttribute storage = (IStorageAttribute) StorageAttributeCache
+					IStorageAttribute storage = (IStorageAttribute) StorageAttributeMap
 							.get(routing.getStorageName());
 					task.setStorage(storage);
 					writerJob.getWriterTasks().put(routing.getStorageName(),

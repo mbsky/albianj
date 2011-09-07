@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.albianj.io.Path;
 import org.albianj.logger.AlbianLoggerService;
-import org.albianj.persistence.impl.cached.StorageAttributeCache;
+import org.albianj.persistence.impl.cached.StorageAttributeMap;
 import org.albianj.persistence.object.DatabaseStyle;
 import org.albianj.persistence.object.IStorageAttribute;
 import org.albianj.service.FreeAlbianService;
@@ -60,7 +60,7 @@ public abstract class FreeStorageParser extends FreeAlbianService implements
 					.warn("the argument storageName is null or empty.");
 			return null;
 		}
-		IStorageAttribute storageAttribute = (IStorageAttribute) StorageAttributeCache
+		IStorageAttribute storageAttribute = (IStorageAttribute) StorageAttributeMap
 				.get(storageName);
 		return generateConnectionUrl(storageAttribute);
 	}

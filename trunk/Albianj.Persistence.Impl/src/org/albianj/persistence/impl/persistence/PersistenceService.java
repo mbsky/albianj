@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.albianj.logger.AlbianLoggerService;
-import org.albianj.persistence.impl.cached.AlbianObjectsCached;
-import org.albianj.persistence.impl.cached.BeanPropertyDescriptorCached;
+import org.albianj.persistence.impl.cached.AlbianObjectsMap;
+import org.albianj.persistence.impl.cached.BeanPropertyDescriptorMap;
 import org.albianj.persistence.impl.routing.RoutingService;
 import org.albianj.persistence.impl.storage.StorageService;
 import org.albianj.persistence.impl.toolkit.Convert;
@@ -51,7 +51,7 @@ public class PersistenceService extends FreePersistenceParser
 				throw new PersistenceAttributeException(msg);
 			}
 
-			AlbianObjectsCached.insert(albianObjectAttribute.getType(),albianObjectAttribute);
+			AlbianObjectsMap.insert(albianObjectAttribute.getType(),albianObjectAttribute);
 		}
 
 	}
@@ -172,7 +172,7 @@ public class PersistenceService extends FreePersistenceParser
 		Map<String, IMemberAttribute> map = new LinkedHashMap<String, IMemberAttribute>();
 		PropertyDescriptor[] propertyDesc = ReflectionHelper
 				.getBeanPropertyDescriptors(type);
-		BeanPropertyDescriptorCached.insert(type, propertyDesc);
+		BeanPropertyDescriptorMap.insert(type, propertyDesc);
 		for (PropertyDescriptor p : propertyDesc)
 		{
 			IMemberAttribute member = reflexAlbianObjectMember(p);

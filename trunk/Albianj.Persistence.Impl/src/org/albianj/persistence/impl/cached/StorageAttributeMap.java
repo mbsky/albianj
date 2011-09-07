@@ -1,11 +1,11 @@
 package org.albianj.persistence.impl.cached;
 
-import org.albianj.cached.ICached;
-import org.albianj.cached.impl.HashCached;
+import org.albianj.cached.ILocalMap;
+import org.albianj.cached.impl.LocalHashMap;
 
-public class AlbianObjectsCached
+public class StorageAttributeMap
 {
-	private static ICached cached = new HashCached();
+	private static ILocalMap cached = new LocalHashMap();
 
 	public synchronized static boolean exist(String key)
 			throws IllegalArgumentException
@@ -36,4 +36,8 @@ public class AlbianObjectsCached
 		cached.clear();
 	}
 
+//	public synchronized static boolean hasNext()
+//	{
+//		
+//	}
 }

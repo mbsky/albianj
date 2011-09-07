@@ -4,8 +4,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.albianj.logger.AlbianLoggerService;
-import org.albianj.persistence.impl.cached.AlbianObjectsCached;
-import org.albianj.persistence.impl.cached.RoutingCached;
+import org.albianj.persistence.impl.cached.AlbianObjectsMap;
+import org.albianj.persistence.impl.cached.RoutingMap;
 import org.albianj.persistence.object.IAlbianObjectAttribute;
 import org.albianj.persistence.object.IAlbianObjectHashMapping;
 import org.albianj.persistence.object.IFilterCondition;
@@ -22,9 +22,9 @@ public class ReaderJobAdapter extends FreeReaderJobAdapter implements
 			Map<String, IOrderByCondition> hashOrderbys)
 	{
 		String className = cls.getName();
-		IRoutingsAttribute routings = (IRoutingsAttribute) RoutingCached
+		IRoutingsAttribute routings = (IRoutingsAttribute) RoutingMap
 				.get(className);
-		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached
+		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsMap
 				.get(className);
 		if (null == routings
 				|| Validate.isNullOrEmpty(routings.getReaderRoutings()))

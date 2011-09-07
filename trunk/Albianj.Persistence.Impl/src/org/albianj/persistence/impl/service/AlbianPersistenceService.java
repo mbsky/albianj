@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import org.albianj.persistence.impl.cached.AlbianObjectsCached;
+import org.albianj.persistence.impl.cached.AlbianObjectsMap;
 import org.albianj.persistence.impl.context.ICompensateCallback;
 import org.albianj.persistence.impl.context.INotify;
 import org.albianj.persistence.impl.context.IReaderJob;
@@ -477,7 +477,7 @@ public class AlbianPersistenceService
 		if(null != obj) return (T) obj;
 		T newObj = doLoadObject(cls, routingName, wheres);
 		if(null == newObj) return null;
-		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached
+		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsMap
 				.get(cls.getName());
 		CacheOperator.storeObjectToRemoterCache(cls, 0,0,wheres, null, newObj, null == albianObject.getCache() ? 300 : albianObject.getCache().getLifeTime());
 		return newObj;
@@ -490,7 +490,7 @@ public class AlbianPersistenceService
 		if(null != obj) return (T) obj;
 		T newObj = doLoadObject(cls, cmdType, statement);
 		if(null == newObj) return null;
-		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached
+		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsMap
 				.get(cls.getName());
 		CacheOperator.storeObjectToRemoterCache(cacheKey, newObj, null == albianObject.getCache() ? 300 : albianObject.getCache().getLifeTime());
 		return newObj;
@@ -504,7 +504,7 @@ public class AlbianPersistenceService
 		if(null != obj) return (List<T>) obj;
 		List<T> newObj = doLoadObjects(cls, routingName,start,step, wheres,orderbys);
 		if(null == newObj) return null;
-		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached
+		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsMap
 				.get(cls.getName());
 		CacheOperator.storeObjectToRemoterCache(cls, start,step,wheres, null, newObj, null == albianObject.getCache() ? 300 : albianObject.getCache().getLifeTime());
 		return newObj;
@@ -516,7 +516,7 @@ public class AlbianPersistenceService
 		if(null != obj) return (List<T>) obj;
 		List<T> newObj = doLoadObjects(cls, cmdType, statement);
 		if(null == newObj) return null;
-		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached
+		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsMap
 				.get(cls.getName());
 		CacheOperator.storeObjectToRemoterCache(cacheKey, newObj, null == albianObject.getCache() ? 300 : albianObject.getCache().getLifeTime());
 		return newObj;

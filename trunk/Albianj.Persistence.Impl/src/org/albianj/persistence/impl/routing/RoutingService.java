@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.albianj.logger.AlbianLoggerService;
-import org.albianj.persistence.impl.cached.RoutingCached;
+import org.albianj.persistence.impl.cached.RoutingMap;
 import org.albianj.persistence.object.IAlbianObjectHashMapping;
 import org.albianj.persistence.object.IRoutingAttribute;
 import org.albianj.persistence.object.IRoutingsAttribute;
@@ -33,7 +33,7 @@ public class RoutingService extends FreeRoutingParser
 		{
 			IRoutingsAttribute routingsAttribute = getRoutingsAttribute((Element) node);
 			if (null == routingsAttribute) return null;
-			RoutingCached
+			RoutingMap
 					.insert(routingsAttribute.getType(), routingsAttribute);
 		}
 		return null;

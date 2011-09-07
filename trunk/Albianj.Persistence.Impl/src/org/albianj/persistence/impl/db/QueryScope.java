@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.albianj.logger.AlbianLoggerService;
-import org.albianj.persistence.impl.cached.BeanPropertyDescriptorCached;
+import org.albianj.persistence.impl.cached.BeanPropertyDescriptorMap;
 import org.albianj.persistence.impl.context.IReaderJob;
 import org.albianj.persistence.impl.storage.StorageService;
 import org.albianj.persistence.object.IAlbianObject;
@@ -93,7 +93,7 @@ public class QueryScope extends FreeQueryScope implements IQueryScope
 	protected <T extends IAlbianObject> List<T> executed(Class<T> cls,ResultSet result) throws SQLException
 	{
 		String className = cls.getName();
-		 PropertyDescriptor[] propertyDesc = (PropertyDescriptor[]) BeanPropertyDescriptorCached.get(className);
+		 PropertyDescriptor[] propertyDesc = (PropertyDescriptor[]) BeanPropertyDescriptorMap.get(className);
 		 List<T> list = new Vector<T>();
 		 while(result.next())
 		 {
