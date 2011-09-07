@@ -2,7 +2,7 @@ package org.albianj.controller.client;
 
 import org.albianj.service.IAlbianService;
 
-public interface IMgrClientService extends IAlbianService
+public interface IControllerClientService extends IAlbianService
 {
 	public void regedit();
 	public void report();
