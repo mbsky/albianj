@@ -2,7 +2,7 @@ package org.albianj.cached;
 
 import java.util.Set;
 
-public interface ICached
+public interface ILocalMap
 {
 	public boolean exist(String key) throws IllegalArgumentException;
 

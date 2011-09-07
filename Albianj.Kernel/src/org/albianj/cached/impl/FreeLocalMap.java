@@ -3,15 +3,15 @@ package org.albianj.cached.impl;
 import java.util.Map;
 import java.util.Set;
 
-import org.albianj.cached.ICached;
+import org.albianj.cached.ILocalMap;
 import org.albianj.verify.Validate;
 
-public abstract class FreeCached implements ICached
+public abstract class FreeLocalMap implements ILocalMap
 {
 
 	private Map<String, Object> map = null;
 	
-	public FreeCached(Map<String, Object> map) throws IllegalArgumentException
+	public FreeLocalMap(Map<String, Object> map) throws IllegalArgumentException
 	{
 		if(null == map) throw new IllegalArgumentException("key");
 		this.map = map;
