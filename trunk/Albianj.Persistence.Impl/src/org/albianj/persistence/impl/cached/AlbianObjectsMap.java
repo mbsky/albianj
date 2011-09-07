@@ -1,7 +1,7 @@
 package org.albianj.persistence.impl.cached;
 
-import org.albianj.cached.ILocalMap;
-import org.albianj.cached.impl.LocalHashMap;
+import org.albianj.localmap.ILocalMap;
+import org.albianj.localmap.LocalHashMap;
 
 public class AlbianObjectsMap
 {

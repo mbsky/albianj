@@ -8,9 +8,9 @@ import java.io.ObjectOutputStream;
 
 import net.rubyeye.xmemcached.MemcachedClient;
 
+import org.albianj.cache.ILocalCached;
 import org.albianj.cached.service.ICacheService;
 import org.albianj.concurrent.IThreadPoolService;
-import org.albianj.expiredcached.impl.ILocalCached;
 import org.albianj.kernel.AlbianServiceRouter;
 import org.albianj.logger.AlbianLoggerService;
 import org.albianj.persistence.object.IFilterCondition;
