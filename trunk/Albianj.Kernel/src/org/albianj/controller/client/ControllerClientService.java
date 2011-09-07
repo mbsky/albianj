@@ -19,7 +19,7 @@ import org.albianj.service.parser.PropertiesParser;
 import org.albianj.socket.client.TcpClient;
 import org.albianj.verify.Validate;
 
-public class MgrClientService extends FreeAlbianService implements IMgrClientService
+public class ControllerClientService extends FreeAlbianService implements IControllerClientService
 {
 	private final static String path = "../config/mgr.properties";
 
@@ -56,42 +56,42 @@ public class MgrClientService extends FreeAlbianService implements IMgrClientSer
 		String so_timeout = PropertiesParser.getValue(props, "so_timeout");
 		String tcp_nodelay = PropertiesParser.getValue(props, "tcp_nodelay");
 		String report_timespan = PropertiesParser.getValue(props, "report_timespan");
-		MgrClientSettings.setHost(host);
+		ControllerClientSettings.setHost(host);
 		if (!Validate.isNullOrEmptyOrAllSpace(port))
 		{
-			MgrClientSettings.setPort(new Integer(port));
+			ControllerClientSettings.setPort(new Integer(port));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(so_keepalive))
 		{
-			MgrClientSettings.setKeepalive(new Boolean(so_keepalive));
+			ControllerClientSettings.setKeepalive(new Boolean(so_keepalive));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(so_rcvbuf))
 		{
-			MgrClientSettings.setReceiveBufferSize(new Integer(so_rcvbuf));
+			ControllerClientSettings.setReceiveBufferSize(new Integer(so_rcvbuf));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(so_reuseaddr))
 		{
-			MgrClientSettings.setReuseAddress(new Boolean(so_reuseaddr));
+			ControllerClientSettings.setReuseAddress(new Boolean(so_reuseaddr));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(so_sndbuf))
 		{
-			MgrClientSettings.setSendBufferSize(new Integer(so_sndbuf));
+			ControllerClientSettings.setSendBufferSize(new Integer(so_sndbuf));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(so_linger))
 		{
-			MgrClientSettings.setSoLinger(new Integer(so_linger));
+			ControllerClientSettings.setSoLinger(new Integer(so_linger));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(so_timeout))
 		{
-			MgrClientSettings.setSoTimeout(new Integer(so_timeout));
+			ControllerClientSettings.setSoTimeout(new Integer(so_timeout));
 		}
 		if (!Validate.isNullOrEmptyOrAllSpace(tcp_nodelay))
 		{
-			MgrClientSettings.setTcpNoDelay(new Boolean(tcp_nodelay));
+			ControllerClientSettings.setTcpNoDelay(new Boolean(tcp_nodelay));
 		}
 		if(!Validate.isNullOrEmptyOrAllSpace(report_timespan))
 		{
-			MgrClientSettings.setReport_timespan(new Integer(report_timespan));
+			ControllerClientSettings.setReport_timespan(new Integer(report_timespan));
 		}
 	}
 
@@ -130,12 +130,12 @@ public class MgrClientService extends FreeAlbianService implements IMgrClientSer
 			table.setState(EngineState.Starting);
 			table.setSerialId(AlbianBootService.getSerialId());
 
-			socket = client.create(MgrClientSettings.getHost(),
-					MgrClientSettings.getPort(), MgrClientSettings.getKeepalive(),
-					MgrClientSettings.getReceiveBufferSize(),
-					MgrClientSettings.getReuseAddress(),
-					MgrClientSettings.getSendBufferSize(), MgrClientSettings.getSoLinger(),
-					MgrClientSettings.getSoTimeout(), MgrClientSettings.getTcpNoDelay());
+			socket = client.create(ControllerClientSettings.getHost(),
+					ControllerClientSettings.getPort(), ControllerClientSettings.getKeepalive(),
+					ControllerClientSettings.getReceiveBufferSize(),
+					ControllerClientSettings.getReuseAddress(),
+					ControllerClientSettings.getSendBufferSize(), ControllerClientSettings.getSoLinger(),
+					ControllerClientSettings.getSoTimeout(), ControllerClientSettings.getTcpNoDelay());
 			client.regist(socket, table);
 		}
 		catch (UnknownHostException e)
@@ -175,15 +175,15 @@ public class MgrClientService extends FreeAlbianService implements IMgrClientSer
 						table.setSerialId(AlbianBootService.getSerialId());
 						table.setState(EngineState.Runing);
 
-						socket = client.create(MgrClientSettings.getHost(),
-								MgrClientSettings.getPort(),
-								MgrClientSettings.getKeepalive(),
-								MgrClientSettings.getReceiveBufferSize(),
-								MgrClientSettings.getReuseAddress(),
-								MgrClientSettings.getSendBufferSize(),
-								MgrClientSettings.getSoLinger(),
-								MgrClientSettings.getSoTimeout(),
-								MgrClientSettings.getTcpNoDelay());
+						socket = client.create(ControllerClientSettings.getHost(),
+								ControllerClientSettings.getPort(),
+								ControllerClientSettings.getKeepalive(),
+								ControllerClientSettings.getReceiveBufferSize(),
+								ControllerClientSettings.getReuseAddress(),
+								ControllerClientSettings.getSendBufferSize(),
+								ControllerClientSettings.getSoLinger(),
+								ControllerClientSettings.getSoTimeout(),
+								ControllerClientSettings.getTcpNoDelay());
 						client.report(socket, table);
 					}
 					catch (UnknownHostException e)
@@ -197,7 +197,7 @@ public class MgrClientService extends FreeAlbianService implements IMgrClientSer
 					}
 					try
 					{
-						Thread.sleep(MgrClientSettings.getReport_timespan() * 1000);
+						Thread.sleep(ControllerClientSettings.getReport_timespan() * 1000);
 					}
 					catch (InterruptedException e)
 					{
@@ -226,12 +226,12 @@ public class MgrClientService extends FreeAlbianService implements IMgrClientSer
 			table.setSerialId(AlbianBootService.getSerialId());
 			table.setState(EngineState.Stoped);
 
-			socket = client.create(MgrClientSettings.getHost(),
-					MgrClientSettings.getPort(), MgrClientSettings.getKeepalive(),
-					MgrClientSettings.getReceiveBufferSize(),
-					MgrClientSettings.getReuseAddress(),
-					MgrClientSettings.getSendBufferSize(), MgrClientSettings.getSoLinger(),
-					MgrClientSettings.getSoTimeout(), MgrClientSettings.getTcpNoDelay());
+			socket = client.create(ControllerClientSettings.getHost(),
+					ControllerClientSettings.getPort(), ControllerClientSettings.getKeepalive(),
+					ControllerClientSettings.getReceiveBufferSize(),
+					ControllerClientSettings.getReuseAddress(),
+					ControllerClientSettings.getSendBufferSize(), ControllerClientSettings.getSoLinger(),
+					ControllerClientSettings.getSoTimeout(), ControllerClientSettings.getTcpNoDelay());
 			client.logout(socket, table);
 		}
 		catch (UnknownHostException e)
