@@ -1,11 +1,11 @@
 package org.albianj.service.parser;
 
-import org.albianj.cached.ICached;
-import org.albianj.cached.impl.SortCached;
+import org.albianj.cached.ILocalMap;
+import org.albianj.cached.impl.LocalSortMap;
 
-public final class ServiceAttributeCached
+public final class ServiceAttributeMap
 {
-	private static ICached cached = new SortCached();
+	private static ILocalMap cached = new LocalSortMap();
 	
 	public synchronized static boolean exist(String key) throws IllegalArgumentException
 	{

@@ -12,7 +12,7 @@ import org.albianj.service.IAlbianService;
 import org.albianj.service.IAlbianServiceAttribute;
 import org.albianj.service.parser.FreeServiceParser;
 import org.albianj.service.parser.IServiceParser;
-import org.albianj.service.parser.ServiceAttributeCached;
+import org.albianj.service.parser.ServiceAttributeMap;
 import org.albianj.service.parser.ServiceParser;
 
 @Kernel
@@ -53,7 +53,7 @@ public final class AlbianBootService
 		IServiceParser parser = new ServiceParser();
 		parser.init();
 		@SuppressWarnings("unchecked")
-		LinkedHashMap<String,IAlbianServiceAttribute> map = (LinkedHashMap<String, IAlbianServiceAttribute>) ServiceAttributeCached.get(FreeServiceParser.ALBIANJSERVICEKEY);
+		LinkedHashMap<String,IAlbianServiceAttribute> map = (LinkedHashMap<String, IAlbianServiceAttribute>) ServiceAttributeMap.get(FreeServiceParser.ALBIANJSERVICEKEY);
 		LinkedHashMap<String,IAlbianServiceAttribute> failMap = new LinkedHashMap<String,IAlbianServiceAttribute>();
 		int lastFailSize = 0;
 		int currentFailSize = 0;
@@ -72,7 +72,7 @@ public final class AlbianBootService
 					service.beforeLoad();
 					service.loading();
 					service.afterLoading();
-					ServiceCached.insert(entry.getKey(), service);
+					ServiceMap.insert(entry.getKey(), service);
 				}
 				catch(Exception exc)
 				{
@@ -93,7 +93,7 @@ public final class AlbianBootService
 				String msg = "the service maybe cross reference.";
 					AlbianLoggerService.error(msg);
 					AlbianLoggerService.error(failMap.keySet().toString());
-				ServiceCached.clear();
+				ServiceMap.clear();
 				state = AlbianState.Unloaded;
 				throw new AlbianServiceException(msg);
 			}
@@ -117,12 +117,12 @@ public final class AlbianBootService
 	
 	public static void unload() throws Exception
 	{
-		Set<String> keys = ServiceCached.getKeys();
+		Set<String> keys = ServiceMap.getKeys();
 		for(String key : keys)
 		{
 			try
 			{
-				IAlbianService service = (IAlbianService) ServiceCached.get(key);
+				IAlbianService service = (IAlbianService) ServiceMap.get(key);
 				service.beforeUnload();
 				service.unload();
 				service.afterUnload();

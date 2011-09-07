@@ -1,11 +1,11 @@
 package org.albianj.cached.service;
 
-import org.albianj.cached.ICached;
-import org.albianj.cached.impl.HashCached;
+import org.albianj.cached.ILocalMap;
+import org.albianj.cached.impl.LocalHashMap;
 
 public class MemcacheCached
 {
-	private static ICached cached = new HashCached();
+	private static ILocalMap cached = new LocalHashMap();
 	
 	public synchronized static boolean exist(String key) throws IllegalArgumentException
 	{

@@ -54,7 +54,7 @@ public abstract class FreeServiceParser extends FreeAlbianService implements
 			AlbianLoggerService.error("The albian services is empty.");
 			return;
 		}
-		ServiceAttributeCached.insert(ALBIANJSERVICEKEY, map);
+		ServiceAttributeMap.insert(ALBIANJSERVICEKEY, map);
 		return;
 	}
 

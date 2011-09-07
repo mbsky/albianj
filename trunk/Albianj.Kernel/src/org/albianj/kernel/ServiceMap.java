@@ -4,16 +4,16 @@ package org.albianj.kernel;
 
 import java.util.Set;
 
-import org.albianj.cached.ICached;
+import org.albianj.cached.ILocalMap;
 //import org.albianj.cached.impl.FreeCached;
 //import org.albianj.cached.impl.HashCached;
-import org.albianj.cached.impl.HashCached;
+import org.albianj.cached.impl.LocalHashMap;
 
 //import org.albianj.cached.impl.SortCached;
 
-public class ServiceCached
+public class ServiceMap
 {
-	private static ICached cached = new HashCached();
+	private static ILocalMap cached = new LocalHashMap();
 
 	public synchronized static boolean exist(String key)
 			throws IllegalArgumentException
