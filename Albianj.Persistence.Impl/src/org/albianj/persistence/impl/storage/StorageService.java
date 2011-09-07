@@ -7,8 +7,8 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.albianj.logger.AlbianLoggerService;
-import org.albianj.persistence.impl.cached.DataSourceCached;
-import org.albianj.persistence.impl.cached.StorageAttributeCache;
+import org.albianj.persistence.impl.cached.DataSourceMap;
+import org.albianj.persistence.impl.cached.StorageAttributeMap;
 import org.albianj.persistence.object.DatabaseStyle;
 import org.albianj.persistence.object.IStorageAttribute;
 import org.albianj.persistence.object.impl.StorageAttribute;
@@ -57,13 +57,13 @@ public class StorageService extends FreeStorageParser
 			{
 				throw new StorageAttributeException("parser storage.xml is error.");
 			}
-			StorageAttributeCache.insert(storage.getName(), storage);
+			StorageAttributeMap.insert(storage.getName(), storage);
 			if(i == 0)
 			{
-				StorageAttributeCache.insert(DEFAULT_STORAGE_NAME, storage);				
+				StorageAttributeMap.insert(DEFAULT_STORAGE_NAME, storage);				
 			}
 			DataSource ds = setupDataSource(storage);
-			DataSourceCached.insert(storage.getName(),ds);
+			DataSourceMap.insert(storage.getName(),ds);
 		}
 	}
 
@@ -172,7 +172,7 @@ public class StorageService extends FreeStorageParser
 	
 	public synchronized static Connection getConnection(String storageName)
 	{
-		DataSource ds =(DataSource) DataSourceCached.get(storageName);
+		DataSource ds =(DataSource) DataSourceMap.get(storageName);
 		try
 		{
 			return ds.getConnection();

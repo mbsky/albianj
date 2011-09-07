@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.albianj.logger.AlbianLoggerService;
-import org.albianj.persistence.impl.cached.AlbianObjectsCached;
-import org.albianj.persistence.impl.cached.RoutingCached;
-import org.albianj.persistence.impl.cached.StorageAttributeCache;
+import org.albianj.persistence.impl.cached.AlbianObjectsMap;
+import org.albianj.persistence.impl.cached.RoutingMap;
+import org.albianj.persistence.impl.cached.StorageAttributeMap;
 import org.albianj.persistence.impl.db.Command;
 import org.albianj.persistence.impl.db.CommandType;
 import org.albianj.persistence.impl.db.ICommand;
@@ -31,9 +31,9 @@ public abstract class FreeReaderJobAdapter implements IReaderJobAdapter
 			IOrderByCondition[] orderbys)
 	{
 		String className = cls.getName();
-		IRoutingsAttribute routings = (IRoutingsAttribute) RoutingCached
+		IRoutingsAttribute routings = (IRoutingsAttribute) RoutingMap
 				.get(className);
-		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsCached
+		IAlbianObjectAttribute albianObject = (IAlbianObjectAttribute) AlbianObjectsMap
 				.get(className);
 		
 		Map<String,IFilterCondition> hashWheres = ListToMap.convertFilterConditions(wheres);
@@ -126,7 +126,7 @@ public abstract class FreeReaderJobAdapter implements IReaderJobAdapter
 		
 		IReaderJob job = new ReaderJob();
 		job.setCommand(cmd);
-		IStorageAttribute storage = (IStorageAttribute) StorageAttributeCache.get(readerRouting.getStorageName());
+		IStorageAttribute storage = (IStorageAttribute) StorageAttributeMap.get(readerRouting.getStorageName());
 		job.setStorage(storage);
 		return job;
 	}
