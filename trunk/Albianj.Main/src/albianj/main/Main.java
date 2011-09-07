@@ -18,8 +18,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import net.rubyeye.xmemcached.MemcachedClient;
 
 import org.albianj.algorithm.Hash;
+import org.albianj.cache.ILocalCached;
 import org.albianj.cached.service.ICacheService;
-import org.albianj.expiredcached.impl.ILocalCached;
 import org.albianj.io.Path;
 import org.albianj.kernel.AlbianBootService;
 import org.albianj.kernel.AlbianServiceRouter;
@@ -47,7 +47,7 @@ import org.albianj.security.Coder;
 import org.albianj.security.DESCoder;
 import org.albianj.security.MACStyle;
 import org.albianj.service.AlbianKeyService;
-import org.albianj.xml.IParser;
+import org.albianj.service.parser.IParser;
 import org.apache.commons.dbcp.DelegatingStatement;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
