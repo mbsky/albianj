@@ -8,8 +8,8 @@ import net.rubyeye.xmemcached.XMemcachedClientBuilder;
 import net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator;
 import net.rubyeye.xmemcached.utils.AddrUtil;
 
-import org.albianj.expiredcached.impl.ILocalCached;
-import org.albianj.expiredcached.impl.LocalCacheManager;
+import org.albianj.cache.ILocalCached;
+import org.albianj.cache.LocalCacheManager;
 import org.albianj.logger.AlbianLoggerService;
 import org.albianj.verify.Validate;
 import org.albianj.xml.XmlParser;

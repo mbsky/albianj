@@ -1,6 +1,6 @@
 package org.albianj.cached.service;
 
-import org.albianj.expiredcached.impl.ILocalCached;
+import org.albianj.cache.ILocalCached;
 import org.albianj.service.IAlbianService;
 
 import net.rubyeye.xmemcached.MemcachedClient;

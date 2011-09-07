@@ -1,7 +1,7 @@
 package org.albianj.service.parser;
 
-import org.albianj.cached.ILocalMap;
-import org.albianj.cached.impl.LocalSortMap;
+import org.albianj.localmap.ILocalMap;
+import org.albianj.localmap.LocalSortMap;
 
 public final class ServiceAttributeMap
 {
