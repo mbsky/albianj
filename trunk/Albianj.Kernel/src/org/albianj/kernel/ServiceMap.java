@@ -4,10 +4,10 @@ package org.albianj.kernel;
 
 import java.util.Set;
 
-import org.albianj.cached.ILocalMap;
 //import org.albianj.cached.impl.FreeCached;
 //import org.albianj.cached.impl.HashCached;
-import org.albianj.cached.impl.LocalHashMap;
+import org.albianj.localmap.ILocalMap;
+import org.albianj.localmap.LocalHashMap;
 
 //import org.albianj.cached.impl.SortCached;
 
