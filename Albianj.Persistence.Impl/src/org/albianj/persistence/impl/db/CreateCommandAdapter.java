@@ -22,28 +22,32 @@ public class CreateCommandAdapter implements IUpdateCommand
 		StringBuilder sqlText = new StringBuilder();
 		StringBuilder cols = new StringBuilder();
 		StringBuilder paras = new StringBuilder();
-		sqlText.append("INSERT INTO ").append(routing.getTableName());
+		sqlText.append("INSERT INTO ");// .append(routing.getTableName());
+		String tableName = null;
 		if (null != routings && null != routings.getHashMapping())
 		{
-			String tableName = routings.getHashMapping().mappingWriterTable(routing,object);
-			if (!Validate.isNullOrEmptyOrAllSpace(tableName))
-			{
-				sqlText.append(tableName);
-			}
+			tableName = routings.getHashMapping().mappingWriterTable(routing,
+					object);
 		}
+		tableName = Validate.isNullOrEmptyOrAllSpace(tableName) ? routing
+				.getTableName() : tableName;
+		sqlText.append(tableName);
 
-		Map<String, IMemberAttribute> mapMemberAttributes = albianObject.getMembers();
+		Map<String, IMemberAttribute> mapMemberAttributes = albianObject
+				.getMembers();
 		Map<String, ISqlParameter> sqlParas = new HashMap<String, ISqlParameter>();
-		for (Map.Entry<String, IMemberAttribute> entry : mapMemberAttributes.entrySet())
+		for (Map.Entry<String, IMemberAttribute> entry : mapMemberAttributes
+				.entrySet())
 		{
 			IMemberAttribute member = entry.getValue();
-			if(!member.getIsSave()) continue;
+			if (!member.getIsSave()) continue;
 			ISqlParameter para = new SqlParameter();
 			para.setName(member.getName());
 			para.setSqlFieldName(member.getSqlFieldName());
 			para.setSqlType(member.getDatabaseType());
 			para.setValue(mapValue.get(member.getName()));
-			sqlParas.put(String.format("#%1$s#",member.getSqlFieldName()) , para);
+			sqlParas.put(String.format("#%1$s#", member.getSqlFieldName()),
+					para);
 			cols.append(member.getSqlFieldName()).append(",");
 			paras.append("#").append(member.getSqlFieldName()).append("# ,");
 		}

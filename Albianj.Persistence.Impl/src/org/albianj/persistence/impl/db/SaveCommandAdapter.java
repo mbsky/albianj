@@ -15,8 +15,14 @@ public class SaveCommandAdapter implements IUpdateCommand
 			IAlbianObjectAttribute albianObject, Map<String, Object> mapValue,
 			IRoutingAttribute routing)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if(object.getIsAlbianNew())
+		{
+			return new CreateCommandAdapter().builder(object, routings, albianObject, mapValue, routing);
+		}
+		else
+		{
+			return new ModifyCommandAdapter().builder(object, routings, albianObject, mapValue, routing);
+		}
 	}
 
 }
