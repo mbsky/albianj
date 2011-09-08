@@ -101,10 +101,13 @@ public class QueryScope extends FreeQueryScope implements IQueryScope
 			{
 				T obj = (T) cls.newInstance();
 				for(PropertyDescriptor desc : propertyDesc)
-				{	if(desc.getName().equals("isAlbianNew")) continue;
+				{	if(desc.getName().equals("isAlbianNew")) 
+					{
+						desc.setValue("isAlbianNew", false);
+						continue;
+					}
 					desc.getWriteMethod().invoke(obj, result.getObject(desc.getName()));
 				}
-				obj.setIsAlbianNew(false);
 				list.add(obj);
 			}
 			catch (Exception e)
