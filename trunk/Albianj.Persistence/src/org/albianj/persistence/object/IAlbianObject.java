@@ -7,5 +7,5 @@ public interface IAlbianObject extends Serializable
 	public String getId();
 	public void setId(String id);
 	public boolean getIsAlbianNew();
-	public void setIsAlbianNew(boolean isNew);
+//	public void setIsAlbianNew(boolean isNew);
 }

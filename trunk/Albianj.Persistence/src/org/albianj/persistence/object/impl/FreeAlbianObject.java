@@ -27,9 +27,9 @@ public abstract class FreeAlbianObject implements IAlbianObject
 		return this.isAlbianNew;
 	}
 
-	@Override
-	public void setIsAlbianNew(boolean isAlbianNew)
-	{
-		this.isAlbianNew = isAlbianNew;
-	}
+//	@Override
+//	protected void setIsAlbianNew(boolean isAlbianNew)
+//	{
+//		this.isAlbianNew = isAlbianNew;
+//	}
 }
