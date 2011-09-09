@@ -145,25 +145,25 @@ public class Main
 //					IAlbianLoggerService.class, "logger");
 			AlbianLoggerService.debug("%s %s %s","i", "heat", "java");
 			
-			ICacheService service = AlbianServiceRouter.getService(ICacheService.class, "CacheService");
-			MemcachedClient client = service.getRemoterClient("list");
-			client.add("key", 1000, "value");
-			String value = client.get("key");
-			System.out.println(value);
+//			ICacheService service = AlbianServiceRouter.getService(ICacheService.class, "CacheService");
+//			MemcachedClient client = service.getRemoterClient("list");
+//			client.add("key", 1000, "value");
+//			String value = client.get("key");
+//			System.out.println(value);
+//			
+//			ILocalCached cache = service.getLocalCache("Single");
+//			cache.put("kkkk", "i am success.");
+//			String vvv = (String) cache.get("kkkk");
+//			System.out.println(vvv);
 			
-			ILocalCached cache = service.getLocalCache("Single");
-			cache.put("kkkk", "i am success.");
-			String vvv = (String) cache.get("kkkk");
-			System.out.println(vvv);
-			
-			Thread.sleep(10 * 1000);
+//			Thread.sleep(10 * 1000);
 
 			try
 			{
 				String key = AlbianKeyService.generate("dd7777777777");
 				AlbianLoggerService.info(key);
 				AlbianLoggerService.info("%d",key.length());
-				return;
+//				return;
 //				return;
 //				ILogInfo log = new LogInfo();
 //				log.setContent("add the user");
@@ -196,19 +196,19 @@ public class Main
 //				}
 //				
 //				//96791e91-1864-4840-8279-dd378b8f
-//				IReaderJobAdapter adapter = new ReaderJobAdapter();
-//				IFilterCondition filter = new FilterCondition();
-//				filter.setFieldName("id");
-//				filter.setFieldClass(String.class);
-//				filter.setLogicalOperation(LogicalOperation.Equal);
-//				filter.setRelationalOperator(RelationalOperator.And);
-//				filter.setValue("aaaaa");
-//				List<IFilterCondition> filters = new Vector<IFilterCondition>();
-//				filters.add(filter);
-//				IReaderJob job = adapter.buildReaderJob(User.class, "", 0, 0, filters, null);
-//				IQueryScope scope = new QueryScope();
-//				List<User> users = scope.query(User.class, job);
-//				return;
+				IReaderJobAdapter adapter = new ReaderJobAdapter();
+				IFilterCondition filter = new FilterCondition();
+				filter.setFieldName("id");
+				filter.setFieldClass(String.class);
+				filter.setLogicalOperation(LogicalOperation.Equal);
+				filter.setRelationalOperator(RelationalOperator.And);
+				filter.setValue("aaaa");
+				IFilterCondition[] filters = new IFilterCondition[1];
+				filters[0] = filter;
+				IReaderJob job = adapter.buildReaderJob(User.class, "", 0, 0,filters, null);
+				IQueryScope scope = new QueryScope();
+				List<User> users = scope.execute(User.class, job);
+				return;
 				
 			}
 			catch (Exception e)
