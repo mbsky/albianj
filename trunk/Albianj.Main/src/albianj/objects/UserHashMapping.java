@@ -51,7 +51,7 @@ public class UserHashMapping extends FreeAlbianObjectHashMapping implements
 	public String mappingReaderTable(IRoutingAttribute routing,Map<String,IFilterCondition> wheres,
 			Map<String,IOrderByCondition> orderbys)
 	{
-		return null;
+		return routing.getTableName() + "_0";
 	}
 	protected String witerTableMapper(String routingName,IAlbianObject obj)
 	{
