@@ -10,6 +10,22 @@ import org.albianj.persistence.object.IRoutingsAttribute;
 public class SaveCommandAdapter implements IUpdateCommand
 {
 
+	private IUpdateCommand create;
+	private IUpdateCommand modify;
+	public SaveCommandAdapter(IUpdateCommand create,IUpdateCommand modify)
+	{
+		this.create = create;
+		this.modify = modify;
+	}
+	
+	public SaveCommandAdapter()
+	{
+		if(null == this.create)
+			this.create = new CreateCommandAdapter();
+		if(null == this.modify)
+			this.modify = new ModifyCommandAdapter();
+	}
+	
 	@Override
 	public ICommand builder(IAlbianObject object, IRoutingsAttribute routings,
 			IAlbianObjectAttribute albianObject, Map<String, Object> mapValue,
@@ -17,11 +33,11 @@ public class SaveCommandAdapter implements IUpdateCommand
 	{
 		if(object.getIsAlbianNew())
 		{
-			return new CreateCommandAdapter().builder(object, routings, albianObject, mapValue, routing);
+			return create.builder(object, routings, albianObject, mapValue, routing);
 		}
 		else
 		{
-			return new ModifyCommandAdapter().builder(object, routings, albianObject, mapValue, routing);
+			return modify.builder(object, routings, albianObject, mapValue, routing);
 		}
 	}
 
