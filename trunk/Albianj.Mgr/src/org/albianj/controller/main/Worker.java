@@ -34,6 +34,8 @@ public class Worker implements IWork
 			AlbianLoggerService.warn("The recv socket is null.");
 			return;
 		}
+		String clientIP = socket.getInetAddress().getHostAddress();
+		AlbianLoggerService.info("The %s client connect to server.",clientIP);
 		Header respHeader = new Header();
 		respHeader.setBodyLen(0);
 		respHeader.setCommand(ManagementProtocol.RESP);
@@ -48,12 +50,14 @@ public class Worker implements IWork
 				header = dealHeader(in);
 				if (null == header)
 				{
+					AlbianLoggerService.error("deal header is error,the client is:%s.",clientIP);
 					respHeader.setState(ManagementProtocol.ERROR_READ_HEADER);
 					break;
 				}
 				byte state = dealBody(in,header);
 				if(ManagementProtocol.SUCCESS != state)
 				{
+					AlbianLoggerService.error("deal body is error,the client is:%s.",clientIP);
 					respHeader.setState(ManagementProtocol.ERROR_READ_BODY);
 					break;
 				}
@@ -63,7 +67,7 @@ public class Worker implements IWork
 		}
 		catch (Exception e)
 		{
-			AlbianLoggerService.error(e, "get the header is error.");
+			AlbianLoggerService.error(e, "deal request is error.client ip:%s..",clientIP);
 		}
 		finally
 		{
@@ -119,6 +123,7 @@ public class Worker implements IWork
 				return ManagementProtocol.ERROR_READ_BODY;
 			}
 			String value = new String(bodys);
+			AlbianLoggerService.debug("message:%s.",value);
 			ClientIptable clientIptable = new ClientIptable(value);
 			switch (header.getCommand())
 			{
