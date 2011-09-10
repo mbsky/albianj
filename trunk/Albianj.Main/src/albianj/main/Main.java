@@ -46,7 +46,7 @@ import org.albianj.runtime.RuningTrace;
 import org.albianj.security.Coder;
 import org.albianj.security.DESCoder;
 import org.albianj.security.MACStyle;
-import org.albianj.service.AlbianKeyService;
+import org.albianj.service.AlbianIdService;
 import org.albianj.service.parser.IParser;
 import org.apache.commons.dbcp.DelegatingStatement;
 import org.apache.log4j.Logger;
@@ -160,7 +160,7 @@ public class Main
 
 			try
 			{
-				String key = AlbianKeyService.generate("dd7777777777");
+				String key = AlbianIdService.generate("dd7777777777");
 				AlbianLoggerService.info(key);
 				AlbianLoggerService.info("%d",key.length());
 //				return;
