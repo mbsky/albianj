@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.albianj.kernel.KernelSetting;
 import org.albianj.text.StringHelper;
 
-public class AlbianKeyService
+public class AlbianIdService
 {
 	//length is 32
 	//4-bit kenerl length - 7-bit appName length - 14-bit timestamep + 4-bit serial number

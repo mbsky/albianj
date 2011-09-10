@@ -14,10 +14,10 @@ import org.slf4j.LoggerFactory;
 public class AlbianLoggerService extends FreeAlbianService implements
 		IAlbianLoggerService
 {
-	public static final String ERROR = "!";
-	public static final String WARN = "@";
-	public static final String INFO = "$";
-	public static final String DEBUG = "*";
+	public static final String MARK_ERROR = "!";
+	public static final String MARK_WARN = "@";
+	public static final String MARK_INFO = "$";
+	public static final String MARK_DEBUG = "*";
 
 	private final static String ALBIAN_LOGGER = "_ALBIAN_LOGGER_";
 	private static Logger logger;
@@ -114,7 +114,7 @@ public class AlbianLoggerService extends FreeAlbianService implements
 	 */
 	public static String getErrorMsg(String format,Object... values)
 	{
-		return getMessage(ERROR,format, values);
+		return getMessage(MARK_ERROR,format, values);
 	}
 
 	/*
@@ -124,7 +124,7 @@ public class AlbianLoggerService extends FreeAlbianService implements
 	 */
 	public static  String getWarnMsg(String format,Object... values)
 	{
-		return getMessage(WARN,format,values);
+		return getMessage(MARK_WARN,format,values);
 	}
 
 	/*
@@ -134,7 +134,7 @@ public class AlbianLoggerService extends FreeAlbianService implements
 	 */
 	public static String getInfoMsg(String format,Object... values)
 	{
-		return getMessage(INFO, format,values);
+		return getMessage(MARK_INFO, format,values);
 	}
 
 	/*
@@ -145,26 +145,26 @@ public class AlbianLoggerService extends FreeAlbianService implements
 	 */
 	public static String getDebugMsg(String format,Object... values)
 	{
-		return getMessage(DEBUG,format, values);
+		return getMessage(MARK_DEBUG,format, values);
 	}
 
 	public static String getErrorMsg(Exception e,String format, Object... values)
 	{
-		return getMessage(ERROR, e,format, values);	}
+		return getMessage(MARK_ERROR, e,format, values);	}
 
 	public static String getWarnMsg(Exception e,String format, Object... values)
 	{
-		return getMessage(WARN, e,format, values);
+		return getMessage(MARK_WARN, e,format, values);
 	}
 
 	public static String getInfoMsg(Exception e,String format, Object... values)
 	{
-		return getMessage(INFO, e,format, values);
+		return getMessage(MARK_INFO, e,format, values);
 	}
 
 	public static String getDebugMsg(Exception e,String format, Object... values)
 	{
-		return getMessage(DEBUG, e,format, values);
+		return getMessage(MARK_DEBUG, e,format, values);
 	}
 
 	protected static String getMessage(String level, Exception e,String format, Object... values)
