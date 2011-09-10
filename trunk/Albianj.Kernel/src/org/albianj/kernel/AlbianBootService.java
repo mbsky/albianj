@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.albianj.logger.AlbianLoggerService;
-import org.albianj.service.AlbianKeyService;
+import org.albianj.service.AlbianIdService;
 import org.albianj.service.AlbianServiceException;
 import org.albianj.service.IAlbianService;
 import org.albianj.service.IAlbianServiceAttribute;
@@ -41,7 +41,7 @@ public final class AlbianBootService
 	public static void start() throws Exception
 	{
 		startDateTime = new Date();
-		serialId = AlbianKeyService.generate32UUID();
+		serialId = AlbianIdService.generate32UUID();
 		
 		Thread thread = new ServiceThread(); 
 		thread.start();

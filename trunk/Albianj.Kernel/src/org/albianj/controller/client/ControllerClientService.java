@@ -136,6 +136,7 @@ public class ControllerClientService extends FreeAlbianService implements IContr
 					ControllerClientSettings.getReuseAddress(),
 					ControllerClientSettings.getSendBufferSize(), ControllerClientSettings.getSoLinger(),
 					ControllerClientSettings.getSoTimeout(), ControllerClientSettings.getTcpNoDelay());
+			AlbianLoggerService.info("regedit message:%s.", table.toString());
 			client.regist(socket, table);
 		}
 		catch (UnknownHostException e)
@@ -174,7 +175,8 @@ public class ControllerClientService extends FreeAlbianService implements IContr
 						table.setStartTime(DateTime.getDateTimeString(AlbianBootService.getStartDateTime()));
 						table.setSerialId(AlbianBootService.getSerialId());
 						table.setState(EngineState.Runing);
-
+						
+						AlbianLoggerService.info("report message:%s.", table.toString());
 						socket = client.create(ControllerClientSettings.getHost(),
 								ControllerClientSettings.getPort(),
 								ControllerClientSettings.getKeepalive(),
@@ -226,6 +228,7 @@ public class ControllerClientService extends FreeAlbianService implements IContr
 			table.setSerialId(AlbianBootService.getSerialId());
 			table.setState(EngineState.Stoped);
 
+			AlbianLoggerService.info("logout message:%s.", table.toString());
 			socket = client.create(ControllerClientSettings.getHost(),
 					ControllerClientSettings.getPort(), ControllerClientSettings.getKeepalive(),
 					ControllerClientSettings.getReceiveBufferSize(),
