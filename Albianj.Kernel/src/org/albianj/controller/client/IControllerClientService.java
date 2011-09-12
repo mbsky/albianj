@@ -6,5 +6,5 @@ public interface IControllerClientService extends IAlbianService
 {
 	public void regedit();
 	public void report();
-	public void unload();
+	public void logout();
 }
