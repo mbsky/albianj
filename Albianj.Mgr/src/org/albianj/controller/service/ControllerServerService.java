@@ -12,7 +12,7 @@ import org.albianj.verify.Validate;
 
 public class ControllerServerService extends FreeAlbianService
 {
-	private final static String path = "../config/mgr.properties";
+	private final static String path = "../config/controller.properties";
 	public void init()
 	{
 		try
