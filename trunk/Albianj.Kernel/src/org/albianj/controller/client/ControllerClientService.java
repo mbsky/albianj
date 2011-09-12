@@ -104,15 +104,10 @@ public class ControllerClientService extends FreeAlbianService implements IContr
 	}
 
 	@Override
-	public void afterLoading() throws RuntimeException
-	{
-		report();
-	}
-
-	@Override
 	public void unload()
 	{
-		unloading();
+		logout();
+		super.unload();
 	}
 
 	public void regedit()
@@ -213,7 +208,7 @@ public class ControllerClientService extends FreeAlbianService implements IContr
 		run.run();
 	}
 
-	public void unloading()
+	public void logout()
 	{
 		ClientIptable table = new ClientIptable();
 		TcpClient client = new TcpClient();

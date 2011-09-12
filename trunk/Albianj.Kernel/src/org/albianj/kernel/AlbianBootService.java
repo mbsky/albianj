@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.albianj.controller.client.IControllerClientService;
 import org.albianj.logger.AlbianLoggerService;
 import org.albianj.service.AlbianIdService;
 import org.albianj.service.AlbianServiceException;
@@ -82,14 +83,39 @@ public final class AlbianBootService
 			}
 			if(0 == currentFailSize) 
 			{
+				IControllerClientService controlService = 
+						AlbianServiceRouter.getService(IControllerClientService.class, "ControllerClientService");
+				if(null == controlService)
+				{
+					String msg = "The kernel no regedit to controls center.";
+					AlbianLoggerService.error(msg);
+					state = AlbianState.Unloaded;
+					throw new AlbianServiceException(msg);
+				}
+				else
+				{
+					controlService.report();
+				}
 				state = AlbianState.Running;
-					AlbianLoggerService.info("start service is success!");
+				AlbianLoggerService.info("start service is success!");
 				break;//all success
 			}
 			
 			if(lastFailSize == currentFailSize)//create instance but all fail in this times,so throw exception
 			{
 				state = AlbianState.Unloading;
+				IControllerClientService controlService = 
+						AlbianServiceRouter.getService(IControllerClientService.class, "ControllerClientService");
+				if(null == controlService)
+				{
+					String msg = "The kernel no regedit to controls center.";
+					AlbianLoggerService.warn(msg);
+				}
+				else
+				{
+					controlService.logout();
+				}
+				
 				String msg = "the service maybe cross reference.";
 					AlbianLoggerService.error(msg);
 					AlbianLoggerService.error(failMap.keySet().toString());
