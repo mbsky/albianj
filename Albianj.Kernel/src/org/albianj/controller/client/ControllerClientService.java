@@ -21,7 +21,7 @@ import org.albianj.verify.Validate;
 
 public class ControllerClientService extends FreeAlbianService implements IControllerClientService
 {
-	private final static String path = "../config/mgr.properties";
+	private final static String path = "../config/controller.properties";
 
 	public void init()
 	{
