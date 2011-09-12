@@ -3,6 +3,7 @@
 	<!-- Kernel -->
 	<Service Id="logger" Type="org.albianj.logger.AlbianLoggerService" />
 	<Service Id="Kernel" Type="org.albianj.service.parser.KernelServiceParser" />
+	<Service Id="ControllerClientService" Type="org.albianj.controller.client.ControllerClientService" />
 	<Service Id="StorageService"
 		Type="org.albianj.persistence.impl.storage.StorageService" />
 	<Service Id="RoutingService"
