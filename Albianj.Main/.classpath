@@ -15,5 +15,11 @@
 	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/slf4j-api-1.6.2.jar" sourcepath="D:/java/slf4j-1.6.2/slf4j-api-1.6.2-sources.jar"/>
 	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/slf4j-log4j12-1.6.2.jar" sourcepath="D:/java/slf4j-1.6.2/slf4j-log4j12-1.6.2-sources.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Albianj.Commons"/>
+	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/gson-1.7.1.jar" sourcepath="D:/java/google-gson-1.7.1/gson-1.7.1-sources.jar"/>
+	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/mongo-2.6.5.jar" sourcepath="D:/java/mongodb-mongo-java-driver-9e25f38/src"/>
+	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/commons-cli-1.1.jar"/>
+	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/commons-codec-1.5.jar"/>
+	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/rabbitmq-client.jar"/>
+	<classpathentry kind="lib" path="D:/自己的项目/Albianj/lib/commons-io-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

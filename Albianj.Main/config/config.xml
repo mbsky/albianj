@@ -1,3 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Config>
+	<Role>Server</Role><!--Server,  Client -->
+	<LoadMode>Preload</LoadMode> <!-- Preload, Lazyload -->
+	<Storage Deployment="normal" > <!-- set,normal,paired -->
+		<Server Address="" Port="" UserName="" Password=""></Server>
+	</Storage>
+	<Notify Hash="" Persistence="true">
+		<Server Address="" Port="" UserName="" Password=""></Server>
+	</Notify>
 </Config>
