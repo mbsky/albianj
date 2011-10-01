@@ -10,7 +10,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.Vector;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -55,13 +57,23 @@ import org.apache.log4j.xml.DOMConfigurator;
 import albianj.objects.ILogInfo;
 import albianj.objects.IUser;
 import albianj.objects.LogInfo;
+import albianj.objects.Node;
 import albianj.objects.User;
 
+import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.Mongo;
 import com.mysql.jdbc.Statement;
 //import org.w3c.dom.Document;
 //import org.w3c.dom.Element;
 //import org.w3c.dom.Element;
 //import org.w3c.dom.NodeList;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.QueueingConsumer;
 
 public class Main
 {
@@ -72,11 +84,119 @@ public class Main
 
 //	static Logger logger = Logger.getLogger(Main.class.getName());
 
+    private static final String exchange_name="my_exchange";
+    private static final String exchange_type="fanout";
+	
 	public static void main(String[] args)
 	{
 		try
 		{
+//			new Runnable()
+//			{
+//				public void run()
+//				{
+//					try
+//					{
+//						Thread.sleep(30 * 1000);
+//						ConnectionFactory factory=new ConnectionFactory();
+//				        factory.setHost("localhost");
+//				        factory.setVirtualHost("my_mq");
+//				        factory.setUsername("xvhfeng");
+//				        factory.setPassword("5035");
+//				        com.rabbitmq.client.Connection connection = factory.newConnection();//.newConnection();
+//				        com.rabbitmq.client.Channel channel=connection.createChannel();
+//				        channel.exchangeDeclare(exchange_name, exchange_type); //声明exchange,以及类型
+//				        String message="This mesaage is just for test!"+Math.random();
+//				        channel.basicPublish(exchange_name, "", null, message.getBytes()); //将消息绑定了队列
+//				        System.out.println("Message send:"+message);
+//				        channel.close();
+//				        connection.close();
+//					}catch(Exception e)
+//					{
+//						e.printStackTrace();
+//					}
+//				}
+//			}.run();
 			
+			
+			
+	        ConnectionFactory clientFactory=new ConnectionFactory();
+	        clientFactory.setHost("localhost");
+	        clientFactory.setVirtualHost("my_mq");
+	        clientFactory.setUsername("xvhfeng");
+	        clientFactory.setPassword("5035");
+	        com.rabbitmq.client.Connection clientConnection=clientFactory.newConnection();
+	        com.rabbitmq.client. Channel clientChannel=clientConnection.createChannel();
+	        clientChannel.exchangeDeclare(exchange_name, exchange_type);
+	        clientChannel.basicQos(1); 
+	        //创建两个队列，将它们都绑定到同一个exchange
+	        String queue_name1=clientChannel.queueDeclare().getQueue();
+	        clientChannel.queueBind(queue_name1, exchange_name, "");
+	        String queue_name2=clientChannel.queueDeclare().getQueue();
+	        clientChannel.queueBind(queue_name2, exchange_name, "");
+	        System.out.println("Wait for message received!");
+	        //创建两个消费者，分别与两个队列相关联
+	        QueueingConsumer consumer1=new QueueingConsumer(clientChannel);
+	        clientChannel.basicConsume(queue_name1, true, consumer1);
+	        QueueingConsumer consumer2=new QueueingConsumer(clientChannel);
+	        clientChannel.basicConsume(queue_name2,true, consumer2);
+	        //两个消费者分别从各自的队列里面收取消息
+	        int i = 0;
+	        while(i == 0){
+	            QueueingConsumer.Delivery deliver=consumer1.nextDelivery();
+	            String clientMsg=new String(deliver.getBody());
+	            System.out.println("Message received[consumer1]:"+clientMsg);
+	            QueueingConsumer.Delivery deliver1=consumer2.nextDelivery();
+	            String clientMsg1=new String(deliver1.getBody());
+	            System.out.println("Message received[consumer2]:"+clientMsg1);
+	            Thread.sleep(500);
+	        }
+	        
+//			Node node = new Node();
+//			node.setEnable(true);
+//			node.setName("OrderSwitch");
+//			node.setValue("true");
+//			Map<String,Node> childNodes = new HashMap<String,Node>();
+//			Node childNode = new Node(); 
+//			childNode.setEnable(true);
+//			childNode.setName("BizofferSwitch");
+//			childNode.setValue("false");
+//			childNodes.put("BizofferSwitch",childNode);
+//			node.setChildNodes(childNodes);
+//			Gson gson = new Gson();
+//			String json = gson.toJson(node);
+//			System.out.println(json);
+			
+			Mongo mongo = new Mongo( "127.0.0.1" , 20000);
+			DB db = mongo.getDB("test");
+			
+			DBCollection coll = db.getCollection("tt");
+
+			Node node = new Node();
+			node.setId(AlbianIdService.generate32UUID());
+			node.setEnable(true);
+			node.setForefatherKey("root");
+			node.setName("test");
+			node.setValue("open");
+			coll.insert(node);
+			
+//			doc.values().add(e)
+
+			
+//			coll.update(doc,doc,true,false);
+			//coll.insert(doc);
+//			coll.up
+//			coll.getWriteConcern().
+			coll.setObjectClass(Node.class);
+			Node nn =(Node) coll.findOne();
+			nn.setEnable(false);
+			coll.save(nn);
+			Node nn1 =(Node) coll.findOne();
+			System.out.println(nn1);
+//			myDoc.containsField("test");
+//			System.out.println(myDoc);
+//			System.out.println(myDoc);
+
 //			String v1 = Coder.encryptMD5("Seapeak");
 //			String v2 = Coder.encryptSHA("Seapeak");
 //			System.out.println(v1);
